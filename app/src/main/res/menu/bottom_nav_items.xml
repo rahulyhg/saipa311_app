@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/saleServices"
+        android:title="خدمات فروش"
+        android:icon="@drawable/ic_action_car"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/afterSaleServices"
+        android:title="خدمات پس از فروش"
+        android:icon="@drawable/ic_new_releases"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/customerServices"
+        android:title="امور مشتریان"
+        android:icon="@drawable/ic_mood"
+        app:showAsAction="always|withText"/>
+    <item
+        android:id="@+id/options"
+        android:title="آپشن"
+        android:icon="@drawable/ic_action_tiles_large"
+        app:showAsAction="always|withText"/>
+</menu>
+
