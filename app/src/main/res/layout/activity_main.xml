@@ -10,23 +10,23 @@
     tools:showIn="@layout/activity_main"
     tools:context="key_team.com.saipa311.MainActivity">
     <android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:context="key_team.com.saipa311.MainActivity">
         <android.support.design.widget.AppBarLayout
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            app:elevation="0dp">
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
                 app:theme="@style/ToolBarStyle"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:elevation="0dp"/>
         </android.support.design.widget.AppBarLayout>
         <android.support.v4.view.ViewPager
             android:id="@+id/viewpager"

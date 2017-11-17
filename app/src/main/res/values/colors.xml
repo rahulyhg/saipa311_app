@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF9912</color>
 
     <color name="bottomNavigationViewItemColor">#A59C96</color>
+    <color name="tabIndicatorColor">#00B2B2</color>
 </resources>
