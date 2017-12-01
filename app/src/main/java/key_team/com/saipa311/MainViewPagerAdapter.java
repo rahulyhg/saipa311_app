@@ -4,6 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import key_team.com.saipa311.AfterSale_services.AfterSaleServicesFragment;
+import key_team.com.saipa311.Customer_services.CustomerServicesFragment;
+import key_team.com.saipa311.Options.OptionsFragment;
+import key_team.com.saipa311.Sale_services.SaleServicesFragment;
+
 /**
  * Created by ammorteza on 11/16/17.
  */

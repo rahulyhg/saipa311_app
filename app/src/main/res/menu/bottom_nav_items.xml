@@ -4,22 +4,22 @@
     <item
         android:id="@+id/saleServices"
         android:title="خدمات فروش"
-        android:icon="@drawable/ic_action_car"
+        android:icon="@drawable/sale_service"
         app:showAsAction="always|withText"/>
     <item
         android:id="@+id/afterSaleServices"
         android:title="خدمات پس از فروش"
-        android:icon="@drawable/ic_new_releases"
+        android:icon="@drawable/after_sale_services"
         app:showAsAction="always|withText"/>
     <item
         android:id="@+id/customerServices"
         android:title="امور مشتریان"
-        android:icon="@drawable/ic_mood"
+        android:icon="@drawable/customer_service"
         app:showAsAction="always|withText"/>
     <item
         android:id="@+id/options"
         android:title="آپشن"
-        android:icon="@drawable/ic_action_tiles_large"
+        android:icon="@drawable/options"
         app:showAsAction="always|withText"/>
 </menu>
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF9912</color>
-    <color name="colorPrimaryDark">#FF8E10</color>
-    <color name="colorAccent">#FF9912</color>
+    <color name="colorPrimary">#F39C12</color>
+    <color name="colorPrimaryDark">#E67E22</color>
+    <color name="colorAccent">#F39C12</color>
 
-    <color name="bottomNavigationViewItemColor">#A59C96</color>
+    <color name="bottomNavigationViewItemColor">#7F8C8D</color>
     <color name="tabIndicatorColor">#00B2B2</color>
+    <color name="tabTextColor">#374045</color>
 </resources>
