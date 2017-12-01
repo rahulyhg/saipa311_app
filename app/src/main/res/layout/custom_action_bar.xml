@@ -6,10 +6,10 @@
     android:background="@color/colorPrimary">
     <LinearLayout
         android:id="@+id/action_bar_right"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:gravity="center_vertical"
+        android:gravity="right|center_vertical"
         android:orientation="vertical">
         <TextView
             android:id="@+id/title_text"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
             android:layout_marginRight="8dp"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="right|center_vertical"
             android:textSize="15sp"
             android:text="نمایندگی سایپا"
             android:textStyle="bold"/>
@@ -30,7 +30,7 @@
             android:layout_gravity="center_vertical"
             android:gravity="right"
             android:textSize="11sp"
-            android:text="کد ۳۱۱"
+            android:text="کوچک عظیمی - کد ۳۱۱"
             android:textStyle="bold"/>
     </LinearLayout>
     <LinearLayout
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageButton
-                android:id="@+id/ic_notif"
+                android:id="@+id/tool_bar_notif_btn"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="?attr/actionBarSize"
                 android:adjustViewBounds="true"
@@ -69,7 +69,7 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
-                android:layout_alignRight="@id/ic_notif"
+                android:layout_alignRight="@id/tool_bar_notif_btn"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/rounded_view_notif_count">
                 <TextView

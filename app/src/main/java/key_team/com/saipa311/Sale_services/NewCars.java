@@ -1,5 +1,6 @@
 package key_team.com.saipa311.Sale_services;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -78,6 +79,13 @@ public class NewCars extends Fragment {
                 title = (TextView) view.findViewById(R.id.title);
                 description = (TextView) view.findViewById(R.id.description);
                 thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+                view.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), NewCarInfoActivity.class);
+                        startActivity(intent);
+                    }
+                });
             }
         }
         public NewCarsAdapter(ArrayList<newCar> data) {
