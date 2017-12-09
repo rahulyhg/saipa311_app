@@ -20,20 +20,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="15dp"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:layout_gravity="right"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"/>
-        </LinearLayout>
+            android:paddingRight="15dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textSizeLarge"
+                    android:layout_gravity="right"
+                    android:textStyle="bold"
+                    android:textColor="#263938"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:layout_gravity="right"
+                    android:textColor="#6DAAD9"
+                    android:text="هاچ بک"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:background="@drawable/rounded_view_special"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/textSizeSmall"
+                    android:text="شرایطی"/>
+            </LinearLayout>
+        </RelativeLayout>
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="fill_parent"
@@ -41,7 +75,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:clickable="true" />
+            android:clickable="false" />
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,9 +89,43 @@
                         android:id="@+id/description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/textSizeNormal"
                         android:layout_gravity="right"
                         android:textColor="@android:color/tab_indicator_text" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp">
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:orientation="horizontal">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:textColor="@android:color/tab_indicator_text"
+                                        android:textSize="@dimen/textSizeNormal"
+                                        android:text="تومان"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:textColor="@color/colorPrimaryDark"
+                                        android:layout_marginLeft="3dp"
+                                        android:layout_marginRight="3dp"
+                                        android:textSize="@dimen/textSizeNormal"
+                                        android:text="۴۵,۰۰۰,۰۰۰"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:textColor="@android:color/tab_indicator_text"
+                                        android:textSize="@dimen/textSizeNormal"
+                                        android:text="قیمت:"/>
+                            </LinearLayout>
+                    </RelativeLayout>
                 </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,11 +143,11 @@
                         android:paddingRight="20dp"
                         android:paddingLeft="20dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_action_like"/>
+                        android:src="@drawable/ic_action_star_0"/>
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="14dp"
+                        android:padding="10dp"
                         android:paddingRight="20dp"
                         android:paddingLeft="20dp"
                         android:layout_gravity="center"

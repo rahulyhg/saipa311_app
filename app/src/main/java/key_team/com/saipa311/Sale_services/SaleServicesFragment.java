@@ -37,7 +37,7 @@ public class SaleServicesFragment extends Fragment {
 
     public void initTabLayout(View view)
     {
-        SaleServicesPagerAdapter adapter = new SaleServicesPagerAdapter(getActivity().getSupportFragmentManager() , 4);
+        SaleServicesPagerAdapter adapter = new SaleServicesPagerAdapter(getActivity().getSupportFragmentManager() , 5);
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.saleServicesViewpager);
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true , new FadePageTransformer());
@@ -74,6 +74,9 @@ public class SaleServicesFragment extends Fragment {
                 case 3:
                     Exchange tab4 = new Exchange();
                     return tab4;
+                case 4:
+                    Junk tab5 = new Junk();
+                    return tab5;
                 default:
                     return null;
             }
@@ -93,6 +96,7 @@ public class SaleServicesFragment extends Fragment {
                 case 1: return "خودروی دست دوم";
                 case 2: return "سرمایه گذاری";
                 case 3: return "تهاتر";
+                case 4: return "اسقاط";
             }
             return "";
         }

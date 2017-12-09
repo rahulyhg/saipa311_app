@@ -7,4 +7,5 @@
     <color name="bottomNavigationViewItemColor">#7F8C8D</color>
     <color name="tabIndicatorColor">#00B2B2</color>
     <color name="tabTextColor">#374045</color>
+    <color name="background_color">#F4F4F4</color>
 </resources>

@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private void createNavigationDrawer()
     {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.colorPrimary));
         toolBarBotifButton = (ImageButton) findViewById(R.id.tool_bar_notif_btn);
         toolBarBotifButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -18,7 +18,7 @@
             android:textColor="#FFFFFF"
             android:layout_marginRight="8dp"
             android:layout_gravity="right|center_vertical"
-            android:textSize="15sp"
+            android:textSize="@dimen/textSizeLarge"
             android:text="نمایندگی سایپا"
             android:textStyle="bold"/>
         <TextView
@@ -29,7 +29,7 @@
             android:layout_marginRight="8dp"
             android:layout_gravity="center_vertical"
             android:gravity="right"
-            android:textSize="11sp"
+            android:textSize="@dimen/textSizeSmall"
             android:text="کوچک عظیمی - کد ۳۱۱"
             android:textStyle="bold"/>
     </LinearLayout>

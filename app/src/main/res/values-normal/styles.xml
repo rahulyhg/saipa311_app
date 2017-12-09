@@ -1,0 +1,5 @@
+<resources>
+    <style name="CustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">18dp</item>
+    </style>
+</resources>
