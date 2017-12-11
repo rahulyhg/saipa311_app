@@ -23,16 +23,16 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:elevation="5dp">
+                app:elevation="0dp">
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorPrimary"
+                    android:background="@android:color/background_light"
                     app:layout_scrollFlags="scroll|enterAlways|snap"
                     app:theme="@style/ToolBarStyle"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"
-                    app:elevation="5dp"/>
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:elevation="0dp"/>
             </android.support.design.widget.AppBarLayout>
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager"

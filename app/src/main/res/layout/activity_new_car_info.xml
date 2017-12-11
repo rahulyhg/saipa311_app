@@ -20,7 +20,7 @@
                     android:layout_height="match_parent"
                     app:titleEnabled="false"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                    app:contentScrim="?attr/colorPrimary"
+                    app:contentScrim="@android:color/background_light"
                     app:expandedTitleMarginStart="48dp"
                     app:expandedTitleMarginEnd="64dp">
                     <LinearLayout
@@ -40,11 +40,11 @@
                             android:gravity="center" />
                     </LinearLayout>
                     <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                    app:layout_collapseMode="pin" />
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:theme="@style/ToolBarStyle"
+                        app:layout_collapseMode="pin" />
             </android.support.design.widget.CollapsingToolbarLayout>
             </android.support.design.widget.AppBarLayout>
             <android.support.v4.widget.NestedScrollView
@@ -52,109 +52,133 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
+                android:background="@color/background_color"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp">
-                        <TextView
-                            android:id="@+id/title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/textSizeLarge"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:textStyle="bold"
-                            android:text="ساندرو"
-                            android:textColor="#263938"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="2dp"
-                            android:paddingBottom="2dp"
-                            android:paddingLeft="6dp"
-                            android:paddingRight="6dp"
-                            android:background="@drawable/rounded_view_special"
-                            android:textColor="#FFFFFF"
-                            android:textSize="@dimen/textSizeSmall"
-                            android:text="شرایطی"/>
-                    </RelativeLayout>
-                    <RelativeLayout
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/new_car_card_view"
+                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp">
+                        android:layout_margin="6dp"
+                        card_view:cardBackgroundColor="@android:color/background_light"
+                        card_view:cardElevation="2dp"
+                        card_view:cardCornerRadius="0dp"
+                        card_view:cardPreventCornerOverlap="false">
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:orientation="horizontal">
-                            <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <RelativeLayout
                                 android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp">
+                                <TextView
+                                    android:id="@+id/title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/textSizeLarge"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:textStyle="bold"
+                                    android:text="ساندرو"
+                                    android:textColor="#263938"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingTop="2dp"
+                                    android:paddingBottom="2dp"
+                                    android:paddingLeft="6dp"
+                                    android:paddingRight="6dp"
+                                    android:background="@drawable/rounded_view_special"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="@dimen/textSizeSmall"
+                                    android:text="شرایطی"/>
+                            </RelativeLayout>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:textColor="@android:color/tab_indicator_text"
-                                android:textSize="@dimen/textSizeNormal"
-                                android:text="تومان"/>
+                                android:layout_marginTop="5dp">
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_centerInParent="true"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:textColor="@android:color/tab_indicator_text"
+                                        android:textSize="@dimen/textSizeLarge"
+                                        android:text="تومان"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:textColor="@color/colorPrimaryDark"
+                                        android:layout_marginLeft="3dp"
+                                        android:layout_marginRight="3dp"
+                                        android:textSize="@dimen/textSizeLarge"
+                                        android:text="۴۵,۰۰۰,۰۰۰"/>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:textColor="@android:color/tab_indicator_text"
+                                        android:textSize="@dimen/textSizeLarge"
+                                        android:text="قیمت:"/>
+                                </LinearLayout>
+                            </RelativeLayout>
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:id="@+id/description"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:layout_marginLeft="3dp"
-                                android:layout_marginRight="3dp"
                                 android:textSize="@dimen/textSizeNormal"
-                                android:text="۴۵,۰۰۰,۰۰۰"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:textColor="@android:color/tab_indicator_text"
-                                android:textSize="@dimen/textSizeNormal"
-                                android:text="قیمت:"/>
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:layout_gravity="center_vertical|right"
+                                android:gravity="right"
+                                android:text="نهری باش جاری، زلال و مهربان و با جوشش زیبایت زندگی را به همه هدیه كن  چون وقتی حركت می كنی هم زنده ای و هم به دیگران  زندگی می دهی ، سبزه های كنار نهر را دیده ای چه زیبا  چشم را نوازش می دهند و ماورای پروانه های لطیف و زیبا هستند، این ها به خاطر سخاوت و مهربانی نهر كوچك اما جاری است، پس تو هم با الهام از این رود كوچك جاری شو و بدان خدا در همه حال با توست.  "
+                                android:textColor="@android:color/tab_indicator_text" />
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:orientation="vertical"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/background_color"></LinearLayout>
+                                <TextView
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/tabIndicatorColor"
+                                    android:textColor="@android:color/white"
+                                    android:padding="10dp"
+                                    android:gravity="center"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_gravity="center"
+                                    android:onClick="callTest"
+                                    android:textSize="@dimen/textSizeNormal"
+                                    android:text="سفارش"/>
                         </LinearLayout>
-                    </RelativeLayout>
-                    <TextView
-                        android:id="@+id/description"
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/textSizeNormal"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_gravity="center_vertical|right"
-                        android:gravity="right"
-                        android:text="نهری باش جاری، زلال و مهربان و با جوشش زیبایت زندگی را به همه هدیه كن  چون وقتی حركت می كنی هم زنده ای و هم به دیگران  زندگی می دهی ، سبزه های كنار نهر را دیده ای چه زیبا  چشم را نوازش می دهند و ماورای پروانه های لطیف و زیبا هستند، این ها به خاطر سخاوت و مهربانی نهر كوچك اما جاری است، پس تو هم با الهام از این رود كوچك جاری شو و بدان خدا در همه حال با توست.  "
-                        android:textColor="@android:color/tab_indicator_text" />
-                        <TextView
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:background="@color/tabIndicatorColor"
-                            android:textColor="@android:color/white"
-                            android:layout_marginTop="10dp"
-                            android:padding="10dp"
-                            android:gravity="center"
-                            android:layout_gravity="center"
-                            android:onClick="callTest"
-                            android:textSize="@dimen/textSizeNormal"
-                            android:text="سفارش"/>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:orientation="vertical"
-                        android:layout_marginTop="20dp"
-                        android:background="#DBE0E0"></LinearLayout>
+                        android:layout_margin="6dp"
+                        card_view:cardBackgroundColor="@android:color/background_light"
+                        card_view:cardElevation="2dp"
+                        card_view:cardCornerRadius="0dp"
+                        card_view:cardPreventCornerOverlap="false">
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
                         android:orientation="vertical">
                         <TextView
                             android:layout_width="match_parent"
@@ -162,13 +186,22 @@
                             android:textSize="@dimen/textSizeNormal"
                             android:gravity="right"
                             android:textStyle="bold"
+                            android:layout_margin="20dp"
                             android:text="مشخصات فنی"
                             android:textColor="#263938"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="10dp"
+                            android:background="@color/background_color"></LinearLayout>
                         <TableLayout
                             android:id="@+id/tableLayout1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="10dp"
                             android:shrinkColumns="*"
                             android:stretchColumns="*">
                             <TableRow
@@ -334,38 +367,49 @@
                             </TableRow>
                         </TableLayout>
                     </LinearLayout>
-                    <LinearLayout
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
                         android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:orientation="vertical"
-                        android:layout_marginTop="20dp"
-                        android:background="#DBE0E0"></LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/textSizeNormal"
-                            android:gravity="right"
-                            android:textStyle="bold"
-                            android:text="شرایط فروش"
-                            android:textColor="#263938"/>
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp">
-                            <ImageView
+                        android:layout_height="wrap_content"
+                        android:layout_margin="6dp"
+                        card_view:cardBackgroundColor="@android:color/background_light"
+                        card_view:cardElevation="2dp"
+                        card_view:cardCornerRadius="0dp"
+                        card_view:cardPreventCornerOverlap="false">
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:src="@drawable/terms_of_sale"/>
-                        </RelativeLayout>
-                    </LinearLayout>
+                                android:textSize="@dimen/textSizeNormal"
+                                android:gravity="right"
+                                android:textStyle="bold"
+                                android:layout_margin="20dp"
+                                android:text="شرایط فروش"
+                                android:textColor="#263938"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:orientation="vertical"
+                                android:layout_marginBottom="10dp"
+                                android:background="@color/background_color"></LinearLayout>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp">
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:adjustViewBounds="true"
+                                    android:src="@drawable/terms_of_sale"
+                                    android:onClick="openImageViewer"/>
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>

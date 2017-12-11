@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:layout_height="match_parent">
     <LinearLayout
         android:id="@+id/action_bar_right"
         android:layout_width="match_parent"
@@ -15,7 +14,7 @@
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
+            android:textColor="#555555"
             android:layout_marginRight="8dp"
             android:layout_gravity="right|center_vertical"
             android:textSize="@dimen/textSizeLarge"
@@ -25,7 +24,7 @@
             android:id="@+id/title_text1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#77ffffff"
+            android:textColor="#77555555"
             android:layout_marginRight="8dp"
             android:layout_gravity="center_vertical"
             android:gravity="right"
@@ -60,7 +59,7 @@
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
                 android:onClick="openNotifDrawer"
-                android:tint="#FFFFFF"
+                android:tint="#555555"
                 android:src="@drawable/ic_notif" />
             <LinearLayout
                 android:id="@+id/notif_unread_count_alarm"

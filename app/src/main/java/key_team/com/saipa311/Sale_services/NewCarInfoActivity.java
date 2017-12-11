@@ -1,8 +1,10 @@
 package key_team.com.saipa311.Sale_services;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.NavUtils;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
@@ -24,6 +27,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import key_team.com.saipa311.MainActivity;
+import key_team.com.saipa311.PhotoViewer;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.ServiceGenerator;
 import key_team.com.saipa311.Sale_services.JsonSchema.StoreClient;
@@ -56,7 +60,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Test> call, Response<Test> response) {
                 Test myItem = response.body();
-                Log.d("my log" , "..............." + myItem.getName());
+                Log.d("my log", "..............." + myItem.getName());
             }
 
             @Override
@@ -65,6 +69,12 @@ public class NewCarInfoActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void openImageViewer(View view)
+    {
+        Intent intent = new Intent(this , PhotoViewer.class);
+        startActivity(intent);
     }
 
     private void initSlider()
