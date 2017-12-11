@@ -42,12 +42,13 @@
                     android:textStyle="bold"
                     android:textColor="#263938"/>
                 <TextView
+                    android:id="@+id/chassis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/textSizeSmall"
                     android:layout_gravity="right"
                     android:textColor="#6DAAD9"
-                    android:text="هاچ بک"/>
+                    android:text=""/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -56,12 +57,14 @@
                 android:layout_centerVertical="true"
                 android:orientation="horizontal">
                 <TextView
+                    android:id="@+id/isConditions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
                     android:paddingLeft="6dp"
                     android:paddingRight="6dp"
+                    android:visibility="gone"
                     android:background="@drawable/rounded_view_special"
                     android:textColor="#FFFFFF"
                     android:textSize="@dimen/textSizeSmall"
@@ -91,6 +94,8 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/textSizeNormal"
                         android:layout_gravity="right"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:textColor="@android:color/tab_indicator_text" />
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -109,14 +114,14 @@
                                         android:textSize="@dimen/textSizeNormal"
                                         android:text="تومان"/>
                                     <TextView
+                                        android:id="@+id/price"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
                                         android:textColor="@color/colorPrimaryDark"
                                         android:layout_marginLeft="3dp"
                                         android:layout_marginRight="3dp"
-                                        android:textSize="@dimen/textSizeNormal"
-                                        android:text="۴۵,۰۰۰,۰۰۰"/>
+                                        android:textSize="@dimen/textSizeNormal" />
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"

@@ -2,39 +2,21 @@ package key_team.com.saipa311.Sale_services;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
-
-import java.io.IOException;
 import java.util.HashMap;
-
-import key_team.com.saipa311.MainActivity;
 import key_team.com.saipa311.PhotoViewer;
 import key_team.com.saipa311.R;
-import key_team.com.saipa311.Sale_services.JsonSchema.ServiceGenerator;
-import key_team.com.saipa311.Sale_services.JsonSchema.StoreClient;
-import key_team.com.saipa311.Sale_services.JsonSchema.Test;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by ammorteza on 12/1/17.
@@ -47,28 +29,6 @@ public class NewCarInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_car_info);
         this.createActionBar();
         this.initSlider();
-        Test test = new Test();
-        test.setName("shondol");
-        StoreClient client = ServiceGenerator.createService(StoreClient.class);
-        Call<Test> myTest = client.myTest(test);
-/*        try {
-            Test test = myTest.execute().body();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        myTest.enqueue(new Callback<Test>() {
-            @Override
-            public void onResponse(Call<Test> call, Response<Test> response) {
-                Test myItem = response.body();
-                Log.d("my log", "..............." + myItem.getName());
-            }
-
-            @Override
-            public void onFailure(Call<Test> call, Throwable t) {
-                //Handle failure
-            }
-        });
-
     }
 
     public void openImageViewer(View view)

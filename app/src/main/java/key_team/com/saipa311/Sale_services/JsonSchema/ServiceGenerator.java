@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ServiceGenerator {
     public static final String API_BASE_URL =
-            "http://10.0.2.2/SaipaRepresentation/public/api/";
+            "http://10.0.2.2/SaipaRepresentation/public/api/app/";
 
     private static OkHttpClient httpClient =
             new OkHttpClient.Builder().build();
