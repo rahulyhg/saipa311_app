@@ -10,10 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,6 +138,7 @@ public class NewCars extends Fragment {
             public TextView price;
             public TextView description;
             public ImageView thumbnail;
+            public ProgressBar progress;
 
             public NewCarViewHolder(View view) {
                 super(view);
@@ -144,10 +148,14 @@ public class NewCars extends Fragment {
                 price = (TextView) view.findViewById(R.id.price);
                 description = (TextView) view.findViewById(R.id.description);
                 thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+                progress = (ProgressBar) view.findViewById(R.id.progressBar);
                 view.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
+                        //Log.d("my log" , "............................ " + getAdapterPosition());
                         Intent intent = new Intent(getActivity(), NewCarInfoActivity.class);
+                        String arrayAsString = new Gson().toJson(newCarData.get(getAdapterPosition()));
+                        intent.putExtra("newCarInfo", arrayAsString);
                         startActivity(intent);
                     }
                 });
@@ -171,13 +179,29 @@ public class NewCars extends Fragment {
             holder.chassis.setText(dataSet.get(listPosition).getChassis());
             holder.isConditions.setVisibility(dataSet.get(listPosition).getIsConditions() == 0 ? View.GONE : View.VISIBLE);
             holder.price.setText(dataSet.get(listPosition).getPrice());
+            holder.price.setTypeface(PublicParams.BYekan(getContext()));
             holder.description.setText(dataSet.get(listPosition).getDescription());
             Picasso.with(getActivity())
                     .load(PublicParams.BASE_URL + "pic/cars/" + dataSet.get(listPosition).getImage())
-                    .placeholder(R.mipmap.ic_launcher)
+                    .placeholder(R.drawable.place_holder)
                     .error(R.mipmap.ic_launcher)
-                    .resize(300,300)
-                    .into(holder.thumbnail);
+                    .fit()
+                    .centerInside()
+                    .into(holder.thumbnail, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            if (holder.progress != null) {
+                                holder.progress.setVisibility(View.GONE);
+                            }
+                        }
+
+                        @Override
+                        public void onError() {
+                            if (holder.progress != null) {
+                                holder.progress.setVisibility(View.GONE);
+                            }
+                        }
+                    });
         }
 
         public void addItem(newCar dataObj) {

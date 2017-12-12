@@ -88,9 +88,6 @@ public class NewCar {
     @SerializedName("cId")
     @Expose
     private Integer cId;
-    @SerializedName("nciId")
-    @Expose
-    private Integer nciId;
     @SerializedName("gId")
     @Expose
     private Integer gId;
@@ -112,6 +109,9 @@ public class NewCar {
     @SerializedName("chassis")
     @Expose
     private Chassis chassis;
+    @SerializedName("gear_box")
+    @Expose
+    private GearBox gearBox;
 
     public Integer getId() {
         return id;
@@ -329,14 +329,6 @@ public class NewCar {
         this.cId = cId;
     }
 
-    public Integer getNciId() {
-        return nciId;
-    }
-
-    public void setNciId(Integer nciId) {
-        this.nciId = nciId;
-    }
-
     public Integer getGId() {
         return gId;
     }
@@ -391,6 +383,14 @@ public class NewCar {
 
     public void setChassis(Chassis chassis) {
         this.chassis = chassis;
+    }
+
+    public GearBox getGearBox() {
+        return gearBox;
+    }
+
+    public void setGearBox(GearBox gearBox) {
+        this.gearBox = gearBox;
     }
 
 }

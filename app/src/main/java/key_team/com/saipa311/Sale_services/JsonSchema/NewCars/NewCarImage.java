@@ -12,6 +12,9 @@ public class NewCarImage {
     @SerializedName("nciState")
     @Expose
     private Integer nciState;
+    @SerializedName("nciNcId")
+    @Expose
+    private Integer nciNcId;
     @SerializedName("nciPatch")
     @Expose
     private String nciPatch;
@@ -39,6 +42,14 @@ public class NewCarImage {
 
     public void setNciState(Integer nciState) {
         this.nciState = nciState;
+    }
+
+    public Integer getNciNcId() {
+        return nciNcId;
+    }
+
+    public void setNciNcId(Integer nciNcId) {
+        this.nciNcId = nciNcId;
     }
 
     public String getNciPatch() {

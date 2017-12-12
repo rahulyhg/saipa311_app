@@ -86,15 +86,16 @@
                                     android:layout_alignParentRight="true"
                                     android:layout_centerVertical="true"
                                     android:textStyle="bold"
-                                    android:text="ساندرو"
                                     android:textColor="#263938"/>
                                 <TextView
+                                    android:id="@+id/isConditions"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:paddingTop="2dp"
                                     android:paddingBottom="2dp"
                                     android:paddingLeft="6dp"
                                     android:paddingRight="6dp"
+                                    android:visibility="gone"
                                     android:background="@drawable/rounded_view_special"
                                     android:textColor="#FFFFFF"
                                     android:textSize="@dimen/textSizeSmall"
@@ -117,14 +118,14 @@
                                         android:textSize="@dimen/textSizeLarge"
                                         android:text="تومان"/>
                                     <TextView
+                                        android:id="@+id/price"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
                                         android:textColor="@color/colorPrimaryDark"
                                         android:layout_marginLeft="3dp"
                                         android:layout_marginRight="3dp"
-                                        android:textSize="@dimen/textSizeLarge"
-                                        android:text="۴۵,۰۰۰,۰۰۰"/>
+                                        android:textSize="@dimen/textSizeLarge" />
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -144,7 +145,6 @@
                                 android:layout_marginRight="20dp"
                                 android:layout_gravity="center_vertical|right"
                                 android:gravity="right"
-                                android:text="نهری باش جاری، زلال و مهربان و با جوشش زیبایت زندگی را به همه هدیه كن  چون وقتی حركت می كنی هم زنده ای و هم به دیگران  زندگی می دهی ، سبزه های كنار نهر را دیده ای چه زیبا  چشم را نوازش می دهند و ماورای پروانه های لطیف و زیبا هستند، این ها به خاطر سخاوت و مهربانی نهر كوچك اما جاری است، پس تو هم با الهام از این رود كوچك جاری شو و بدان خدا در همه حال با توست.  "
                                 android:textColor="@android:color/tab_indicator_text" />
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -196,7 +196,7 @@
                             android:layout_marginBottom="10dp"
                             android:background="@color/background_color"></LinearLayout>
                         <TableLayout
-                            android:id="@+id/tableLayout1"
+                            android:id="@+id/technicalSpecifications"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"

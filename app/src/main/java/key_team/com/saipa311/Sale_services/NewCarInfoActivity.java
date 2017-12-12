@@ -8,27 +8,62 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 import key_team.com.saipa311.PhotoViewer;
+import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
 
 /**
  * Created by ammorteza on 12/1/17.
  */
 public class NewCarInfoActivity extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private NewCar newCarInfo;
+    private TextView title;
+    private TextView isConditions;
+    private TextView price;
+    private TextView description;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_car_info);
         this.createActionBar();
+        this.getData();
         this.initSlider();
+    }
+
+    private void getData()
+    {
+        String newCarInfo_string = getIntent().getExtras().getString("newCarInfo");
+        newCarInfo = new Gson().fromJson(newCarInfo_string, NewCar.class);
+
+        title = (TextView)findViewById(R.id.title);
+        isConditions = (TextView)findViewById(R.id.isConditions);
+        price = (TextView)findViewById(R.id.price);
+        description = (TextView)findViewById(R.id.description);
+
+        title.setText(newCarInfo.getNcSubject());
+        if (newCarInfo.getNcConditions() == 0)
+            isConditions.setVisibility(View.GONE);
+        else
+            isConditions.setVisibility(View.VISIBLE);
+
+        price.setText(newCarInfo.getNcPrice());
+        price.setTypeface(PublicParams.BYekan(this));
+
+        description.setText(newCarInfo.getNcDescription());
     }
 
     public void openImageViewer(View view)
@@ -40,10 +75,11 @@ public class NewCarInfoActivity extends AppCompatActivity {
     private void initSlider()
     {
         SliderLayout mDemoSlider = (SliderLayout)findViewById(R.id.slider);
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("۱",R.drawable.new_car1);
-        file_maps.put("۲",R.drawable.new_car2);
-        file_maps.put("۳", R.drawable.new_car3);
+        HashMap<String,String> file_maps = new HashMap<String, String>();
+        for (int i = 0 ; i < newCarInfo.getNewCarImage().size() ; i++ )
+        {
+            file_maps.put(i + "", PublicParams.BASE_URL + "pic/cars/" + newCarInfo.getNewCarImage().get(i).getNciPatch());
+        }
         for(String name : file_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(this);
             // initialize a SliderLayout
