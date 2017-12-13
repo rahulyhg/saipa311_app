@@ -4,6 +4,9 @@
     <dimen name="textSizeLarge">30dp</dimen>
     <dimen name="textSizeNormal">28dp</dimen>
     <dimen name="textSizeSmall">26dp</dimen>
+    <dimen name="textSizeSmaller" tools:override="true">24dp</dimen>
+    <dimen name="textSizeXSmaller" tools:override="true">20dp</dimen>
+    <dimen name="textSizeXXSmaller" tools:override="true">18dp</dimen>
 
     <dimen name="design_bottom_navigation_text_size" tools:override="true">28dp</dimen>
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">28dp</dimen>

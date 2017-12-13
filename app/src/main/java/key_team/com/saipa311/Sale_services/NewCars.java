@@ -3,6 +3,7 @@ package key_team.com.saipa311.Sale_services;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -38,6 +39,7 @@ public class NewCars extends Fragment {
     private NewCarsAdapter newCarAdapter;
     private ArrayList<newCar> newCarList;
     private List<NewCar> newCarData;
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,18 @@ public class NewCars extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ss_new_car_fragment_layout, container, false);
         recyclerView = (RecyclerView)view.findViewById(R.id.new_car_recycler_view);
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchAllNewCars();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(R.color.colorPrimary,
+                R.color.colorPrimary,
+                R.color.colorPrimary,
+                R.color.colorPrimary);
         newCarList = new ArrayList<>();
         newCarAdapter = new NewCarsAdapter(newCarList);
         recyclerView.setAdapter(newCarAdapter);
@@ -66,26 +80,26 @@ public class NewCars extends Fragment {
             @Override
             public void onResponse(Call<List<NewCar>> call, Response<List<NewCar>> response) {
                 newCarData = response.body();
-                Log.d("my log", "..............." + newCarData.get(0).getNcSubject());
                 prepareAlbums();
             }
 
             @Override
             public void onFailure(Call<List<NewCar>> call, Throwable t) {
-                Log.d("my log", "............... error" + t.getMessage());
             }
         });
     }
     private void prepareAlbums() {
+        newCarAdapter.clearData();
         for (int i=0 ; i < newCarData.size() ; i++) {
             newCar a = new newCar(newCarData.get(i).getNcSubject(),
                     newCarData.get(i).getChassis().getChChassis(),
                     newCarData.get(i).getNcConditions(),
                     newCarData.get(i).getNcPrice(),
                     newCarData.get(i).getNcDescription() ,
-                    newCarData.get(i).getNewCarImage().get(0).getNciPatch());
+                    newCarData.get(i).getNewCarImage().size() > 0 ? newCarData.get(i).getNewCarImage().get(0).getNciPatch() : "");
             newCarAdapter.addItem(a);
         }
+        swipeContainer.setRefreshing(false);
     }
     public class newCar {
         String title;
@@ -160,6 +174,11 @@ public class NewCars extends Fragment {
                     }
                 });
             }
+        }
+
+        public void clearData(){
+            dataSet.clear();
+            newCarAdapter.notifyDataSetChanged();
         }
         public NewCarsAdapter(ArrayList<newCar> data) {
             this.dataSet = data;

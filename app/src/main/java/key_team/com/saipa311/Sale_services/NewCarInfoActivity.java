@@ -9,8 +9,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
@@ -18,6 +22,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import key_team.com.saipa311.PhotoViewer;
@@ -35,6 +40,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
     private TextView isConditions;
     private TextView price;
     private TextView description;
+    private ImageView conditionImg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +70,405 @@ public class NewCarInfoActivity extends AppCompatActivity {
         price.setTypeface(PublicParams.BYekan(this));
 
         description.setText(newCarInfo.getNcDescription());
+
+        TableLayout ts = (TableLayout) findViewById(R.id.technicalSpecifications);
+        TableLayout.LayoutParams tr_params = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+
+        TableRow tr = new TableRow(this);
+        tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        TextView ncWheelbase = new TextView(this);
+        ncWheelbase.setText(newCarInfo.getNcWheelbase());
+        ncWheelbase.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        ncWheelbase.setGravity(Gravity.RIGHT);
+        ncWheelbase.setTypeface(PublicParams.BYekan(this));
+        ncWheelbase.setTextColor(Color.parseColor("#263938"));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr.addView(ncWheelbase);
+
+        TextView ncWheelbase_subject = new TextView(this);
+        ncWheelbase_subject.setText("فاصله محور ها");
+        ncWheelbase_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        ncWheelbase_subject.setGravity(Gravity.RIGHT);
+        ncWheelbase_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr.addView(ncWheelbase_subject);
+        tr.setBackgroundColor(getResources().getColor(R.color.background_color_light));
+        tr.setPadding(8 , 15 , 8 , 15);
+        ts.addView(tr, tr_params);
+        /////////////////////////////
+        TableRow tr1 = new TableRow(this);
+        TextView ncEngine = new TextView(this);
+        ncEngine.setText(newCarInfo.getNcEngine());
+        ncEngine.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        ncEngine.setGravity(Gravity.RIGHT);
+        ncEngine.setTypeface(PublicParams.BYekan(this));
+        ncEngine.setTextColor(Color.parseColor("#263938"));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr1.addView(ncEngine);
+
+        TextView ncEngine_subject = new TextView(this);
+        ncEngine_subject.setText("حجم موتور");
+        ncEngine_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        ncEngine_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        ncEngine_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr1.addView(ncEngine_subject);
+        tr1.setPadding(8, 15, 8, 15);
+        ts.addView(tr1, tr_params);
+        /////////////////////////////
+        TableRow tr2 = new TableRow(this);
+        TextView maxSpeed = new TextView(this);
+        maxSpeed.setText(newCarInfo.getNcMaxSpeed());
+        maxSpeed.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        maxSpeed.setGravity(Gravity.RIGHT);
+        maxSpeed.setTypeface(PublicParams.BYekan(this));
+        maxSpeed.setTextColor(Color.parseColor("#263938"));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr2.addView(maxSpeed);
+
+        TextView maxSpeed_subject = new TextView(this);
+        maxSpeed_subject.setText("حداکثر سرعت");
+        maxSpeed_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        maxSpeed_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        maxSpeed_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr2.addView(maxSpeed_subject);
+        tr2.setBackgroundColor(getResources().getColor(R.color.background_color_light));
+        tr2.setPadding(8, 15, 8, 15);
+        ts.addView(tr2, tr_params);
+        /////////////////////////////
+        TableRow tr3 = new TableRow(this);
+        TextView maxPower = new TextView(this);
+        maxPower.setText(newCarInfo.getNcMaxPower());
+        maxPower.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        maxPower.setGravity(Gravity.RIGHT);
+        maxPower.setTypeface(PublicParams.BYekan(this));
+        maxPower.setTextColor(Color.parseColor("#263938"));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr3.addView(maxPower);
+
+        TextView maxPower_subject = new TextView(this);
+        maxPower_subject.setText("حداکثر توان");
+        maxPower_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        maxPower_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        maxPower_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr3.addView(maxPower_subject);
+        tr3.setPadding(8, 15, 8, 15);
+        ts.addView(tr3, tr_params);
+        /////////////////////////////
+        TableRow tr4 = new TableRow(this);
+        TextView brakeSystem = new TextView(this);
+        brakeSystem.setText(newCarInfo.getNcBrakeSystem());
+        brakeSystem.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        brakeSystem.setTextColor(Color.parseColor("#263938"));
+        brakeSystem.setGravity(Gravity.RIGHT);
+        brakeSystem.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr4.addView(brakeSystem);
+
+        TextView brakeSystem_subject = new TextView(this);
+        brakeSystem_subject.setText("سیستم ترمز");
+        brakeSystem_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        brakeSystem_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        brakeSystem_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr4.addView(brakeSystem_subject);
+        tr4.setBackgroundColor(getResources().getColor(R.color.background_color_light));
+        tr4.setPadding(8, 15, 8, 15);
+        ts.addView(tr4, tr_params);
+        /////////////////////////////
+        TableRow tr5 = new TableRow(this);
+        TextView tire = new TextView(this);
+        tire.setText(newCarInfo.getNcTire());
+        tire.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        tire.setTextColor(Color.parseColor("#263938"));
+        tire.setGravity(Gravity.RIGHT);
+        tire.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr5.addView(tire);
+
+        TextView tire_subject = new TextView(this);
+        tire_subject.setText("سایز و نوع رینگ و لاستیک");
+        tire_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        tire_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        tire_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr5.addView(tire_subject);
+        tr5.setPadding(8, 15, 8, 15);
+        ts.addView(tr5, tr_params);
+        /////////////////////////////
+        TableRow tr6 = new TableRow(this);
+        TextView gvm = new TextView(this);
+        gvm.setText(newCarInfo.getNcGvm());
+        gvm.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        gvm.setTextColor(Color.parseColor("#263938"));
+        gvm.setGravity(Gravity.RIGHT);
+        gvm.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr6.addView(gvm);
+
+        TextView gvm_subject = new TextView(this);
+        gvm_subject.setText("وزن خالص");
+        gvm_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        gvm_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        gvm_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr6.addView(gvm_subject);
+        tr6.setBackgroundColor(getResources().getColor(R.color.background_color_light));
+        tr6.setPadding(8, 15, 8, 15);
+        ts.addView(tr6, tr_params);
+        /////////////////////////////
+        TableRow tr7 = new TableRow(this);
+        TextView fuelTank = new TextView(this);
+        fuelTank.setText(newCarInfo.getNcFuelTank());
+        fuelTank.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        fuelTank.setTextColor(Color.parseColor("#263938"));
+        fuelTank.setGravity(Gravity.RIGHT);
+        fuelTank.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr7.addView(fuelTank);
+
+        TextView fuelTank_subject = new TextView(this);
+        fuelTank_subject.setText("ظرفیت باک");
+        fuelTank_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        fuelTank_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        fuelTank_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr7.addView(fuelTank_subject);
+        tr7.setPadding(8, 15, 8, 15);
+        ts.addView(tr7, tr_params);
+        /////////////////////////////
+        TableRow tr8 = new TableRow(this);
+        TextView maxTorque = new TextView(this);
+        maxTorque.setText(newCarInfo.getNcMaxTorque());
+        maxTorque.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        maxTorque.setTextColor(Color.parseColor("#263938"));
+        maxTorque.setGravity(Gravity.RIGHT);
+        maxTorque.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr8.addView(maxTorque);
+
+        TextView maxTorque_subject = new TextView(this);
+        maxTorque_subject.setText("حداکثر گشتاور");
+        maxTorque_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        maxTorque_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        maxTorque_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr8.addView(maxTorque_subject);
+        tr8.setBackgroundColor(getResources().getColor(R.color.background_color_light));
+        tr8.setPadding(8, 15, 8, 15);
+        ts.addView(tr8, tr_params);
+        /////////////////////////////
+        TableRow tr9 = new TableRow(this);
+        TextView fuelEfficiency = new TextView(this);
+        fuelEfficiency.setText(newCarInfo.getNcFuelEfficiency());
+        fuelEfficiency.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        fuelEfficiency.setTextColor(Color.parseColor("#263938"));
+        fuelEfficiency.setGravity(Gravity.RIGHT);
+        fuelEfficiency.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr9.addView(fuelEfficiency);
+
+        TextView fuelEfficiency_subject = new TextView(this);
+        fuelEfficiency_subject.setText("مصرف سوخت");
+        fuelEfficiency_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        fuelEfficiency_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        fuelEfficiency_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr9.addView(fuelEfficiency_subject);
+        tr9.setPadding(8, 15, 8, 15);
+        ts.addView(tr9, tr_params);
+        /////////////////////////////
+        TableRow tr10 = new TableRow(this);
+        TextView pollutionStandard = new TextView(this);
+        pollutionStandard.setText(newCarInfo.getNcPollutionStandard());
+        pollutionStandard.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        pollutionStandard.setTextColor(Color.parseColor("#263938"));
+        pollutionStandard.setGravity(Gravity.RIGHT);
+        pollutionStandard.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr10.addView(pollutionStandard);
+
+        TextView pollutionStandard_subject = new TextView(this);
+        pollutionStandard_subject.setText("استاندارد آلایندگی");
+        pollutionStandard_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        pollutionStandard_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        pollutionStandard_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr10.addView(pollutionStandard_subject);
+        tr10.setBackgroundColor(getResources().getColor(R.color.background_color_light));
+        tr10.setPadding(8, 15, 8, 15);
+        ts.addView(tr10, tr_params);
+        /////////////////////////////
+        TableRow tr11 = new TableRow(this);
+        TextView cylinder = new TextView(this);
+        cylinder.setText(newCarInfo.getNcCylinder());
+        cylinder.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        cylinder.setTextColor(Color.parseColor("#263938"));
+        cylinder.setGravity(Gravity.RIGHT);
+        cylinder.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr11.addView(cylinder);
+
+        TextView cylinder_subject = new TextView(this);
+        cylinder_subject.setText("تعداد سیلندر و سوپاپ");
+        cylinder_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        cylinder_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        cylinder_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr11.addView(cylinder_subject);
+        tr11.setPadding(8, 15, 8, 15);
+        ts.addView(tr11, tr_params);
+        /////////////////////////////
+        TableRow tr12 = new TableRow(this);
+        TextView transmissionType = new TextView(this);
+        transmissionType.setText(newCarInfo.getNcTransmissionType());
+        transmissionType.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        transmissionType.setTextColor(Color.parseColor("#263938"));
+        transmissionType.setGravity(Gravity.RIGHT);
+        transmissionType.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr12.addView(transmissionType);
+
+        TextView transmissionType_subject = new TextView(this);
+        transmissionType_subject.setText("حالت گیرباکس");
+        transmissionType_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        transmissionType_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        transmissionType_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr12.addView(transmissionType_subject);
+        tr12.setBackgroundColor(getResources().getColor(R.color.background_color_light));
+        tr12.setPadding(8, 15, 8, 15);
+        ts.addView(tr12, tr_params);
+        /////////////////////////////
+        TableRow tr13 = new TableRow(this);
+        TextView gearBox = new TextView(this);
+        gearBox.setText(newCarInfo.getGearBox().getGbGearBox());
+        gearBox.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        gearBox.setTextColor(Color.parseColor("#263938"));
+        gearBox.setGravity(Gravity.RIGHT);
+        gearBox.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr13.addView(gearBox);
+
+        TextView gearBox_subject = new TextView(this);
+        gearBox_subject.setText("نوع گیرباکس");
+        gearBox_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        gearBox_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        gearBox_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr13.addView(gearBox_subject);
+        tr13.setPadding(8, 15, 8, 15);
+        ts.addView(tr13, tr_params);
+        /////////////////////////////
+        TableRow tr14 = new TableRow(this);
+        TextView color = new TextView(this);
+        color.setText(newCarInfo.getNcColor());
+        color.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        color.setTextColor(Color.parseColor("#263938"));
+        color.setGravity(Gravity.RIGHT);
+        color.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr14.addView(color);
+
+        TextView color_subject = new TextView(this);
+        color_subject.setText("رنگ");
+        color_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        color_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        color_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr14.addView(color_subject);
+        tr14.setBackgroundColor(getResources().getColor(R.color.background_color_light));
+        tr14.setPadding(8, 15, 8, 15);
+        ts.addView(tr14, tr_params);
+        /////////////////////////////
+        TableRow tr15 = new TableRow(this);
+        TextView length = new TextView(this);
+        length.setText(newCarInfo.getNcLength());
+        length.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        length.setTextColor(Color.parseColor("#263938"));
+        length.setGravity(Gravity.RIGHT);
+        length.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr15.addView(length);
+
+        TextView length_subject = new TextView(this);
+        length_subject.setText("طول");
+        length_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        length_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        length_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr15.addView(length_subject);
+        tr15.setPadding(8, 15, 8, 15);
+        ts.addView(tr15, tr_params);
+        /////////////////////////////
+        TableRow tr16 = new TableRow(this);
+        TextView width = new TextView(this);
+        width.setText(newCarInfo.getNcWidth());
+        width.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        width.setTextColor(Color.parseColor("#263938"));
+        width.setGravity(Gravity.RIGHT);
+        width.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr16.addView(width);
+
+        TextView width_subject = new TextView(this);
+        width_subject.setText("عرض");
+        width_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        width_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        width_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr16.addView(width_subject);
+        tr16.setBackgroundColor(getResources().getColor(R.color.background_color_light));
+        tr16.setPadding(8, 15, 8, 15);
+        ts.addView(tr16, tr_params);
+        /////////////////////////////
+        TableRow tr17 = new TableRow(this);
+        TextView height = new TextView(this);
+        height.setText(newCarInfo.getNcHeight());
+        height.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        height.setTextColor(Color.parseColor("#263938"));
+        height.setGravity(Gravity.RIGHT);
+        height.setTypeface(PublicParams.BYekan(this));
+        //value.setTextSize(R.dimen.textSizeSmall);
+        tr17.addView(height);
+
+        TextView height_subject = new TextView(this);
+        height_subject.setText("ارتفاع");
+        height_subject.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        height_subject.setTextColor(Color.parseColor("#AEAEAE"));
+        height_subject.setGravity(Gravity.RIGHT);
+        //subject.setTextSize(R.dimen.textSizeSmall);
+        tr17.addView(height_subject);
+        tr17.setPadding(8, 15, 8, 15);
+        ts.addView(tr17, tr_params);
+
+        conditionImg = (ImageView)findViewById(R.id.condition);
+        Log.d("............" , PublicParams.BASE_URL + "pic/terms/" + newCarInfo.getNcTermsOfSaleImg());
+        Picasso.with(NewCarInfoActivity.this)
+                .load(PublicParams.BASE_URL + "pic/terms/" + newCarInfo.getNcTermsOfSaleImg())
+                .placeholder(R.drawable.place_holder)
+                .error(R.mipmap.ic_launcher)
+                .fit()
+                .centerInside()
+                .into(conditionImg, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+
     }
 
     public void openImageViewer(View view)
     {
         Intent intent = new Intent(this , PhotoViewer.class);
+        intent.putExtra("imgUrl", PublicParams.BASE_URL + "pic/terms/" + newCarInfo.getNcTermsOfSaleImg());
         startActivity(intent);
     }
 

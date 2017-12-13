@@ -13,7 +13,8 @@
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:elevation="4dp">
                 <android.support.design.widget.CollapsingToolbarLayout
                     android:id="@+id/collapsing_toolbar"
                     android:layout_width="match_parent"
@@ -44,7 +45,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         app:theme="@style/ToolBarStyle"
-                        app:layout_collapseMode="pin" />
+                        app:layout_collapseMode="pin"
+                        android:elevation="4dp"/>
             </android.support.design.widget.CollapsingToolbarLayout>
             </android.support.design.widget.AppBarLayout>
             <android.support.v4.widget.NestedScrollView
@@ -204,167 +206,6 @@
                             android:layout_marginBottom="10dp"
                             android:shrinkColumns="*"
                             android:stretchColumns="*">
-                            <TableRow
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal">
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:gravity="right"
-                                    android:textColor="#263938"
-                                    android:text="۶"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="right"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:textColor="#AEAEAE"
-                                    android:text="تعداد چرخ"/>
-                            </TableRow>
-                            <TableRow
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal">
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:gravity="right"
-                                    android:textColor="#263938"
-                                    android:text="۱۳ اینچ - ۱۶۵ در ۶۰"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="right"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:textColor="#AEAEAE"
-                                    android:text="سایز چرخ"/>
-                            </TableRow>
-                            <TableRow
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal">
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:gravity="right"
-                                    android:textColor="#263938"
-                                    android:text="۳۵ لیتر"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="right"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:textColor="#AEAEAE"
-                                    android:text="حجم باک"/>
-                            </TableRow>
-                            <TableRow
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal">
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:gravity="right"
-                                    android:textColor="#263938"
-                                    android:text="یورو ۴"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="right"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:textColor="#AEAEAE"
-                                    android:text="استاندارد آلایندگی"/>
-                            </TableRow>
-                            <TableRow
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal">
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:gravity="right"
-                                    android:textColor="#263938"
-                                    android:text="ABS جلو دیسکی عقب کاسه ای"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="right"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:textColor="#AEAEAE"
-                                    android:text="سیستم ترمز"/>
-                            </TableRow>
-                            <TableRow
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal">
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:gravity="right"
-                                    android:textColor="#263938"
-                                    android:text="دنده دستی پنج سرعته"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="right"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:textColor="#AEAEAE"
-                                    android:text="گیرباکس"/>
-                            </TableRow>
-                            <TableRow
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="5dp"
-                                android:gravity="center_horizontal">
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:gravity="right"
-                                    android:textColor="#263938"
-                                    android:text="۹ تا ۱۱ لیتر در ۱۰۰ کیلومتر"/>
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_weight="1"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="right"
-                                    android:textSize="@dimen/textSizeSmall"
-                                    android:textColor="#AEAEAE"
-                                    android:text="سیکل ترکیبی مصرف سوخت"/>
-                            </TableRow>
                         </TableLayout>
                     </LinearLayout>
                     </android.support.v7.widget.CardView>
@@ -402,6 +243,7 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginRight="20dp">
                                 <ImageView
+                                    android:id="@+id/condition"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:adjustViewBounds="true"
