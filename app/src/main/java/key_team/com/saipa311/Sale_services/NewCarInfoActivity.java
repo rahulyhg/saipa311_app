@@ -12,7 +12,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -41,6 +44,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
     private TextView price;
     private TextView description;
     private ImageView conditionImg;
+    private SliderLayout mDemoSlider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +64,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
         price = (TextView)findViewById(R.id.price);
         description = (TextView)findViewById(R.id.description);
 
-        title.setText(newCarInfo.getNcSubject());
+        title.setText(newCarInfo.getProduct().getPrSubject());
         if (newCarInfo.getNcConditions() == 0)
             isConditions.setVisibility(View.GONE);
         else
@@ -449,7 +453,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
         Picasso.with(NewCarInfoActivity.this)
                 .load(PublicParams.BASE_URL + "pic/terms/" + newCarInfo.getNcTermsOfSaleImg())
                 .placeholder(R.drawable.place_holder)
-                .error(R.mipmap.ic_launcher)
+                .error(R.drawable.oops)
                 .fit()
                 .centerInside()
                 .into(conditionImg, new com.squareup.picasso.Callback() {
@@ -474,11 +478,11 @@ public class NewCarInfoActivity extends AppCompatActivity {
 
     private void initSlider()
     {
-        SliderLayout mDemoSlider = (SliderLayout)findViewById(R.id.slider);
+        mDemoSlider = (SliderLayout)findViewById(R.id.slider);
         HashMap<String,String> file_maps = new HashMap<String, String>();
         for (int i = 0 ; i < newCarInfo.getNewCarImage().size() ; i++ )
         {
-            file_maps.put(i + "", PublicParams.BASE_URL + "pic/cars/" + newCarInfo.getNewCarImage().get(i).getNciPatch());
+            file_maps.put(i + "", PublicParams.BASE_URL + "pic/cars/" + newCarInfo.getNewCarImage().get(i).getNciPath());
         }
         for(String name : file_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(this);
@@ -501,6 +505,15 @@ public class NewCarInfoActivity extends AppCompatActivity {
 
             mDemoSlider.addSlider(textSliderView);
         }
+        final ViewTreeObserver observer= mDemoSlider.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        mDemoSlider.setLayoutParams(new LinearLayout.LayoutParams(mDemoSlider.getWidth(), mDemoSlider.getWidth()));
+                        //Log.d("Log", "Height: ............................................." + mDemoSlider.getWidth());
+                    }
+                });
         mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Fade);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         mDemoSlider.setCustomAnimation(new DescriptionAnimation());

@@ -79,9 +79,6 @@ public class NewCar {
     @SerializedName("ncTransmission_type")
     @Expose
     private String ncTransmissionType;
-    @SerializedName("ncSubject")
-    @Expose
-    private String ncSubject;
     @SerializedName("ncDescription")
     @Expose
     private String ncDescription;
@@ -94,6 +91,9 @@ public class NewCar {
     @SerializedName("reId")
     @Expose
     private Integer reId;
+    @SerializedName("prId")
+    @Expose
+    private Integer prId;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -112,6 +112,9 @@ public class NewCar {
     @SerializedName("gear_box")
     @Expose
     private GearBox gearBox;
+    @SerializedName("product")
+    @Expose
+    private Product product;
 
     public Integer getId() {
         return id;
@@ -305,14 +308,6 @@ public class NewCar {
         this.ncTransmissionType = ncTransmissionType;
     }
 
-    public String getNcSubject() {
-        return ncSubject;
-    }
-
-    public void setNcSubject(String ncSubject) {
-        this.ncSubject = ncSubject;
-    }
-
     public String getNcDescription() {
         return ncDescription;
     }
@@ -343,6 +338,14 @@ public class NewCar {
 
     public void setReId(Integer reId) {
         this.reId = reId;
+    }
+
+    public Integer getPrId() {
+        return prId;
+    }
+
+    public void setPrId(Integer prId) {
+        this.prId = prId;
     }
 
     public String getCreatedAt() {
@@ -391,6 +394,14 @@ public class NewCar {
 
     public void setGearBox(GearBox gearBox) {
         this.gearBox = gearBox;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
 }

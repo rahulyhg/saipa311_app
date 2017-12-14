@@ -31,6 +31,9 @@ public class Representation {
     @SerializedName("gId")
     @Expose
     private Integer gId;
+    @SerializedName("cId")
+    @Expose
+    private Integer cId;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -109,6 +112,14 @@ public class Representation {
 
     public void setGId(Integer gId) {
         this.gId = gId;
+    }
+
+    public Integer getCId() {
+        return cId;
+    }
+
+    public void setCId(Integer cId) {
+        this.cId = cId;
     }
 
     public String getCreatedAt() {

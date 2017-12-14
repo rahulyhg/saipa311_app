@@ -27,6 +27,7 @@ import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.ServiceGenerator;
 import key_team.com.saipa311.Sale_services.JsonSchema.StoreClient;
+import key_team.com.saipa311.SquareImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,12 +92,12 @@ public class NewCars extends Fragment {
     private void prepareAlbums() {
         newCarAdapter.clearData();
         for (int i=0 ; i < newCarData.size() ; i++) {
-            newCar a = new newCar(newCarData.get(i).getNcSubject(),
+            newCar a = new newCar(newCarData.get(i).getProduct().getPrSubject(),
                     newCarData.get(i).getChassis().getChChassis(),
                     newCarData.get(i).getNcConditions(),
                     newCarData.get(i).getNcPrice(),
                     newCarData.get(i).getNcDescription() ,
-                    newCarData.get(i).getNewCarImage().size() > 0 ? newCarData.get(i).getNewCarImage().get(0).getNciPatch() : "");
+                    newCarData.get(i).getNewCarImage().size() > 0 ? newCarData.get(i).getNewCarImage().get(0).getNciPath() : "");
             newCarAdapter.addItem(a);
         }
         swipeContainer.setRefreshing(false);
@@ -151,7 +152,7 @@ public class NewCars extends Fragment {
             public TextView isConditions;
             public TextView price;
             public TextView description;
-            public ImageView thumbnail;
+            public SquareImageView thumbnail;
             public ProgressBar progress;
 
             public NewCarViewHolder(View view) {
@@ -161,7 +162,7 @@ public class NewCars extends Fragment {
                 isConditions = (TextView) view.findViewById(R.id.isConditions);
                 price = (TextView) view.findViewById(R.id.price);
                 description = (TextView) view.findViewById(R.id.description);
-                thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+                thumbnail = (SquareImageView) view.findViewById(R.id.thumbnail);
                 progress = (ProgressBar) view.findViewById(R.id.progressBar);
                 view.setOnClickListener(new View.OnClickListener(){
                     @Override
@@ -202,8 +203,7 @@ public class NewCars extends Fragment {
             holder.description.setText(dataSet.get(listPosition).getDescription());
             Picasso.with(getActivity())
                     .load(PublicParams.BASE_URL + "pic/cars/" + dataSet.get(listPosition).getImage())
-                    .placeholder(R.drawable.place_holder)
-                    .error(R.mipmap.ic_launcher)
+                    .error(R.drawable.oops)
                     .fit()
                     .centerInside()
                     .into(holder.thumbnail, new com.squareup.picasso.Callback() {

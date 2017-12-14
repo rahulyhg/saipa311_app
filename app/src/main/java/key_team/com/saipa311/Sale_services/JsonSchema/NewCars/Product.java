@@ -4,20 +4,17 @@ package key_team.com.saipa311.Sale_services.JsonSchema.NewCars;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class NewCarImage {
+public class Product {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("nciState")
+    @SerializedName("prSubject")
     @Expose
-    private Integer nciState;
-    @SerializedName("nciNcId")
+    private String prSubject;
+    @SerializedName("cId")
     @Expose
-    private Integer nciNcId;
-    @SerializedName("nciPath")
-    @Expose
-    private String nciPath;
+    private Integer cId;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -33,28 +30,20 @@ public class NewCarImage {
         this.id = id;
     }
 
-    public Integer getNciState() {
-        return nciState;
+    public String getPrSubject() {
+        return prSubject;
     }
 
-    public void setNciState(Integer nciState) {
-        this.nciState = nciState;
+    public void setPrSubject(String prSubject) {
+        this.prSubject = prSubject;
     }
 
-    public Integer getNciNcId() {
-        return nciNcId;
+    public Integer getCId() {
+        return cId;
     }
 
-    public void setNciNcId(Integer nciNcId) {
-        this.nciNcId = nciNcId;
-    }
-
-    public String getNciPath() {
-        return nciPath;
-    }
-
-    public void setNciPath(String nciPath) {
-        this.nciPath = nciPath;
+    public void setCId(Integer cId) {
+        this.cId = cId;
     }
 
     public String getCreatedAt() {
