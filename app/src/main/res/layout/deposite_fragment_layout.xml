@@ -6,9 +6,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/AppTheme.AppBarOverlay"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
     <TextView
-        android:text="deposite fragment"
+        android:text="I hope i did't missed any thing. Recyleview not displaying any thing in my second tab fragment. My Json response is working fine when i check in browser, its showing the response, but not displaying in the fragment.I hope i did't missed any thing. Recyleview not displaying any thing in my second tab fragment. My Json response is working fine when i check in browser, its showing the response, but not displaying in the fragment.I hope i did't missed any thing. Recyleview not displaying any thing in my second tab fragment. My Json response is working fine when i check in browser, its showing the response, but not displaying in the fragment.I hope i did't missed any thing. Recyleview not displaying any thing in my second tab fragment. My Json response is working fine when i check in browser, its showing the response, but not displaying in the fragment.I hope i did't missed any thing. Recyleview not displaying any thing in my second tab fragment. My Json response is working fine when i check in browser, its showing the response, but not displaying in the fragment.I hope i did't missed any thing. Recyleview not displaying any thing in my second tab fragment. My Json response is working fine when i check in browser, its showing the response, but not displaying in the fragment.I hope i did't missed any thing. Recyleview not displaying any thing in my second tab fragment. My Json response is working fine when i check in browser, its showing the response, but not displaying in the fragment.I hope i did't missed any thing. Recyleview not displaying any thing in my second tab fragment. My Json response is working fine when i check in browser, its showing the response, but not displaying in the fragment.I hope i did't missed any thing. Recyleview not displaying any thing in my second tab fragment. My Json response is working fine when i check in browser, its showing the response, but not displaying in the fragment.I hope i did't missed any thing. Recyleview not displaying any thing in my second tab fragment. My Json response is working fine when i check in browser, its showing the response, but not displaying in the fragment."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"/>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

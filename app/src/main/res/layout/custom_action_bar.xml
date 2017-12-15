@@ -58,8 +58,9 @@
                 android:adjustViewBounds="true"
                 android:layout_gravity="center_vertical"
                 android:background="@android:color/transparent"
+                android:padding="2dp"
                 android:onClick="openNotifDrawer"
-                android:tint="#555555"
+                android:tint="#777777"
                 android:src="@drawable/ic_notif" />
             <LinearLayout
                 android:id="@+id/notif_unread_count_alarm"

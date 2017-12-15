@@ -43,11 +43,6 @@ public class NewCars extends Fragment {
     private SwipeRefreshLayout swipeContainer;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.ss_new_car_fragment_layout, container, false);
         recyclerView = (RecyclerView)view.findViewById(R.id.new_car_recycler_view);
@@ -89,6 +84,7 @@ public class NewCars extends Fragment {
             }
         });
     }
+
     private void prepareAlbums() {
         newCarAdapter.clearData();
         for (int i=0 ; i < newCarData.size() ; i++) {
@@ -102,6 +98,7 @@ public class NewCars extends Fragment {
         }
         swipeContainer.setRefreshing(false);
     }
+
     public class newCar {
         String title;
         String chassis;

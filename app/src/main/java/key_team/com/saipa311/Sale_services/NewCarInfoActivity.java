@@ -37,7 +37,6 @@ import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
  * Created by ammorteza on 12/1/17.
  */
 public class NewCarInfoActivity extends AppCompatActivity {
-    private CollapsingToolbarLayout collapsingToolbarLayout;
     private NewCar newCarInfo;
     private TextView title;
     private TextView isConditions;

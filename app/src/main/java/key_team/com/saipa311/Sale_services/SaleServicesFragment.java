@@ -40,7 +40,6 @@ public class SaleServicesFragment extends Fragment {
         SaleServicesPagerAdapter adapter = new SaleServicesPagerAdapter(getActivity().getSupportFragmentManager() , 5);
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.saleServicesViewpager);
         viewPager.setAdapter(adapter);
-        viewPager.setPageTransformer(true , new FadePageTransformer());
         TabLayout tabLayout = (TabLayout)view.findViewById(R.id.saleServicesTabLayout);
         tabLayout.setupWithViewPager(viewPager);
     }

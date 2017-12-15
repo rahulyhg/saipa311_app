@@ -1,5 +1,6 @@
 package key_team.com.saipa311;
 
+import android.app.Fragment;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,8 +15,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+
+import key_team.com.saipa311.Sale_services.SaleServicesFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -108,12 +112,20 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+
     private void setupViewPager()
     {
         mainViewPager = (ViewPager)findViewById(R.id.viewpager);
         MainViewPagerAdapter adapter = new MainViewPagerAdapter(getSupportFragmentManager() , 4);
         mainViewPager.setAdapter(adapter);
-
+        mainViewPager.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                return true;
+            }
+        });
         mainViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
