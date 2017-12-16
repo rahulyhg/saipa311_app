@@ -2,6 +2,8 @@ package key_team.com.saipa311.Sale_services.JsonSchema;
 
 import java.util.List;
 
+import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
+import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
@@ -19,4 +21,7 @@ public interface StoreClient {
 
     @POST("sale_service/old_car/fetchAllData")
     Call<List<OldCar>> fetchOldCars(@Body OldCarRequestParams params);
+
+    @POST("sale_service/deposit/fetchAllData")
+    Call<List<Deposit>> fetchDeposits(@Body DepositRequestParams params);
 }

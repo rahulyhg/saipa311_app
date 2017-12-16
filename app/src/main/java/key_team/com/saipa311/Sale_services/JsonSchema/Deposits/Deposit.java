@@ -15,6 +15,9 @@ public class Deposit {
     @SerializedName("reId")
     @Expose
     private Integer reId;
+    @SerializedName("coId")
+    @Expose
+    private Integer coId;
     @SerializedName("dCar")
     @Expose
     private String dCar;
@@ -45,6 +48,9 @@ public class Deposit {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("compony")
+    @Expose
+    private Compony compony;
 
     public Integer getId() {
         return id;
@@ -68,6 +74,14 @@ public class Deposit {
 
     public void setReId(Integer reId) {
         this.reId = reId;
+    }
+
+    public Integer getCoId() {
+        return coId;
+    }
+
+    public void setCoId(Integer coId) {
+        this.coId = coId;
     }
 
     public String getDCar() {
@@ -148,6 +162,14 @@ public class Deposit {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Compony getCompony() {
+        return compony;
+    }
+
+    public void setCompony(Compony compony) {
+        this.compony = compony;
     }
 
 }

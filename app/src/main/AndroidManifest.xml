@@ -40,6 +40,12 @@
             android:launchMode="singleTask">
         </activity>
         <activity
+            android:name=".Sale_services.DepositInfoActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask">
+        </activity>
+        <activity
             android:name=".PhotoViewer"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask">
