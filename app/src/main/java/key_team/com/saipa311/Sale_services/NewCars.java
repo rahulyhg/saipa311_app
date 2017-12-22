@@ -10,22 +10,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestParams;
-import key_team.com.saipa311.Sale_services.JsonSchema.ServiceGenerator;
+import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.Sale_services.JsonSchema.StoreClient;
 import key_team.com.saipa311.SquareImageView;
 import retrofit2.Call;
@@ -83,6 +81,14 @@ public class NewCars extends Fragment {
             public void onFailure(Call<List<NewCar>> call, Throwable t) {
             }
         });
+
+/*        UserInfo userInfo = new UserInfo();
+        userInfo.name = "مرتضی امزاجردی";
+        userInfo.mobile = "09369293829";
+        userInfo.access_token = "gsdfgsdf6gs4fd6g4s6df4g6s4f6gs4d6fg4s6df4g6s4df6gs46df4gsdfg";
+        userInfo.refresh_token = "fsdfgs4df684s6f4g6sdf8gs7df98g7s9d8f46xc4vb6cx4v6b4x6cv4b6x4cvb";
+        userInfo.save();*/
+        //Log.d("my log" , "....................." + UserInfo.getUserInfo().name);
     }
 
     private void prepareAlbums() {
@@ -199,7 +205,7 @@ public class NewCars extends Fragment {
             holder.price.setTypeface(PublicParams.BYekan(getContext()));
             holder.description.setText(dataSet.get(listPosition).getDescription());
             Picasso.with(getActivity())
-                    .load(PublicParams.BASE_URL + "pic/cars/" + dataSet.get(listPosition).getImage())
+                    .load(PublicParams.BASE_URL + dataSet.get(listPosition).getImage())
                     .error(R.drawable.oops)
                     .fit()
                     .centerInside()

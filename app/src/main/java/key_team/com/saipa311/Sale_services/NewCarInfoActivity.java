@@ -7,6 +7,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,6 +29,8 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
+
+import key_team.com.saipa311.Auth.LoginActivity;
 import key_team.com.saipa311.PhotoViewer;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
@@ -44,6 +47,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
     private TextView description;
     private ImageView conditionImg;
     private SliderLayout mDemoSlider;
+    private CardView conditionImagePart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,12 +66,17 @@ public class NewCarInfoActivity extends AppCompatActivity {
         isConditions = (TextView)findViewById(R.id.isConditions);
         price = (TextView)findViewById(R.id.price);
         description = (TextView)findViewById(R.id.description);
+        conditionImagePart = (CardView)findViewById(R.id.conditionImagePart);
 
         title.setText(newCarInfo.getProduct().getPrSubject());
-        if (newCarInfo.getNcConditions() == 0)
+        if (newCarInfo.getNcConditions() == 0) {
             isConditions.setVisibility(View.GONE);
-        else
+            conditionImagePart.setVisibility(View.GONE);
+        }
+        else {
             isConditions.setVisibility(View.VISIBLE);
+            conditionImagePart.setVisibility(View.VISIBLE);
+        }
 
         price.setText(newCarInfo.getNcPrice());
         price.setTypeface(PublicParams.BYekan(this));
@@ -448,9 +457,9 @@ public class NewCarInfoActivity extends AppCompatActivity {
         ts.addView(tr17, tr_params);
 
         conditionImg = (ImageView)findViewById(R.id.condition);
-        Log.d("............" , PublicParams.BASE_URL + "pic/terms/" + newCarInfo.getNcTermsOfSaleImg());
+        Log.d("............" , PublicParams.BASE_URL + newCarInfo.getNcTermsOfSaleImg());
         Picasso.with(NewCarInfoActivity.this)
-                .load(PublicParams.BASE_URL + "pic/terms/" + newCarInfo.getNcTermsOfSaleImg())
+                .load(PublicParams.BASE_URL + newCarInfo.getNcTermsOfSaleImg())
                 .placeholder(R.drawable.place_holder)
                 .error(R.drawable.oops)
                 .fit()
@@ -471,7 +480,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
     public void openImageViewer(View view)
     {
         Intent intent = new Intent(this , PhotoViewer.class);
-        intent.putExtra("imgUrl", PublicParams.BASE_URL + "pic/terms/" + newCarInfo.getNcTermsOfSaleImg());
+        intent.putExtra("imgUrl", PublicParams.BASE_URL + newCarInfo.getNcTermsOfSaleImg());
         startActivity(intent);
     }
 
@@ -481,7 +490,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
         HashMap<String,String> file_maps = new HashMap<String, String>();
         for (int i = 0 ; i < newCarInfo.getNewCarImage().size() ; i++ )
         {
-            file_maps.put(i + "", PublicParams.BASE_URL + "pic/cars/" + newCarInfo.getNewCarImage().get(i).getNciPath());
+            file_maps.put(i + "", PublicParams.BASE_URL + newCarInfo.getNewCarImage().get(i).getNciPath());
         }
         for(String name : file_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(this);
@@ -529,9 +538,12 @@ public class NewCarInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-    public void callTest(View view)
+    public void createRequest(View view)
     {
-
+        Intent intent = new Intent(NewCarInfoActivity.this, LoginActivity.class);
+        //String arrayAsString = new Gson().toJson(newCarData.get(getAdapterPosition()));
+        //intent.putExtra("newCarInfo", arrayAsString);
+        startActivity(intent);
     }
 
     @Override

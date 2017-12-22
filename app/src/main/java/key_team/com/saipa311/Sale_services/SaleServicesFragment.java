@@ -95,7 +95,7 @@ public class SaleServicesFragment extends Fragment {
                 case 1: return "خودروی دست دوم";
                 case 2: return "سرمایه گذاری";
                 case 3: return "تهاتر";
-                case 4: return "اسقاط";
+                case 4: return "خودروی فرسوده";
             }
             return "";
         }

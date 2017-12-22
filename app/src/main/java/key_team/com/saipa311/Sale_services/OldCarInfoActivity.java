@@ -177,7 +177,7 @@ public class OldCarInfoActivity extends AppCompatActivity {
         HashMap<String,String> file_maps = new HashMap<String, String>();
         for (int i = 0 ; i < oldCarInfo.getOldCarImage().size() ; i++ )
         {
-            file_maps.put(i + "", PublicParams.BASE_URL + "pic/cars/" + oldCarInfo.getOldCarImage().get(i).getOciPath());
+            file_maps.put(i + "", PublicParams.BASE_URL + oldCarInfo.getOldCarImage().get(i).getOciPath());
         }
         for(String name : file_maps.keySet()){
             DefaultSliderView textSliderView = new DefaultSliderView(this);

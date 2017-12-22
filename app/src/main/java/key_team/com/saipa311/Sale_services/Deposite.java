@@ -22,7 +22,7 @@ import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestParams;
-import key_team.com.saipa311.Sale_services.JsonSchema.ServiceGenerator;
+import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.Sale_services.JsonSchema.StoreClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -174,7 +174,7 @@ public class Deposite extends Fragment {
             holder.description.setText(dataSet.get(listPosition).getDescription());
 
             Picasso.with(getActivity())
-                    .load(PublicParams.BASE_URL + "pic/company_icons/" + dataSet.get(listPosition).getComponyLogo())
+                    .load(PublicParams.BASE_URL + dataSet.get(listPosition).getComponyLogo())
                     .error(R.drawable.oops)
                     .fit()
                     .centerInside()

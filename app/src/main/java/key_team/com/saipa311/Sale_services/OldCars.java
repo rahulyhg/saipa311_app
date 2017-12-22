@@ -23,7 +23,7 @@ import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestParams;
-import key_team.com.saipa311.Sale_services.JsonSchema.ServiceGenerator;
+import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.Sale_services.JsonSchema.StoreClient;
 import key_team.com.saipa311.SquareImageView;
 import retrofit2.Call;
@@ -189,7 +189,7 @@ public class OldCars extends Fragment {
             holder.price.setTypeface(PublicParams.BYekan(getContext()));
             holder.description.setText(dataSet.get(listPosition).getDescription());
             Picasso.with(getActivity())
-                    .load(PublicParams.BASE_URL + "pic/cars/" + dataSet.get(listPosition).getImage())
+                    .load(PublicParams.BASE_URL + dataSet.get(listPosition).getImage())
                     .error(R.drawable.oops)
                     .fit()
                     .centerInside()

@@ -178,7 +178,7 @@
                         android:gravity="right"
                         android:textStyle="bold"
                         android:layout_margin="20dp"
-                        android:text="سود سپرده"
+                        android:text="سود ماهانه"
                         android:textColor="#263938"/>
                     <LinearLayout
                         android:layout_width="match_parent"

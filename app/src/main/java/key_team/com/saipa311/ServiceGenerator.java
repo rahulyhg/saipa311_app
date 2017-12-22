@@ -1,4 +1,4 @@
-package key_team.com.saipa311.Sale_services.JsonSchema;
+package key_team.com.saipa311;
 
 import key_team.com.saipa311.PublicParams;
 import okhttp3.OkHttpClient;
