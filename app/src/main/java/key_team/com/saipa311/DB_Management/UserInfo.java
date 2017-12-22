@@ -1,5 +1,7 @@
 package key_team.com.saipa311.DB_Management;
 
+import android.util.Log;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -40,5 +42,14 @@ public class UserInfo extends Model {
         return new Select()
                 .from(UserInfo.class)
                 .executeSingle();
+    }
+
+    public static boolean isLoggedIn()
+    {
+        int userInfoCount = new Select().from(UserInfo.class).execute().size();
+        if (userInfoCount == 0)
+            return false;
+        else
+            return true;
     }
 }

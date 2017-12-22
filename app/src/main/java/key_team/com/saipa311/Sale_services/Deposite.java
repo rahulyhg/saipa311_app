@@ -23,7 +23,7 @@ import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestParams;
 import key_team.com.saipa311.ServiceGenerator;
-import key_team.com.saipa311.Sale_services.JsonSchema.StoreClient;
+import key_team.com.saipa311.StoreClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +63,7 @@ public class Deposite extends Fragment {
 
     private void fetchAllDeposits()
     {
+        swipeContainer.setRefreshing(true);
         DepositRequestParams params = new DepositRequestParams();
         params.setRepId(1);
         StoreClient client = ServiceGenerator.createService(StoreClient.class);

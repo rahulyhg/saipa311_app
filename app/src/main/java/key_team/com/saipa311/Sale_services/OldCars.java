@@ -24,8 +24,8 @@ import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestParams;
 import key_team.com.saipa311.ServiceGenerator;
-import key_team.com.saipa311.Sale_services.JsonSchema.StoreClient;
 import key_team.com.saipa311.SquareImageView;
+import key_team.com.saipa311.StoreClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,6 +66,7 @@ public class OldCars extends Fragment {
 
     private void fetchAllOldCars()
     {
+        swipeContainer.setRefreshing(true);
         OldCarRequestParams params = new OldCarRequestParams();
         params.setRepId(1);
         StoreClient client = ServiceGenerator.createService(StoreClient.class);

@@ -2,6 +2,11 @@ package key_team.com.saipa311;
 
 import java.util.List;
 
+import key_team.com.saipa311.Auth.JsonSchema.RefreshTokenRequestParams;
+import key_team.com.saipa311.Auth.JsonSchema.TokenInfo;
+import key_team.com.saipa311.Auth.JsonSchema.TokenRequestParams;
+import key_team.com.saipa311.Auth.JsonSchema.User;
+import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
@@ -10,18 +15,29 @@ import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestParams;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 /**
  * Created by ammorteza on 12/8/17.
  */
 public interface StoreClient {
-    @POST("sale_service/new_car/fetchAllData")
+    UserInfo userInformation = new UserInfo();
+    @POST("app/sale_service/new_car/fetchAllData")
     Call<List<NewCar>> fetchNewCars(@Body NewCarRequestParams params);
 
-    @POST("sale_service/old_car/fetchAllData")
+    @POST("app/sale_service/old_car/fetchAllData")
     Call<List<OldCar>> fetchOldCars(@Body OldCarRequestParams params);
 
-    @POST("sale_service/deposit/fetchAllData")
+    @POST("app/sale_service/deposit/fetchAllData")
     Call<List<Deposit>> fetchDeposits(@Body DepositRequestParams params);
+
+    @POST("login")
+    Call<TokenInfo> login(@Body TokenRequestParams params);
+
+    @POST("refresh_token")
+    Call<TokenInfo> refreshToken(@Body RefreshTokenRequestParams params);
+
+    @POST("user_info")
+    Call<User> userInfo();
 }

@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 
 import key_team.com.saipa311.Auth.LoginActivity;
+import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.PhotoViewer;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
@@ -540,10 +541,12 @@ public class NewCarInfoActivity extends AppCompatActivity {
 
     public void createRequest(View view)
     {
-        Intent intent = new Intent(NewCarInfoActivity.this, LoginActivity.class);
-        //String arrayAsString = new Gson().toJson(newCarData.get(getAdapterPosition()));
-        //intent.putExtra("newCarInfo", arrayAsString);
-        startActivity(intent);
+        if (UserInfo.isLoggedIn() == false) {
+            Intent intent = new Intent(NewCarInfoActivity.this, LoginActivity.class);
+            //String arrayAsString = new Gson().toJson(newCarData.get(getAdapterPosition()));
+            //intent.putExtra("newCarInfo", arrayAsString);
+            startActivity(intent);
+        }
     }
 
     @Override

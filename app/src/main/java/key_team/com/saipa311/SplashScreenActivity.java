@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,12 +22,23 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.activeandroid.query.Delete;
+
+import key_team.com.saipa311.Auth.JsonSchema.RefreshTokenRequestParams;
+import key_team.com.saipa311.Auth.JsonSchema.TokenInfo;
+import key_team.com.saipa311.Auth.JsonSchema.TokenRequestParams;
+import key_team.com.saipa311.DB_Management.UserInfo;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SplashScreenActivity extends AppCompatActivity {
     Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        refreshToken();
         Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.fade_in);
         ImageView imageView = (ImageView)findViewById(R.id.saipa_logo);
         imageView.setAnimation(animation);
@@ -40,5 +52,38 @@ public class SplashScreenActivity extends AppCompatActivity {
                 finish();
             }
         }, 3000);
+    }
+
+    private void refreshToken()
+    {
+        final UserInfo userInfo = UserInfo.getUserInfo();
+        if (UserInfo.isLoggedIn())
+        {
+            RefreshTokenRequestParams params = new RefreshTokenRequestParams();
+            params.setRefreshToken(userInfo.refresh_token);
+            final StoreClient client = ServiceGenerator.createService(StoreClient.class);
+            Call<TokenInfo> tokenInfo = client.refreshToken(params);
+            tokenInfo.enqueue(new Callback<TokenInfo>() {
+                @Override
+                public void onResponse(Call<TokenInfo> call, Response<TokenInfo> response) {
+                    new Delete().from(UserInfo.class).execute();
+                    if (response.code() == 200) {
+                        TokenInfo temp = response.body();
+                        final UserInfo _userInfo = new UserInfo();
+                        _userInfo.access_token = temp.getAccessToken();
+                        _userInfo.refresh_token = temp.getRefreshToken();
+                        _userInfo.name = userInfo.name;
+                        _userInfo.mobile = userInfo.mobile;
+                        _userInfo.save();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<TokenInfo> call, Throwable t) {
+
+                }
+            });
+            Log.d("my log", ".................................. user table is not empty");
+        }
     }
 }
