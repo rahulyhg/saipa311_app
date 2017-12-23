@@ -3,9 +3,12 @@ package key_team.com.saipa311;
 import java.util.List;
 
 import key_team.com.saipa311.Auth.JsonSchema.RefreshTokenRequestParams;
+import key_team.com.saipa311.Auth.JsonSchema.RegisterUserRequestParams;
+import key_team.com.saipa311.Auth.JsonSchema.RegisterUserResult;
 import key_team.com.saipa311.Auth.JsonSchema.TokenInfo;
 import key_team.com.saipa311.Auth.JsonSchema.TokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.User;
+import key_team.com.saipa311.Auth.JsonSchema.UserActivationRequestParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestParams;
@@ -40,4 +43,10 @@ public interface StoreClient {
 
     @POST("user_info")
     Call<User> userInfo();
+
+    @POST("app/register_customer_user")
+    Call<RegisterUserResult> registerUser(@Body RegisterUserRequestParams params);
+
+    @POST("app/active_customer_user")
+    Call<Void> userActivation(@Body UserActivationRequestParams params);
 }
