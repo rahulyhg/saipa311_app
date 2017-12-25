@@ -27,6 +27,7 @@ import com.activeandroid.query.Delete;
 import key_team.com.saipa311.Auth.JsonSchema.RefreshTokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.TokenInfo;
 import key_team.com.saipa311.Auth.JsonSchema.TokenRequestParams;
+import key_team.com.saipa311.Auth.JsonSchema.User;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,9 +73,29 @@ public class SplashScreenActivity extends AppCompatActivity {
                         final UserInfo _userInfo = new UserInfo();
                         _userInfo.access_token = temp.getAccessToken();
                         _userInfo.refresh_token = temp.getRefreshToken();
-                        _userInfo.name = userInfo.name;
-                        _userInfo.mobile = userInfo.mobile;
                         _userInfo.save();
+
+                        Call<User> user_info = client.userInfo();
+                        user_info.enqueue(new Callback<User>() {
+                            @Override
+                            public void onResponse(Call<User> call, Response<User> response) {
+                                User user = response.body();
+                                _userInfo.userId = user.getId();
+                                _userInfo.name = user.getName();
+                                _userInfo.mobile = user.getMobile();
+                                _userInfo.birthDate = user.getBirthDate();
+                                _userInfo.fatherName = user.getFatherName();
+                                _userInfo.idNumber = user.getIdNumber();
+                                _userInfo.nationalCode = user.getNationalCode();
+                                _userInfo.save();
+                                Log.d("my log", ".................. user name" + userInfo.name + " - " + userInfo.refresh_token);
+                            }
+
+                            @Override
+                            public void onFailure(Call<User> call, Throwable t) {
+                            }
+                        });
+                        Log.d("my log", ".................................. user info " + _userInfo.mobile);
                     }
                 }
 

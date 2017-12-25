@@ -543,8 +543,12 @@ public class NewCarInfoActivity extends AppCompatActivity {
     {
         if (UserInfo.isLoggedIn() == false) {
             Intent intent = new Intent(NewCarInfoActivity.this, LoginActivity.class);
-            //String arrayAsString = new Gson().toJson(newCarData.get(getAdapterPosition()));
-            //intent.putExtra("newCarInfo", arrayAsString);
+            startActivity(intent);
+        }
+        else{
+            Intent intent = new Intent(NewCarInfoActivity.this, NewCarRequestActivity.class);
+            String arrayAsString = new Gson().toJson(newCarInfo);
+            intent.putExtra("newCarInfo", arrayAsString);
             startActivity(intent);
         }
     }

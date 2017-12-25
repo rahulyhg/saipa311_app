@@ -12,11 +12,26 @@ import com.activeandroid.query.Select;
  */
 @Table(name = "tbl_user_info")
 public class UserInfo extends Model {
+    @Column(name = "userId")
+    public Integer userId;
+
     @Column(name = "name")
     public String name;
 
     @Column(name = "mobile")
     public String mobile;
+
+    @Column(name = "fatherName")
+    public String fatherName;
+
+    @Column(name = "birthDate")
+    public String birthDate;
+
+    @Column(name = "nationalCode")
+    public String nationalCode;
+
+    @Column(name = "idNumber")
+    public String idNumber;
 
     @Column(name = "access_token")
     public String access_token;
@@ -28,14 +43,14 @@ public class UserInfo extends Model {
         super();
     }
 
-    public UserInfo(String name , String mobile , String access_token , String refresh_token)
+/*    public UserInfo(String name , String mobile , String access_token , String refresh_token)
     {
         super();
         this.name = name;
         this.mobile = mobile;
         this.access_token = access_token;
         this.refresh_token = refresh_token;
-    }
+    }*/
 
     public static UserInfo getUserInfo()
     {

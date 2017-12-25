@@ -198,8 +198,13 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<User> call, Response<User> response) {
                                 User user = response.body();
+                                userInfo.userId = user.getId();
                                 userInfo.name = user.getName();
                                 userInfo.mobile = user.getMobile();
+                                userInfo.birthDate = user.getBirthDate();
+                                userInfo.fatherName = user.getFatherName();
+                                userInfo.idNumber = user.getIdNumber();
+                                userInfo.nationalCode = user.getNationalCode();
                                 userInfo.save();
                                 progressDialog.stop();
                                 Log.d("my log", ".................. user name" + userInfo.name + " - " + userInfo.refresh_token);
