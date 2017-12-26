@@ -1,5 +1,6 @@
 package key_team.com.saipa311.Sale_services;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.activeandroid.query.Delete;
@@ -23,6 +25,7 @@ import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
 import key_team.com.saipa311.customToast;
@@ -48,6 +51,7 @@ public class NewCarRequestActivity extends AppCompatActivity {
     private Switch haveLicensePlate;
     private EditText address;
     private EditText description;
+    private ViewFlipper viewFlipper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +61,47 @@ public class NewCarRequestActivity extends AppCompatActivity {
 
     public void register(View view)
     {
+        if (validate())
+        {
+            UserInfo userInfo = UserInfo.getUserInfo();
+            NewCarRequestRequestParams params = new NewCarRequestRequestParams();
+            params.setUserId(userInfo.userId);
+            //Log.d("my log", "................... user id" + userInfo.userId);
+            params.setFatherName(fatherName.getText().toString());
+            params.setNationalCode(nationalCode.getText().toString());
+            params.setBirthDate(bYear.getSelectedItem().toString() + "/" + bMonth.getSelectedItem().toString() + "/" + bDay.getSelectedItem().toString());
+            params.setIdNumber(idNumber.getText().toString());
+            params.setNcId(newCarInfo.getId());
+            params.setNcrHaveLicensePlate(haveLicensePlate.isChecked() == true ? 1 : 0);
+            params.setNcrAddress(address.getText().toString());
+            params.setNcrDescription(description.getText().toString());
+            final StoreClient client = ServiceGenerator.createService(StoreClient.class);
+            final Call request = client.registerNewCarRequest(params);
+            request.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    if (response.code() == 200)
+                    {
+                        viewFlipper.setDisplayedChild(1);
+                    }else
+                    {
+                        customToast.show(getLayoutInflater(), NewCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                    }
 
+                    Log.d("my log" , "..................." + response.code() + " = " + response.message());
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    customToast.show(getLayoutInflater(), NewCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                }
+            });
+        }
+    }
+
+    public void wait(View view)
+    {
+        finish();
     }
 
     private void init()
@@ -67,6 +111,7 @@ public class NewCarRequestActivity extends AppCompatActivity {
 
         UserInfo userInfo = UserInfo.getUserInfo();
 
+        viewFlipper = (ViewFlipper)findViewById(R.id.view_flipper);
         carColor = (Spinner)findViewById(R.id.input_color);
         bYear = (Spinner)findViewById(R.id.input_year);
         bMonth = (Spinner)findViewById(R.id.input_month);
@@ -112,26 +157,95 @@ public class NewCarRequestActivity extends AppCompatActivity {
         bDay.setAdapter(dayAdapter);
     }
 
-    public void validate() {
-/*        boolean valid = true;
+    public boolean validate() {
+        boolean valid = true;
 
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
+        int color = carColor.getSelectedItemPosition();
+        int year = bYear.getSelectedItemPosition();
+        int month = bMonth.getSelectedItemPosition();
+        int day = bDay.getSelectedItemPosition();
+        String _name = name.getText().toString();
+        String _fatherName = fatherName.getText().toString();
+        String _idNumber = idNumber.getText().toString();
+        String _nationalCode = nationalCode.getText().toString();
+        String _address = address.getText().toString();
+        String _mobile = mobile.getText().toString();
 
-        if (email.isEmpty()) {
-            emailText.setError("نام کاربری الزامیست!");
+        if (((String) carColor.getItemAtPosition(color)).isEmpty()) {
+            setSpinnerError(carColor , "انتخاب رنگ الزامیست!");
             valid = false;
-        } else {
-            emailText.setError(null);
         }
 
-        if (password.isEmpty()) {
-            passwordText.setError("کلمه عبور الزامیست!");
+        if (((String) bYear.getItemAtPosition(year)).isEmpty()) {
+            setSpinnerError(bYear , "انتخاب سال الزامیست!");
             valid = false;
-        } else {
-            passwordText.setError(null);
         }
 
-        return valid;*/
+        if (((String) bMonth.getItemAtPosition(month)).isEmpty()) {
+            setSpinnerError(bMonth , "انتخاب ماه الزامی است!");
+            valid = false;
+        }
+
+        if (((String) bDay.getItemAtPosition(day)).isEmpty()) {
+            setSpinnerError(bDay , "انتخاب روز الزامیست!");
+            valid = false;
+        }
+
+        if (_name.isEmpty()) {
+            name.setError("نام و نام خانوادگی الزامیست!");
+            valid = false;
+        } else {
+            name.setError(null);
+        }
+
+        if (_fatherName.isEmpty()) {
+            fatherName.setError("نام پدر الزامیست!");
+            valid = false;
+        } else {
+            fatherName.setError(null);
+        }
+
+        if (_idNumber.isEmpty()) {
+            idNumber.setError("شماره شناسنامه الزامیست!");
+            valid = false;
+        } else {
+            idNumber.setError(null);
+        }
+
+        if (_nationalCode.isEmpty()) {
+            nationalCode.setError("کد ملی الزامیست!");
+            valid = false;
+        } else {
+            nationalCode.setError(null);
+        }
+
+        if (_address.isEmpty()) {
+            address.setError("آدرس الزامیست!");
+            valid = false;
+        } else {
+            address.setError(null);
+        }
+
+        if (_mobile.isEmpty()) {
+            mobile.setError("شماره همراه الزامبست!");
+            valid = false;
+        } else {
+            mobile.setError(null);
+        }
+
+        return valid;
+    }
+
+    private void setSpinnerError(Spinner spinner, String error){
+        View selectedView = spinner.getSelectedView();
+        if (selectedView != null && selectedView instanceof TextView) {
+            spinner.requestFocus();
+            TextView selectedTextView = (TextView) selectedView;
+            selectedTextView.setError("error"); // any name of the error will do
+            selectedTextView.setTextColor(Color.RED); //text color in which you want your error message to be displayed
+            selectedTextView.setText(error); // actual error message
+            spinner.performClick(); // to open the spinner list if error is found.
+
+        }
     }
 }

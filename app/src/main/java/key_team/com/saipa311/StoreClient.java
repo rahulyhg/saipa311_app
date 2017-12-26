@@ -14,6 +14,7 @@ import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestParams;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestParams;
 import retrofit2.Call;
@@ -49,4 +50,8 @@ public interface StoreClient {
 
     @POST("app/active_customer_user")
     Call<Void> userActivation(@Body UserActivationRequestParams params);
+
+    @POST("app/sale_service/new_car/registerRequest")
+    Call<Void> registerNewCarRequest(@Body NewCarRequestRequestParams params);
+
 }
