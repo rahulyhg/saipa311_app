@@ -13,6 +13,8 @@ import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOption;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOptionsParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
@@ -53,5 +55,8 @@ public interface StoreClient {
 
     @POST("app/sale_service/new_car/registerRequest")
     Call<Void> registerNewCarRequest(@Body NewCarRequestRequestParams params);
+
+    @POST("app/option/fetchOptionWithRepAndPid")
+    Call<List<NewCarOption>> fetchOptionWithRepAndPid(@Body NewCarOptionsParams params);
 
 }

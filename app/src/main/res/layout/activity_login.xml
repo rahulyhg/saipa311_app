@@ -56,7 +56,6 @@
                     android:onClick="login"
                     android:text="ورود"/>
 
-
                 <TextView android:id="@+id/link_signup"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

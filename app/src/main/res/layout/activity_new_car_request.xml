@@ -181,6 +181,20 @@
                             android:text="آیا خودرویی با پلاک جدید دارید؟"/>
                     </LinearLayout>
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/options"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textSize="@dimen/textSizeLarge"
+                        android:text="آپشن"/>
+                </LinearLayout>
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

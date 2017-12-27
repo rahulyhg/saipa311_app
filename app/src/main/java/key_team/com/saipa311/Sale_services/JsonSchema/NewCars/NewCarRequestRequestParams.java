@@ -1,6 +1,7 @@
 
 package key_team.com.saipa311.Sale_services.JsonSchema.NewCars;
 
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -33,6 +34,9 @@ public class NewCarRequestRequestParams {
     @SerializedName("ncrDescription")
     @Expose
     private String ncrDescription;
+    @SerializedName("selectedOptions")
+    @Expose
+    private List<SelectedOption> selectedOptions = null;
 
     public Integer getUserId() {
         return userId;
@@ -104,6 +108,14 @@ public class NewCarRequestRequestParams {
 
     public void setNcrDescription(String ncrDescription) {
         this.ncrDescription = ncrDescription;
+    }
+
+    public List<SelectedOption> getSelectedOptions() {
+        return selectedOptions;
+    }
+
+    public void setSelectedOptions(List<SelectedOption> selectedOptions) {
+        this.selectedOptions = selectedOptions;
     }
 
 }

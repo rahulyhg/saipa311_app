@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -14,6 +16,9 @@ import android.widget.ViewFlipper;
 
 import com.activeandroid.query.Delete;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserResult;
@@ -25,7 +30,10 @@ import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOption;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOptionsParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.SelectedOption;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
 import key_team.com.saipa311.customToast;
@@ -52,11 +60,54 @@ public class NewCarRequestActivity extends AppCompatActivity {
     private EditText address;
     private EditText description;
     private ViewFlipper viewFlipper;
+    private List<SelectedOption> selectedOptions = new ArrayList<SelectedOption>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_car_request);
         init();
+        loadOptions();
+    }
+
+    private void loadOptions()
+    {
+        NewCarOptionsParams params = new NewCarOptionsParams();
+        params.setRepId(1);
+        params.setPId(newCarInfo.getProduct().getId());
+        final StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        final Call<List<NewCarOption>> request = client.fetchOptionWithRepAndPid(params);
+        request.enqueue(new Callback<List<NewCarOption>>() {
+            @Override
+            public void onResponse(Call<List<NewCarOption>> call, Response<List<NewCarOption>> response) {
+                final List<NewCarOption> newCarOption = response.body();
+                LinearLayout options = (LinearLayout)findViewById(R.id.options);
+
+                for (int i=0;i<newCarOption.size();i++)
+                {
+                    final int curent_i = i;
+                    Switch sw = new Switch(NewCarRequestActivity.this);
+                    sw.setText(newCarOption.get(i).getOption().getOName());
+                    sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            SelectedOption so = new SelectedOption();
+                            so.setId(newCarOption.get(curent_i).getId());
+                            if (isChecked) {
+                                selectedOptions.add(so);
+                            }else{
+                                selectedOptions.remove(so);
+                            }
+                        }
+                    });
+                    options.addView(sw);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<NewCarOption>> call, Throwable t) {
+
+            }
+        });
     }
 
     public void register(View view)
@@ -75,6 +126,7 @@ public class NewCarRequestActivity extends AppCompatActivity {
             params.setNcrHaveLicensePlate(haveLicensePlate.isChecked() == true ? 1 : 0);
             params.setNcrAddress(address.getText().toString());
             params.setNcrDescription(description.getText().toString());
+            params.setSelectedOptions(selectedOptions);
             final StoreClient client = ServiceGenerator.createService(StoreClient.class);
             final Call request = client.registerNewCarRequest(params);
             request.enqueue(new Callback() {
