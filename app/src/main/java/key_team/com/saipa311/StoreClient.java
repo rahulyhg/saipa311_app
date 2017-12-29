@@ -19,6 +19,7 @@ import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestParam
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestParams;
+import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestRequestParams;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
@@ -55,6 +56,9 @@ public interface StoreClient {
 
     @POST("app/sale_service/new_car/registerRequest")
     Call<Void> registerNewCarRequest(@Body NewCarRequestRequestParams params);
+
+    @POST("app/sale_service/old_car/registerRequest")
+    Call<Void> registerOldCarRequest(@Body OldCarRequestRequestParams params);
 
     @POST("app/option/fetchOptionWithRepAndPid")
     Call<List<NewCarOption>> fetchOptionWithRepAndPid(@Body NewCarOptionsParams params);

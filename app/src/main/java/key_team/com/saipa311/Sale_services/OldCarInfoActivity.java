@@ -1,5 +1,6 @@
 package key_team.com.saipa311.Sale_services;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -22,6 +23,9 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.google.gson.Gson;
 import java.util.HashMap;
+
+import key_team.com.saipa311.Auth.LoginActivity;
+import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
@@ -225,9 +229,18 @@ public class OldCarInfoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-    public void callTest(View view)
+    public void createRequest(View view)
     {
-
+        if (UserInfo.isLoggedIn() == false) {
+            Intent intent = new Intent(OldCarInfoActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Intent intent = new Intent(OldCarInfoActivity.this, OldCarRequestActivity.class);
+            String arrayAsString = new Gson().toJson(oldCarInfo);
+            intent.putExtra("oldCarInfo", arrayAsString);
+            startActivity(intent);
+        }
     }
 
     @Override

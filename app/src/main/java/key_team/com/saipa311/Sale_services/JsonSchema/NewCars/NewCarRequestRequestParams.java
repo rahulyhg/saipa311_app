@@ -16,6 +16,9 @@ public class NewCarRequestRequestParams {
     @SerializedName("birthDate")
     @Expose
     private String birthDate;
+    @SerializedName("mobile")
+    @Expose
+    private String mobile;
     @SerializedName("nationalCode")
     @Expose
     private String nationalCode;
@@ -25,6 +28,9 @@ public class NewCarRequestRequestParams {
     @SerializedName("ncId")
     @Expose
     private Integer ncId;
+    @SerializedName("ncrColor")
+    @Expose
+    private String ncrColor;
     @SerializedName("ncrHaveLicensePlate")
     @Expose
     private Integer ncrHaveLicensePlate;
@@ -62,6 +68,14 @@ public class NewCarRequestRequestParams {
         this.birthDate = birthDate;
     }
 
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
     public String getNationalCode() {
         return nationalCode;
     }
@@ -84,6 +98,14 @@ public class NewCarRequestRequestParams {
 
     public void setNcId(Integer ncId) {
         this.ncId = ncId;
+    }
+
+    public String getNcrColor() {
+        return ncrColor;
+    }
+
+    public void setNcrColor(String ncrColor) {
+        this.ncrColor = ncrColor;
     }
 
     public Integer getNcrHaveLicensePlate() {

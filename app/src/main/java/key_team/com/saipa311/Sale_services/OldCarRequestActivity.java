@@ -4,11 +4,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
@@ -17,26 +15,16 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.activeandroid.query.Delete;
 import com.google.gson.Gson;
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import key_team.com.saipa311.Auth.JsonSchema.RegisterUserRequestParams;
-import key_team.com.saipa311.Auth.JsonSchema.RegisterUserResult;
-import key_team.com.saipa311.Auth.JsonSchema.TokenInfo;
-import key_team.com.saipa311.Auth.JsonSchema.TokenRequestParams;
-import key_team.com.saipa311.Auth.JsonSchema.User;
-import key_team.com.saipa311.Auth.JsonSchema.UserActivationRequestParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
-import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
@@ -44,6 +32,8 @@ import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOption;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOptionsParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.SelectedOption;
+import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
+import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestRequestParams;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
 import key_team.com.saipa311.customToast;
@@ -54,9 +44,8 @@ import retrofit2.Response;
 /**
  * Created by ammorteza on 12/1/17.
  */
-public class NewCarRequestActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private NewCar newCarInfo;
-    private Spinner carColor;
+public class OldCarRequestActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    private OldCar oldCarInfo;
     private EditText birthDate;
     private EditText subject;
     private EditText name;
@@ -64,67 +53,24 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
     private EditText idNumber;
     private EditText nationalCode;
     private EditText mobile;
-    private Switch haveLicensePlate;
     private EditText address;
     private EditText description;
     private ViewFlipper viewFlipper;
-    private List<SelectedOption> selectedOptions = new ArrayList<SelectedOption>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_car_request);
+        setContentView(R.layout.activity_old_car_request);
         createActionBar();
         init();
-        loadOptions();
     }
 
-    private void loadOptions()
+    private void createActionBar()
     {
-        NewCarOptionsParams params = new NewCarOptionsParams();
-        params.setRepId(1);
-        params.setPId(newCarInfo.getProduct().getId());
-        final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-        final Call<List<NewCarOption>> request = client.fetchOptionWithRepAndPid(params);
-        request.enqueue(new Callback<List<NewCarOption>>() {
-            @Override
-            public void onResponse(Call<List<NewCarOption>> call, Response<List<NewCarOption>> response) {
-                final List<NewCarOption> newCarOption = response.body();
-                LinearLayout options = (LinearLayout) findViewById(R.id.options);
-
-                for (int i = 0; i < newCarOption.size(); i++) {
-                    final int curent_i = i;
-                    Switch sw = new Switch(NewCarRequestActivity.this);
-                    sw.setText(newCarOption.get(i).getOption().getOName());
-                    sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            SelectedOption so = new SelectedOption();
-
-                            if (isChecked) {
-                                so.setId(newCarOption.get(curent_i).getId());
-                                Log.d("my log", "................... add option in list" + curent_i);
-                                selectedOptions.add(so);
-                            } else {
-                                for (int i = 0; i < selectedOptions.size(); i++) {
-                                    SelectedOption temp = selectedOptions.get(i);
-                                    if (temp.getId() == newCarOption.get(curent_i).getId()) {
-                                        selectedOptions.remove(i);
-                                        Log.d("my log", "................... remove option in list" + selectedOptions.size());
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    options.addView(sw);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<NewCarOption>> call, Throwable t) {
-
-            }
-        });
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     public void openDatePicker(View  view)
@@ -132,7 +78,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         PersianCalendar now = new PersianCalendar();
         now.setPersianDate(1370, 5, 5);
         DatePickerDialog dpd = DatePickerDialog.newInstance(
-                NewCarRequestActivity.this,
+                OldCarRequestActivity.this,
                 now.getPersianYear(),
                 now.getPersianMonth(),
                 now.getPersianDay()
@@ -149,21 +95,12 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         //Toast.makeText(getApplicationContext(), date, Toast.LENGTH_SHORT).show();
     }
 
-    private void createActionBar()
-    {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
-
     public void register(View view)
     {
         if (validate())
         {
             UserInfo userInfo = UserInfo.getUserInfo();
-            NewCarRequestRequestParams params = new NewCarRequestRequestParams();
+            OldCarRequestRequestParams params = new OldCarRequestRequestParams();
             params.setUserId(userInfo.userId);
             //Log.d("my log", "................... user id" + userInfo.userId);
             params.setFatherName(fatherName.getText().toString());
@@ -171,14 +108,11 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
             params.setBirthDate(birthDate.getText().toString());
             params.setIdNumber(idNumber.getText().toString());
             params.setMobile(mobile.getText().toString());
-            params.setNcId(newCarInfo.getId());
-            params.setNcrHaveLicensePlate(haveLicensePlate.isChecked() == true ? 1 : 0);
-            params.setNcrColor(carColor.getSelectedItem().toString());
-            params.setNcrAddress(address.getText().toString());
-            params.setNcrDescription(description.getText().toString());
-            params.setSelectedOptions(selectedOptions);
+            params.setOcId(oldCarInfo.getId());
+            params.setOcrAddress(address.getText().toString());
+            params.setOcrDescription(description.getText().toString());
             final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-            final Call request = client.registerNewCarRequest(params);
+            final Call request = client.registerOldCarRequest(params);
             request.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
@@ -187,7 +121,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
                         viewFlipper.setDisplayedChild(1);
                     }else
                     {
-                        customToast.show(getLayoutInflater(), NewCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                        customToast.show(getLayoutInflater(), OldCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                     }
 
                     Log.d("my log" , "..................." + response.code() + " = " + response.message());
@@ -195,7 +129,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
-                    customToast.show(getLayoutInflater(), NewCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                    customToast.show(getLayoutInflater(), OldCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                 }
             });
         }
@@ -208,12 +142,11 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
 
     private void init()
     {
-        String newCarInfo_string = getIntent().getExtras().getString("newCarInfo");
-        newCarInfo = new Gson().fromJson(newCarInfo_string, NewCar.class);
+        String oldCarInfo_string = getIntent().getExtras().getString("oldCarInfo");
+        oldCarInfo = new Gson().fromJson(oldCarInfo_string, OldCar.class);
 
         UserInfo userInfo = UserInfo.getUserInfo();
         viewFlipper = (ViewFlipper)findViewById(R.id.view_flipper);
-        carColor = (Spinner)findViewById(R.id.input_color);
         birthDate = (EditText)findViewById(R.id.btn_birthDate);
         birthDate.setTypeface(PublicParams.BYekan(this));
         subject = (EditText)findViewById(R.id.input_subject);
@@ -226,7 +159,6 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         idNumber.setTypeface(PublicParams.BYekan(this));
         nationalCode = (EditText)findViewById(R.id.input_nationalCode);
         nationalCode.setTypeface(PublicParams.BYekan(this));
-        haveLicensePlate = (Switch)findViewById(R.id.input_haveLicensePlate);
         address = (EditText)findViewById(R.id.input_address);
         address.setTypeface(PublicParams.BYekan(this));
         description = (EditText)findViewById(R.id.input_description);
@@ -234,12 +166,13 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         mobile = (EditText)findViewById(R.id.input_mobile);
         mobile.setTypeface(PublicParams.BYekan(this));
 
-        subject.setText(newCarInfo.getProduct().getPrSubject());
+        subject.setText(oldCarInfo.getProduct().getPrSubject());
         name.setText(userInfo.name);
         fatherName.setText(userInfo.fatherName);
         idNumber.setText(userInfo.idNumber);
         nationalCode.setText(userInfo.nationalCode);
         mobile.setText(userInfo.mobile);
+
         birthDate.setText(userInfo.birthDate == null ? "" : userInfo.birthDate);
         birthDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -248,7 +181,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
                     PersianCalendar now = new PersianCalendar();
                     now.setPersianDate(1370, 5, 5);
                     DatePickerDialog dpd = DatePickerDialog.newInstance(
-                            NewCarRequestActivity.this,
+                            OldCarRequestActivity.this,
                             now.getPersianYear(),
                             now.getPersianMonth(),
                             now.getPersianDay()
@@ -259,16 +192,11 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
                 }
             }
         });
-
-        String[] items = new String[]{"سفید", "آبی", "مشکی"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        carColor.setAdapter(adapter);
     }
 
     public boolean validate() {
         boolean valid = true;
 
-        int color = carColor.getSelectedItemPosition();
         String _birthDate = birthDate.getText().toString();
         String _name = name.getText().toString();
         String _fatherName = fatherName.getText().toString();
@@ -276,11 +204,6 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         String _nationalCode = nationalCode.getText().toString();
         String _address = address.getText().toString();
         String _mobile = mobile.getText().toString();
-
-        if (((String) carColor.getItemAtPosition(color)).isEmpty()) {
-            setSpinnerError(carColor , "انتخاب رنگ الزامیست!");
-            valid = false;
-        }
 
         if (_birthDate.isEmpty()){
             birthDate.setError("تاریخ تولد الزامیست");
