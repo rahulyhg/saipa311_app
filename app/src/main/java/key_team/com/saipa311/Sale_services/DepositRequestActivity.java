@@ -8,12 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -21,17 +17,11 @@ import com.google.gson.Gson;
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
-import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
-import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOption;
-import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOptionsParams;
-import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
-import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.SelectedOption;
+import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
+import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestRequestParams;
 import key_team.com.saipa311.ServiceGenerator;
@@ -44,8 +34,8 @@ import retrofit2.Response;
 /**
  * Created by ammorteza on 12/1/17.
  */
-public class OldCarRequestActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private OldCar oldCarInfo;
+public class DepositRequestActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    private Deposit depositInfo;
     private EditText birthDate;
     private EditText subject;
     private EditText name;
@@ -78,7 +68,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         PersianCalendar now = new PersianCalendar();
         now.setPersianDate(1370, 5, 5);
         DatePickerDialog dpd = DatePickerDialog.newInstance(
-                OldCarRequestActivity.this,
+                DepositRequestActivity.this,
                 now.getPersianYear(),
                 now.getPersianMonth(),
                 now.getPersianDay()
@@ -100,7 +90,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         if (validate())
         {
             UserInfo userInfo = UserInfo.getUserInfo();
-            OldCarRequestRequestParams params = new OldCarRequestRequestParams();
+            DepositRequestRequestParams params = new DepositRequestRequestParams();
             params.setUserId(userInfo.userId);
             //Log.d("my log", "................... user id" + userInfo.userId);
             params.setFatherName(fatherName.getText().toString());
@@ -108,11 +98,11 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
             params.setBirthDate(birthDate.getText().toString());
             params.setIdNumber(idNumber.getText().toString());
             params.setMobile(mobile.getText().toString());
-            params.setOcId(oldCarInfo.getId());
-            params.setOcrAddress(address.getText().toString());
-            params.setOcrDescription(description.getText().toString());
+            params.setDId(depositInfo.getId());
+            params.setDrAddress(address.getText().toString());
+            params.setDrDescription(description.getText().toString());
             final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-            final Call request = client.registerOldCarRequest(params);
+            final Call request = client.registerDepositRequest(params);
             request.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
@@ -121,7 +111,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
                         viewFlipper.setDisplayedChild(1);
                     }else
                     {
-                        customToast.show(getLayoutInflater(), OldCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                        customToast.show(getLayoutInflater(), DepositRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                     }
 
                     Log.d("my log" , "..................." + response.code() + " = " + response.message());
@@ -129,7 +119,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
-                    customToast.show(getLayoutInflater(), OldCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                    customToast.show(getLayoutInflater(), DepositRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                 }
             });
         }
@@ -142,8 +132,8 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
 
     private void init()
     {
-        String oldCarInfo_string = getIntent().getExtras().getString("oldCarInfo");
-        oldCarInfo = new Gson().fromJson(oldCarInfo_string, OldCar.class);
+        String depositInfo_string = getIntent().getExtras().getString("depositInfo");
+        depositInfo = new Gson().fromJson(depositInfo_string, Deposit.class);
 
         UserInfo userInfo = UserInfo.getUserInfo();
         viewFlipper = (ViewFlipper)findViewById(R.id.view_flipper);
@@ -166,7 +156,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         mobile = (EditText)findViewById(R.id.input_mobile);
         mobile.setTypeface(PublicParams.BYekan(this));
 
-        subject.setText(oldCarInfo.getProduct().getPrSubject());
+        subject.setText(depositInfo.getDCar());
         name.setText(userInfo.name);
         fatherName.setText(userInfo.fatherName);
         idNumber.setText(userInfo.idNumber);
@@ -181,7 +171,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
                     PersianCalendar now = new PersianCalendar();
                     now.setPersianDate(1370, 5, 5);
                     DatePickerDialog dpd = DatePickerDialog.newInstance(
-                            OldCarRequestActivity.this,
+                            DepositRequestActivity.this,
                             now.getPersianYear(),
                             now.getPersianMonth(),
                             now.getPersianDay()

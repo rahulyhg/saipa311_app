@@ -1,5 +1,6 @@
 package key_team.com.saipa311.Sale_services;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -23,6 +24,8 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 
+import key_team.com.saipa311.Auth.LoginActivity;
+import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
@@ -166,9 +169,18 @@ public class DepositInfoActivity extends AppCompatActivity {
         /////////////////////////////
     }
 
-    public void callTest(View view)
+    public void createRequest(View view)
     {
-
+        if (UserInfo.isLoggedIn() == false) {
+            Intent intent = new Intent(DepositInfoActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Intent intent = new Intent(DepositInfoActivity.this, DepositRequestActivity.class);
+            String arrayAsString = new Gson().toJson(depositInfo);
+            intent.putExtra("depositInfo", arrayAsString);
+            startActivity(intent);
+        }
     }
 
     @Override

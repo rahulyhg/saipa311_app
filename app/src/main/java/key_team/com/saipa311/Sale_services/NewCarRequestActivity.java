@@ -1,12 +1,15 @@
 package key_team.com.saipa311.Sale_services;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -69,6 +72,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
     private EditText description;
     private ViewFlipper viewFlipper;
     private List<SelectedOption> selectedOptions = new ArrayList<SelectedOption>();
+    private boolean HIDE_INSERT_ACTION_MENU = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,7 +162,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
-    public void register(View view)
+    private void register()
     {
         if (validate())
         {
@@ -184,7 +188,10 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
                 public void onResponse(Call call, Response response) {
                     if (response.code() == 200)
                     {
+                        HIDE_INSERT_ACTION_MENU = true;
+                        invalidateOptionsMenu();
                         viewFlipper.setDisplayedChild(1);
+                        showDialog();
                     }else
                     {
                         customToast.show(getLayoutInflater(), NewCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
@@ -199,6 +206,20 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
                 }
             });
         }
+    }
+
+    private void showDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("مشتری گرامی");
+        builder.setMessage(R.string.register_pm);
+        builder.setPositiveButton("منتظر می مانم", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.show();
     }
 
     public void wait(View view)
@@ -347,6 +368,18 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.register_activity_menu, menu);
+        MenuItem actionInsert = menu.findItem(R.id.action_insert);
+        if (HIDE_INSERT_ACTION_MENU)
+        {
+            actionInsert.setVisible(false);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -356,6 +389,10 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_insert:
+                register();
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }

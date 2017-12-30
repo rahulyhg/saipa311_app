@@ -155,12 +155,11 @@
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginTop="10dp"
                                 android:background="@color/background_color"></LinearLayout>
-                                <TextView
+                                <Button
                                     android:layout_width="150dp"
                                     android:layout_height="wrap_content"
-                                    android:background="@color/tabIndicatorColor"
-                                    android:textColor="@android:color/white"
-                                    android:padding="10dp"
+                                    android:background="@drawable/transparent_button"
+                                    android:textColor="@android:color/black"
                                     android:gravity="center"
                                     android:layout_marginBottom="10dp"
                                     android:layout_gravity="center"

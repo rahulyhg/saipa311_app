@@ -159,6 +159,7 @@
                         android:layout_gravity="center"
                         android:src="@drawable/ic_action_star_0"/>
                     <ImageView
+                        android:id="@+id/shareNewCar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"

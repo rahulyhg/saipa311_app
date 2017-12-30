@@ -12,6 +12,7 @@ import key_team.com.saipa311.Auth.JsonSchema.UserActivationRequestParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestParams;
+import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOption;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOptionsParams;
@@ -62,5 +63,8 @@ public interface StoreClient {
 
     @POST("app/option/fetchOptionWithRepAndPid")
     Call<List<NewCarOption>> fetchOptionWithRepAndPid(@Body NewCarOptionsParams params);
+
+    @POST("app/sale_service/deposit/registerRequest")
+    Call<Void> registerDepositRequest(@Body DepositRequestRequestParams params);
 
 }
