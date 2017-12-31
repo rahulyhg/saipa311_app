@@ -16,6 +16,8 @@ import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestReq
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOption;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOptionsParams;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestExists;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestExistsParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
@@ -66,5 +68,8 @@ public interface StoreClient {
 
     @POST("app/sale_service/deposit/registerRequest")
     Call<Void> registerDepositRequest(@Body DepositRequestRequestParams params);
+
+    @POST("app/sale_service/new_car/isNotTrackedRequestExist")
+    Call<NewCarRequestExists> isNotTrackedRequestExist(@Body NewCarRequestExistsParams params);
 
 }

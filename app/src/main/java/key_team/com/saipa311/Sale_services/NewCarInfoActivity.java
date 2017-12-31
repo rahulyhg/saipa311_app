@@ -15,8 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -37,6 +39,15 @@ import key_team.com.saipa311.PhotoViewer;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestExists;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestExistsParams;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
+import key_team.com.saipa311.ServiceGenerator;
+import key_team.com.saipa311.StoreClient;
+import key_team.com.saipa311.customToast;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ammorteza on 12/1/17.
@@ -63,6 +74,10 @@ public class NewCarInfoActivity extends AppCompatActivity {
     {
         String newCarInfo_string = getIntent().getExtras().getString("newCarInfo");
         newCarInfo = new Gson().fromJson(newCarInfo_string, NewCar.class);
+
+        if (UserInfo.isLoggedIn()) {
+            existNotTrackedRequest();
+        }
 
         title = (TextView)findViewById(R.id.title);
         isConditions = (TextView)findViewById(R.id.isConditions);
@@ -476,7 +491,43 @@ public class NewCarInfoActivity extends AppCompatActivity {
 
                     }
                 });
+    }
 
+    private void existNotTrackedRequest()
+    {
+        NewCarRequestExistsParams params = new NewCarRequestExistsParams();
+        params.setNcId(newCarInfo.getId());
+        final StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        final Call<NewCarRequestExists> request = client.isNotTrackedRequestExist(params);
+        request.enqueue(new Callback<NewCarRequestExists>() {
+            @Override
+            public void onResponse(Call<NewCarRequestExists> call, Response<NewCarRequestExists> response) {
+                if (response.code() == 200)
+                {
+                    NewCarRequestExists ncrExist;
+                    ncrExist = response.body();
+                    if (ncrExist.getExist() == true)
+                    {
+                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
+                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.VISIBLE);
+                    }
+                    else{
+                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
+                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+                    }
+                }else
+                {
+                    customToast.show(getLayoutInflater(), NewCarInfoActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NewCarRequestExists> call, Throwable t) {
+                customToast.show(getLayoutInflater(), NewCarInfoActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+            }
+        });
     }
 
     public void openImageViewer(View view)

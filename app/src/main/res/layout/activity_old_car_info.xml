@@ -174,7 +174,7 @@
                                     android:layout_gravity="center"
                                     android:onClick="createRequest"
                                     android:textSize="@dimen/textSizeNormal"
-                                    android:text="سفارش"/>
+                                    android:text="سفارش" />
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <android.support.v7.widget.CardView

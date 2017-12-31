@@ -2,6 +2,7 @@ package key_team.com.saipa311.Sale_services;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -211,7 +213,14 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
     private void showDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("مشتری گرامی");
+        TextView title = new TextView(this);
+        title.setPadding(0 , 30 , 45 , 10);
+        title.setGravity(Gravity.RIGHT);
+        title.setTextSize((int) getResources().getDimension(R.dimen.textSizeXSmaller));
+        title.setTextColor(getResources().getColor(R.color.colorPrimary));
+        title.setTypeface(title.getTypeface() , Typeface.BOLD);
+        title.setText("مشتری گرامی");
+        builder.setCustomTitle(title);
         builder.setMessage(R.string.register_pm);
         builder.setPositiveButton("منتظر می مانم", new DialogInterface.OnClickListener() {
             @Override

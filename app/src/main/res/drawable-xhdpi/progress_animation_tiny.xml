@@ -6,13 +6,13 @@
     android:pivotY="50%"
     android:toDegrees="360" >
     <shape
-        android:innerRadius="20dp"
+        android:innerRadius="10dp"
         android:shape="ring"
         android:thickness="2dp"
         android:useLevel="false" >
         <size
-            android:height="48dp"
-            android:width="48dp" />
+            android:height="20dp"
+            android:width="20dp" />
         <gradient
             android:centerColor="@color/colorPrimaryDark"
             android:centerY="0.5"
