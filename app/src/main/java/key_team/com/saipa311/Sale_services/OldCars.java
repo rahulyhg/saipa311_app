@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -143,6 +144,7 @@ public class OldCars extends Fragment {
             public TextView description;
             public SquareImageView thumbnail;
             public ProgressBar progress;
+            public ImageView shareNewCar;
 
             public OldCarViewHolder(View view) {
                 super(view);
@@ -152,6 +154,7 @@ public class OldCars extends Fragment {
                 description = (TextView) view.findViewById(R.id.description);
                 thumbnail = (SquareImageView) view.findViewById(R.id.thumbnail);
                 progress = (ProgressBar) view.findViewById(R.id.progressBar);
+                shareNewCar = (ImageView) view.findViewById(R.id.shareNewCar);
                 view.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
@@ -189,6 +192,23 @@ public class OldCars extends Fragment {
             holder.price.setText(dataSet.get(listPosition).getPrice());
             holder.price.setTypeface(PublicParams.BYekan(getContext()));
             holder.description.setText(dataSet.get(listPosition).getDescription());
+            holder.shareNewCar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent.setType("text/plain");
+                    String shareBody = dataSet.get(listPosition).getTitle()
+                            + "\n" + dataSet.get(listPosition).getDescription()
+                            + "\n" + "سال ساخت : " + dataSet.get(listPosition).getBuildYear()
+                            + "\n" + "قیمت : " + dataSet.get(listPosition).getPrice()
+                            + "\n" + "نماینده سایپا ۳۱۱ : کوچک عظیمی";
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "سایپا");
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                    //sharingIntent.setType("*/*");
+                    //sharingIntent.putExtra(Intent.EXTRA_STREAM , PublicParams.BASE_URL + dataSet.get(listPosition).getImage());
+                    startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                }
+            });
             Picasso.with(getActivity())
                     .load(PublicParams.BASE_URL + dataSet.get(listPosition).getImage())
                     .error(R.drawable.oops)

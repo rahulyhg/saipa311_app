@@ -8,11 +8,15 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -28,7 +32,17 @@ import key_team.com.saipa311.Auth.LoginActivity;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestExists;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestExistsParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
+import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestExists;
+import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestExistsParams;
+import key_team.com.saipa311.ServiceGenerator;
+import key_team.com.saipa311.StoreClient;
+import key_team.com.saipa311.customToast;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ammorteza on 12/1/17.
@@ -53,6 +67,14 @@ public class OldCarInfoActivity extends AppCompatActivity {
     {
         String oldCarInfo_string = getIntent().getExtras().getString("oldCarInfo");
         oldCarInfo = new Gson().fromJson(oldCarInfo_string, OldCar.class);
+
+        if (UserInfo.isLoggedIn()) {
+            existNotTrackedRequest();
+        }
+        else{
+            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+        }
 
         title = (TextView)findViewById(R.id.title);
         buildYear = (TextView)findViewById(R.id.buildYear);
@@ -175,6 +197,48 @@ public class OldCarInfoActivity extends AppCompatActivity {
         ts.addView(tr4, tr_params);
     }
 
+    private void existNotTrackedRequest()
+    {
+        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
+        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
+        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.VISIBLE);
+
+        OldCarRequestExistsParams params = new OldCarRequestExistsParams();
+        params.setOcId(oldCarInfo.getId());
+        final StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        final Call<OldCarRequestExists> request = client.isNotTrackedOldCarRequestExist(params);
+        request.enqueue(new Callback<OldCarRequestExists>() {
+            @Override
+            public void onResponse(Call<OldCarRequestExists> call, Response<OldCarRequestExists> response) {
+                if (response.code() == 200)
+                {
+                    OldCarRequestExists ocrExist;
+                    ocrExist = response.body();
+                    if (ocrExist.getExist() == true)
+                    {
+                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
+                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.VISIBLE);
+                    }
+                    else{
+                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
+                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+                    }
+                }else
+                {
+                    customToast.show(getLayoutInflater(), OldCarInfoActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OldCarRequestExists> call, Throwable t) {
+                customToast.show(getLayoutInflater(), OldCarInfoActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+            }
+        });
+
+    }
+
     private void initSlider()
     {
         mDemoSlider = (SliderLayout)findViewById(R.id.slider);
@@ -233,13 +297,13 @@ public class OldCarInfoActivity extends AppCompatActivity {
     {
         if (UserInfo.isLoggedIn() == false) {
             Intent intent = new Intent(OldCarInfoActivity.this, LoginActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         }
         else{
             Intent intent = new Intent(OldCarInfoActivity.this, OldCarRequestActivity.class);
             String arrayAsString = new Gson().toJson(oldCarInfo);
             intent.putExtra("oldCarInfo", arrayAsString);
-            startActivity(intent);
+            startActivityForResult(intent , 2);
         }
     }
 
@@ -252,5 +316,18 @@ public class OldCarInfoActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("my log", "....................... onActivityResult");
+        if (UserInfo.isLoggedIn()) {
+            existNotTrackedRequest();
+        }
+        else{
+            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+        }
     }
 }

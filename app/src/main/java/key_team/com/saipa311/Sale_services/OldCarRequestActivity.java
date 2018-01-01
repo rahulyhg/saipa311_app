@@ -1,11 +1,16 @@
 package key_team.com.saipa311.Sale_services;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -56,6 +61,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
     private EditText address;
     private EditText description;
     private ViewFlipper viewFlipper;
+    private boolean HIDE_INSERT_ACTION_MENU = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +101,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         //Toast.makeText(getApplicationContext(), date, Toast.LENGTH_SHORT).show();
     }
 
-    public void register(View view)
+    private void register()
     {
         if (validate())
         {
@@ -118,7 +124,10 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
                 public void onResponse(Call call, Response response) {
                     if (response.code() == 200)
                     {
+                        HIDE_INSERT_ACTION_MENU = true;
+                        invalidateOptionsMenu();
                         viewFlipper.setDisplayedChild(1);
+                        showDialog();
                     }else
                     {
                         customToast.show(getLayoutInflater(), OldCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
@@ -133,11 +142,6 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
                 }
             });
         }
-    }
-
-    public void wait(View view)
-    {
-        finish();
     }
 
     private void init()
@@ -256,18 +260,39 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         return valid;
     }
 
-/*    private void setSpinnerError(Spinner spinner, String error){
-        View selectedView = spinner.getSelectedView();
-        if (selectedView != null && selectedView instanceof TextView) {
-            spinner.requestFocus();
-            TextView selectedTextView = (TextView) selectedView;
-            selectedTextView.setError("error"); // any name of the error will do
-            selectedTextView.setTextColor(Color.RED); //text color in which you want your error message to be displayed
-            selectedTextView.setText(error); // actual error message
-            spinner.performClick(); // to open the spinner list if error is found.
+    private void showDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        TextView title = new TextView(this);
+        title.setPadding(0 , 30 , 45 , 10);
+        title.setGravity(Gravity.RIGHT);
+        //title.setTextSize((int) getResources().getDimension(R.dimen.textSizeXSmaller));
+        title.setTextColor(getResources().getColor(R.color.colorPrimary));
+        title.setTypeface(title.getTypeface() , Typeface.BOLD);
+        title.setText("مشتری گرامی");
+        builder.setCustomTitle(title);
+        builder.setCancelable(false);
+        builder.setMessage(R.string.register_pm);
+        builder.setPositiveButton("منتظر می مانم", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.show();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.register_activity_menu, menu);
+        MenuItem actionInsert = menu.findItem(R.id.action_insert);
+        if (HIDE_INSERT_ACTION_MENU)
+        {
+            actionInsert.setVisible(false);
         }
-    }*/
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -278,6 +303,9 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.action_insert:
+                register();
                 return true;
         }
         return super.onOptionsItemSelected(item);

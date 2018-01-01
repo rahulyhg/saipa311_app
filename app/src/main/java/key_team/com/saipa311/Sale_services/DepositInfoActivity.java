@@ -7,11 +7,14 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -29,8 +32,18 @@ import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
+import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExists;
+import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExistsParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
+import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestExists;
+import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestExistsParams;
+import key_team.com.saipa311.ServiceGenerator;
+import key_team.com.saipa311.StoreClient;
+import key_team.com.saipa311.customToast;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by ammorteza on 12/1/17.
@@ -61,6 +74,14 @@ public class DepositInfoActivity extends AppCompatActivity {
     private void getData() {
         String depositInfo_string = getIntent().getExtras().getString("depositInfo");
         depositInfo = new Gson().fromJson(depositInfo_string, Deposit.class);
+
+        if (UserInfo.isLoggedIn()) {
+            existNotTrackedRequest();
+        }
+        else{
+            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+        }
 
         car = (TextView) findViewById(R.id.car);
         notifId = (TextView) findViewById(R.id.notifId);
@@ -169,17 +190,58 @@ public class DepositInfoActivity extends AppCompatActivity {
         /////////////////////////////
     }
 
+    private void existNotTrackedRequest()
+    {
+        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
+        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
+        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.VISIBLE);
+
+        DepositRequestExistsParams params = new DepositRequestExistsParams();
+        params.setDId(depositInfo.getId());
+        final StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        final Call<DepositRequestExists> request = client.isNotTrackedDepositRequestExist(params);
+        request.enqueue(new Callback<DepositRequestExists>() {
+            @Override
+            public void onResponse(Call<DepositRequestExists> call, Response<DepositRequestExists> response) {
+                if (response.code() == 200)
+                {
+                    DepositRequestExists drExist;
+                    drExist = response.body();
+                    if (drExist.getExist() == true)
+                    {
+                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
+                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.VISIBLE);
+                    }
+                    else{
+                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
+                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+                    }
+                }else
+                {
+                    customToast.show(getLayoutInflater(), DepositInfoActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DepositRequestExists> call, Throwable t) {
+                customToast.show(getLayoutInflater(), DepositInfoActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+            }
+        });
+    }
+
     public void createRequest(View view)
     {
         if (UserInfo.isLoggedIn() == false) {
             Intent intent = new Intent(DepositInfoActivity.this, LoginActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent , 1);
         }
         else{
             Intent intent = new Intent(DepositInfoActivity.this, DepositRequestActivity.class);
             String arrayAsString = new Gson().toJson(depositInfo);
             intent.putExtra("depositInfo", arrayAsString);
-            startActivity(intent);
+            startActivityForResult(intent , 2);
         }
     }
 
@@ -192,5 +254,18 @@ public class DepositInfoActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("my log", "....................... onActivityResult");
+        if (UserInfo.isLoggedIn()) {
+            existNotTrackedRequest();
+        }
+        else{
+            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+        }
     }
 }

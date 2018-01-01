@@ -131,6 +131,7 @@ public class Deposite extends Fragment {
             public TextView notifId;
             public TextView description;
             public ImageView companyLogo;
+            public ImageView shareNewCar;
 
             public DepositViewHolder(View view) {
                 super(view);
@@ -138,6 +139,7 @@ public class Deposite extends Fragment {
                 notifId = (TextView) view.findViewById(R.id.notifId);
                 description = (TextView) view.findViewById(R.id.description);
                 companyLogo = (ImageView) view.findViewById(R.id.company);
+                shareNewCar = (ImageView) view.findViewById(R.id.shareNewCar);
                 view.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
@@ -173,7 +175,21 @@ public class Deposite extends Fragment {
             holder.notifId.setText(dataSet.get(listPosition).getNotifId());
             holder.notifId.setTypeface(PublicParams.BYekan(getContext()));
             holder.description.setText(dataSet.get(listPosition).getDescription());
-
+            holder.shareNewCar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                    sharingIntent.setType("text/plain");
+                    String shareBody = "طرح سرمایه گذاری " + dataSet.get(listPosition).getCar()
+                            + "\n" + dataSet.get(listPosition).getDescription()
+                            + "\n" + "نماینده سایپا ۳۱۱ : کوچک عظیمی";
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "سایپا");
+                    sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                    //sharingIntent.setType("*/*");
+                    //sharingIntent.putExtra(Intent.EXTRA_STREAM , PublicParams.BASE_URL + dataSet.get(listPosition).getImage());
+                    startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                }
+            });
             Picasso.with(getActivity())
                     .load(PublicParams.BASE_URL + dataSet.get(listPosition).getComponyLogo())
                     .error(R.drawable.oops)

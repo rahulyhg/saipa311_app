@@ -78,6 +78,10 @@ public class NewCarInfoActivity extends AppCompatActivity {
         if (UserInfo.isLoggedIn()) {
             existNotTrackedRequest();
         }
+        else{
+            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+        }
 
         title = (TextView)findViewById(R.id.title);
         isConditions = (TextView)findViewById(R.id.isConditions);
@@ -495,6 +499,10 @@ public class NewCarInfoActivity extends AppCompatActivity {
 
     private void existNotTrackedRequest()
     {
+        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
+        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
+        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.VISIBLE);
+
         NewCarRequestExistsParams params = new NewCarRequestExistsParams();
         params.setNcId(newCarInfo.getId());
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
@@ -595,13 +603,13 @@ public class NewCarInfoActivity extends AppCompatActivity {
     {
         if (UserInfo.isLoggedIn() == false) {
             Intent intent = new Intent(NewCarInfoActivity.this, LoginActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         }
         else{
             Intent intent = new Intent(NewCarInfoActivity.this, NewCarRequestActivity.class);
             String arrayAsString = new Gson().toJson(newCarInfo);
             intent.putExtra("newCarInfo", arrayAsString);
-            startActivity(intent);
+            startActivityForResult(intent, 2);
         }
     }
 
@@ -614,5 +622,18 @@ public class NewCarInfoActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("my log" , "....................... onActivityResult");
+        if (UserInfo.isLoggedIn()) {
+            existNotTrackedRequest();
+        }
+        else{
+            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+        }
     }
 }

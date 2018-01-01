@@ -216,11 +216,12 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         TextView title = new TextView(this);
         title.setPadding(0 , 30 , 45 , 10);
         title.setGravity(Gravity.RIGHT);
-        title.setTextSize((int) getResources().getDimension(R.dimen.textSizeXSmaller));
+        //title.setTextSize((int) getResources().getDimension(R.dimen.textSizeXSmaller));
         title.setTextColor(getResources().getColor(R.color.colorPrimary));
         title.setTypeface(title.getTypeface() , Typeface.BOLD);
         title.setText("مشتری گرامی");
         builder.setCustomTitle(title);
+        builder.setCancelable(false);
         builder.setMessage(R.string.register_pm);
         builder.setPositiveButton("منتظر می مانم", new DialogInterface.OnClickListener() {
             @Override
@@ -229,11 +230,6 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
             }
         });
         builder.show();
-    }
-
-    public void wait(View view)
-    {
-        finish();
     }
 
     private void init()

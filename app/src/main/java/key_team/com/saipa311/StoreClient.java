@@ -11,6 +11,8 @@ import key_team.com.saipa311.Auth.JsonSchema.User;
 import key_team.com.saipa311.Auth.JsonSchema.UserActivationRequestParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
+import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExists;
+import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExistsParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
@@ -21,6 +23,8 @@ import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestExist
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
+import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestExists;
+import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestExistsParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestRequestParams;
 import retrofit2.Call;
@@ -71,5 +75,11 @@ public interface StoreClient {
 
     @POST("app/sale_service/new_car/isNotTrackedRequestExist")
     Call<NewCarRequestExists> isNotTrackedRequestExist(@Body NewCarRequestExistsParams params);
+
+    @POST("app/sale_service/deposit/isNotTrackedRequestExist")
+    Call<DepositRequestExists> isNotTrackedDepositRequestExist(@Body DepositRequestExistsParams params);
+
+    @POST("app/sale_service/old_car/isNotTrackedRequestExist")
+    Call<OldCarRequestExists> isNotTrackedOldCarRequestExist(@Body OldCarRequestExistsParams params);
 
 }

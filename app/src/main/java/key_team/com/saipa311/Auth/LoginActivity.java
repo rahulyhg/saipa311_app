@@ -192,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
                         userInfo.access_token = temp.getAccessToken();
                         userInfo.refresh_token = temp.getRefreshToken();
                         userInfo.save();
-                        //Log.d("my log", ".................. access token" + UserInfo.getUserInfo().access_token);
+                        Log.d("my log", ".................. access token" + UserInfo.getUserInfo().access_token);
                         Call<User> user_info = client.userInfo();
                         user_info.enqueue(new Callback<User>() {
                             @Override
@@ -230,6 +230,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<TokenInfo> call, Throwable t) {
                     progressDialog.stop();
+                    Log.d("my log", "........................ get access token error " + t.getMessage());
                 }
             });
         }
