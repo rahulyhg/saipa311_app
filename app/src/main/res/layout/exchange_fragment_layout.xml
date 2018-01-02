@@ -3,12 +3,56 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:theme="@style/AppTheme.AppBarOverlay"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <TextView
-        android:text="exchange fragment"
-        android:layout_width="wrap_content"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingBottom="100dp">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"/>
+        android:orientation="vertical"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:layout_gravity="center"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@android:color/black"
+            android:src="@drawable/ic_exchange_car"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/bottomNavigationViewItemColor"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSizeLarge"
+            android:text="تصمیم داری ماشینتو عوض کنی؟"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/bottomNavigationViewItemColor"
+            android:textSize="@dimen/textSizeLarge"
+            android:text="خیلی راحته."/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/bottomNavigationViewItemColor"
+            android:textSize="@dimen/textSizeNormal"
+            android:text="فرم درخواست رو تکمیل کن"/>
+        <Button
+            android:id="@+id/openExchangeForm"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent_button"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_marginTop="20dp"
+            android:onClick=""
+            android:textSize="@dimen/textSizeNormal"
+            android:text="درخواست" />
+    </LinearLayout>
 </LinearLayout>

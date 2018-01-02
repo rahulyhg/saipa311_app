@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#E67E22</color>
     <color name="colorAccent">#FFA233</color>
 
-    <color name="bottomNavigationViewItemColor">#7F8C8D</color>
+    <color name="bottomNavigationViewItemColor">@color/icon_color_inactive</color>
     <color name="tabIndicatorColor">#00B2B2</color>
     <color name="tabTextColor">#374045</color>
     <color name="background_color">#F4F4F4</color>
@@ -14,4 +14,6 @@
 
     <color name="mdtp_accent_color">@color/colorPrimary</color>
     <color name="mdtp_accent_color_dark">@color/colorPrimaryDark</color>
+    <color name="icon_color_inactive">#858585</color>
+    <color name="icon_color">#000000</color>
 </resources>

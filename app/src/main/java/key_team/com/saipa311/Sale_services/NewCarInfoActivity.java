@@ -2,9 +2,14 @@ package key_team.com.saipa311.Sale_services;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -68,6 +73,35 @@ public class NewCarInfoActivity extends AppCompatActivity {
         this.createActionBar();
         this.getData();
         this.initSlider();
+
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+                Log.d("my log" , ".................... offset" + offset);
+/*                Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.drawer_icon, null);
+                if (offset < -200)
+                {
+                    upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
+                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+                    Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.option_menu_icon);
+                    drawable.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
+                    toolbar.setOverflowIcon(drawable);
+                }
+                else
+                {
+
+                    upArrow.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
+                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+                    Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.option_menu_icon);
+                    drawable.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
+                    toolbar.setOverflowIcon(drawable);
+                }*/
+            }
+        });
     }
 
     private void getData()
