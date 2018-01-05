@@ -2,9 +2,13 @@ package key_team.com.saipa311.Sale_services;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -267,6 +271,21 @@ public class OldCarInfoActivity extends AppCompatActivity {
                     .putString("extra", name);
 
             mDemoSlider.addSlider(textSliderView);
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+            appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+                    //Log.d("my log" , ".................... offset" + offset);
+                    Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_arrow_back, null);
+                    if (offset < -400) {
+                        upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
+                        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+                    } else {
+                        upArrow.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+                    }
+                }
+            });
         }
         final ViewTreeObserver observer= mDemoSlider.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(
@@ -277,9 +296,9 @@ public class OldCarInfoActivity extends AppCompatActivity {
                         //Log.d("Log", "Height: ............................................." + mDemoSlider.getWidth());
                     }
                 });
-        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Fade);
+        //mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Fade);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+        //mDemoSlider.setCustomAnimation(new DescriptionAnimation());
         mDemoSlider.setDuration(5000);
         mDemoSlider.getPagerIndicator().setDefaultIndicatorColor(Color.parseColor("#F39C12"), Color.parseColor("#FFFFFF"));
     }

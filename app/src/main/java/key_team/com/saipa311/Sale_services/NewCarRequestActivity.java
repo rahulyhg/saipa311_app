@@ -150,7 +150,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        String date = "You picked the following date: "+dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
+        //String date = "You picked the following date: "+dayOfMonth+"/"+(monthOfYear+1)+"/"+year;
         birthDate.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
         //Toast.makeText(getApplicationContext(), date, Toast.LENGTH_SHORT).show();
     }
@@ -292,8 +292,6 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
     }
 
     public boolean validate() {
-        boolean valid = true;
-
         int color = carColor.getSelectedItemPosition();
         String _birthDate = birthDate.getText().toString();
         String _name = name.getText().toString();
@@ -305,58 +303,59 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
 
         if (((String) carColor.getItemAtPosition(color)).isEmpty()) {
             setSpinnerError(carColor , "انتخاب رنگ الزامیست!");
-            valid = false;
+            return false;
         }
 
         if (_birthDate.isEmpty()){
             birthDate.setError("تاریخ تولد الزامیست");
+            return false;
         }else{
             birthDate.setError(null);
         }
 
         if (_name.isEmpty()) {
             name.setError("نام و نام خانوادگی الزامیست!");
-            valid = false;
+            return false;
         } else {
             name.setError(null);
         }
 
         if (_fatherName.isEmpty()) {
             fatherName.setError("نام پدر الزامیست!");
-            valid = false;
+            return false;
         } else {
             fatherName.setError(null);
         }
 
         if (_idNumber.isEmpty()) {
             idNumber.setError("شماره شناسنامه الزامیست!");
-            valid = false;
+            return false;
         } else {
             idNumber.setError(null);
         }
 
         if (_nationalCode.isEmpty()) {
             nationalCode.setError("کد ملی الزامیست!");
-            valid = false;
+            return false;
         } else {
             nationalCode.setError(null);
         }
 
         if (_address.isEmpty()) {
             address.setError("آدرس الزامیست!");
-            valid = false;
+            return false;
         } else {
             address.setError(null);
         }
 
         if (_mobile.isEmpty()) {
             mobile.setError("شماره همراه الزامبست!");
-            valid = false;
+            return false;
         } else {
             mobile.setError(null);
         }
 
-        return valid;
+        return true;
     }
 
     private void setSpinnerError(Spinner spinner, String error){

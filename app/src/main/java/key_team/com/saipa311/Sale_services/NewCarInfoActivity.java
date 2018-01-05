@@ -73,35 +73,6 @@ public class NewCarInfoActivity extends AppCompatActivity {
         this.createActionBar();
         this.getData();
         this.initSlider();
-
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
-                Log.d("my log" , ".................... offset" + offset);
-/*                Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.drawer_icon, null);
-                if (offset < -200)
-                {
-                    upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
-                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
-                    Drawable drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.option_menu_icon);
-                    drawable.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
-                    toolbar.setOverflowIcon(drawable);
-                }
-                else
-                {
-
-                    upArrow.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
-                    getSupportActionBar().setHomeAsUpIndicator(upArrow);
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-                    Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.option_menu_icon);
-                    drawable.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
-                    toolbar.setOverflowIcon(drawable);
-                }*/
-            }
-        });
     }
 
     private void getData()
@@ -607,6 +578,21 @@ public class NewCarInfoActivity extends AppCompatActivity {
                     .putString("extra", name);
 
             mDemoSlider.addSlider(textSliderView);
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+            appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+                    //Log.d("my log" , ".................... offset" + offset);
+                    Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_arrow_back, null);
+                    if (offset < -400) {
+                        upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
+                        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+                    } else {
+                        upArrow.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+                        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+                    }
+                }
+            });
         }
         final ViewTreeObserver observer= mDemoSlider.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(
@@ -617,9 +603,9 @@ public class NewCarInfoActivity extends AppCompatActivity {
                         //Log.d("Log", "Height: ............................................." + mDemoSlider.getWidth());
                     }
                 });
-        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Fade);
+        //mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Fade);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+        //mDemoSlider.setCustomAnimation(new DescriptionAnimation());
         mDemoSlider.setDuration(5000);
         mDemoSlider.getPagerIndicator().setDefaultIndicatorColor(Color.parseColor("#F39C12"), Color.parseColor("#FFFFFF"));
     }

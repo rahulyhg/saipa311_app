@@ -211,8 +211,6 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
     }
 
     public boolean validate() {
-        boolean valid = true;
-
         String _birthDate = birthDate.getText().toString();
         String _name = name.getText().toString();
         String _fatherName = fatherName.getText().toString();
@@ -223,53 +221,54 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
 
         if (_birthDate.isEmpty()){
             birthDate.setError("تاریخ تولد الزامیست");
+            return false;
         }else{
             birthDate.setError(null);
         }
 
         if (_name.isEmpty()) {
             name.setError("نام و نام خانوادگی الزامیست!");
-            valid = false;
+            return false;
         } else {
             name.setError(null);
         }
 
         if (_fatherName.isEmpty()) {
             fatherName.setError("نام پدر الزامیست!");
-            valid = false;
+            return false;
         } else {
             fatherName.setError(null);
         }
 
         if (_idNumber.isEmpty()) {
             idNumber.setError("شماره شناسنامه الزامیست!");
-            valid = false;
+            return false;
         } else {
             idNumber.setError(null);
         }
 
         if (_nationalCode.isEmpty()) {
             nationalCode.setError("کد ملی الزامیست!");
-            valid = false;
+            return false;
         } else {
             nationalCode.setError(null);
         }
 
         if (_address.isEmpty()) {
             address.setError("آدرس الزامیست!");
-            valid = false;
+            return false;
         } else {
             address.setError(null);
         }
 
         if (_mobile.isEmpty()) {
             mobile.setError("شماره همراه الزامبست!");
-            valid = false;
+            return false;
         } else {
             mobile.setError(null);
         }
 
-        return valid;
+        return true;
     }
 
     @Override
