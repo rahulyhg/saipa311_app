@@ -214,23 +214,19 @@ public class OldCarInfoActivity extends AppCompatActivity {
         request.enqueue(new Callback<OldCarRequestExists>() {
             @Override
             public void onResponse(Call<OldCarRequestExists> call, Response<OldCarRequestExists> response) {
-                if (response.code() == 200)
-                {
+                if (response.code() == 200) {
                     OldCarRequestExists ocrExist;
                     ocrExist = response.body();
-                    if (ocrExist.getExist() == true)
-                    {
-                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
-                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.VISIBLE);
+                    if (ocrExist.getExist() == true) {
+                        ((ProgressBar) findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+                        ((Button) findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
+                        ((TextView) findViewById(R.id.onTrackPm)).setVisibility(TextView.VISIBLE);
+                    } else {
+                        ((ProgressBar) findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
+                        ((TextView) findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
+                        ((Button) findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
                     }
-                    else{
-                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
-                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
-                    }
-                }else
-                {
+                } else {
                     customToast.show(getLayoutInflater(), OldCarInfoActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                 }
             }
@@ -277,7 +273,7 @@ public class OldCarInfoActivity extends AppCompatActivity {
                 public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
                     //Log.d("my log" , ".................... offset" + offset);
                     Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_arrow_back, null);
-                    if (offset < -400) {
+                    if ((Math.abs(offset) + 30) >= appBarLayout.getTotalScrollRange()) {
                         upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
                         getSupportActionBar().setHomeAsUpIndicator(upArrow);
                     } else {

@@ -17,13 +17,14 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tint="@android:color/black"
+            android:tint="@android:color/secondary_text_dark"
+            android:background="@drawable/rounded_view_image_background"
             android:src="@drawable/ic_exchange_car"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:textColor="@color/bottomNavigationViewItemColor"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             android:textSize="@dimen/textSizeLarge"
             android:text="تصمیم داری ماشینتو عوض کنی؟"/>

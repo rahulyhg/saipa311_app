@@ -1,8 +1,5 @@
 package key_team.com.saipa311;
 
-import android.support.annotation.NonNull;
-
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -32,10 +29,11 @@ import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestExist
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestExistsParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestRequestParams;
-import okhttp3.MediaType;
+import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarChangePlans;
+import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarChangePlanRequestParams;
+import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarRequestExists;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
@@ -50,7 +48,6 @@ import retrofit2.http.PartMap;
 public interface StoreClient {
     public static final String MULTIPART_FORM_DATA = "multipart/form-data";
 
-    UserInfo userInformation = new UserInfo();
     @POST("app/sale_service/new_car/fetchAllData")
     Call<List<NewCar>> fetchNewCars(@Body NewCarRequestParams params);
 
@@ -104,5 +101,11 @@ public interface StoreClient {
     Call<Void> registerExchangeRequest(
             @PartMap Map<String, RequestBody> params,
             @Part MultipartBody.Part[] files);
+
+    @POST("app/sale_service/outDatedCar/fetchActivePlan")
+    Call<OutDatedCarChangePlans> getOutDatedCarChangeActivePlan(@Body OutDatedCarChangePlanRequestParams params);
+
+    @POST("app/sale_service/outDatedCar/isNotTrackedRequestExist")
+    Call<OutDatedCarRequestExists> isNotTrackedODCCRequestExist();
 
 }

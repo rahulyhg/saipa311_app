@@ -31,11 +31,14 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
+
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.gson.Gson;
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
@@ -47,12 +50,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.Exchange.CompanyWithProduct;
 import key_team.com.saipa311.Sale_services.JsonSchema.Exchange.Product;
+import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
+import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarChangePlans;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
 import key_team.com.saipa311.customToast;
@@ -66,10 +72,11 @@ import retrofit2.Response;
 /**
  * Created by ammorteza on 12/1/17.
  */
-public class ExchangeRequestActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private Spinner company;
-    private Spinner product;
+public class OutDatedCarRequestActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    private OutDatedCarChangePlans changePlan;
     private Spinner buildYear;
+    private Switch carInTheParking;
+    private EditText subject;
     private EditText km;
     private EditText chassisIdNumber;
     private EditText name;
@@ -81,8 +88,6 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
     private EditText description;
     private SliderLayout mDemoSlider;
     private MyProgressDialog progressDialog;
-    private List<CompanyWithProduct> companyWithProducts = new ArrayList<CompanyWithProduct>();
-    private List<Product> selectedProductsList = new ArrayList<Product>();
     HashMap<String,String> file_maps = new HashMap<String, String>();
     private boolean HIDE_INSERT_ACTION_MENU = false;
     private int GALLERY_REQUEST = 1;
@@ -93,32 +98,11 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exchange_request);
+        setContentView(R.layout.activity_out_dated_car_request);
         createActionBar();
         init();
         loadBuildYear();
-        getAllCompanyWithProduct();
         initSlider();
-    }
-
-    private void getAllCompanyWithProduct()
-    {
-        final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-        final Call<List<CompanyWithProduct>> request = client.getAllCompanyWithProducts();
-        request.enqueue(new Callback<List<CompanyWithProduct>>() {
-            @Override
-            public void onResponse(Call<List<CompanyWithProduct>> call, Response<List<CompanyWithProduct>> response) {
-                if (response.code() == 200) {
-                    companyWithProducts = response.body();
-                    loadCompanies();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<CompanyWithProduct>> call, Throwable t) {
-
-            }
-        });
     }
 
     public void openDatePicker(View  view)
@@ -126,7 +110,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
         PersianCalendar now = new PersianCalendar();
         now.setPersianDate(1370, 5, 5);
         DatePickerDialog dpd = DatePickerDialog.newInstance(
-                ExchangeRequestActivity.this,
+                OutDatedCarRequestActivity.this,
                 now.getPersianYear(),
                 now.getPersianMonth(),
                 now.getPersianDay()
@@ -139,45 +123,16 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
     private void loadBuildYear()
     {
         PersianCalendar pc = new PersianCalendar();
-        String[] items = new String[(pc.getPersianYear() - 1390) + 1];
+        int start = Integer.parseInt(changePlan.getCcpStartYear());
+        int end = Integer.parseInt(changePlan.getCcpEndYear());
+        String[] items = new String[(end - start) + 1];
         items[0] = "";
-        for (int i = 1 ; i<= pc.getPersianYear() - 1390 ; i++)
+        for (int i = start ; i<= end ; i++)
         {
-            items[i] = (1390 + i) + "";
+            items[i - start] = i + "";
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         buildYear.setAdapter(adapter);
-    }
-
-    private void loadProducts(int companyPosition)
-    {
-        String[] items = null;
-        if (companyPosition == 0) {
-            items = new String[1];
-            items[0] = "";
-        }else{
-            List<Product> products = this.companyWithProducts.get(companyPosition - 1).getProduct();
-            selectedProductsList = products;
-            items = new String[products.size() + 1];
-            items[0] = "";
-            for (int i = 1; i <= products.size(); i++) {
-                items[i] = products.get(i - 1).getPrSubject();
-            }
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        product.setAdapter(adapter);
-    }
-
-    private void loadCompanies()
-    {
-        String[] items = new String[this.companyWithProducts.size() + 1];
-        items[0] = "";
-        for (int i = 1;i <= this.companyWithProducts.size(); i++)
-        {
-            items[i] = this.companyWithProducts.get(i - 1).getCoSubject();
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        company.setAdapter(adapter);
     }
 
     private void createActionBar()
@@ -211,7 +166,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
             params.put("nationalCode", createRequestBody(nationalCode.getText().toString()));
             params.put("idNumber", createRequestBody(idNumber.getText().toString()));
             params.put("repId", createRequestBody(1 + ""));
-            params.put("pId", createRequestBody(selectedProductsList.get(this.product.getSelectedItemPosition() - 1).getId().toString()));
+            //params.put("pId", createRequestBody(selectedProductsList.get(this.product.getSelectedItemPosition() - 1).getId().toString()));
             params.put("buildYear", createRequestBody(buildYear.getSelectedItem().toString()));
             params.put("km", createRequestBody(km.getText().toString()));
             params.put("chassisIdNumber", createRequestBody(chassisIdNumber.getText().toString()));
@@ -228,7 +183,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
                         showDialog();
 
                     } else{
-                        customToast.show(getLayoutInflater(), ExchangeRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                        customToast.show(getLayoutInflater(), OutDatedCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                     }
                     Log.d("my log" , "................ error message:" + response.code() + " - " + response.message());
                 }
@@ -237,7 +192,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
                 public void onFailure(Call call, Throwable t) {
                     progressDialog.stop();
                     Log.d("my log", "................ error message:" + t.getMessage());
-                    customToast.show(getLayoutInflater(), ExchangeRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                    customToast.show(getLayoutInflater(), OutDatedCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                 }
             });
         }
@@ -300,20 +255,13 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
 
     private void init()
     {
+        String newCarInfo_string = getIntent().getExtras().getString("changePlan");
+        changePlan = new Gson().fromJson(newCarInfo_string, OutDatedCarChangePlans.class);
+
         UserInfo userInfo = UserInfo.getUserInfo();
-        product = (Spinner)findViewById(R.id.input_carType);
-        company = (Spinner)findViewById(R.id.input_company);
-        company.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                loadProducts(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        subject = (EditText)findViewById(R.id.input_subject);
+        subject.setTypeface(PublicParams.BYekan(this));
+        carInTheParking = (Switch)findViewById(R.id.input_carInTheParking);
         buildYear = (Spinner)findViewById(R.id.input_buildYear);
         birthDate = (EditText)findViewById(R.id.btn_birthDate);
         birthDate.setTypeface(PublicParams.BYekan(this));
@@ -333,7 +281,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
         nationalCode.setTypeface(PublicParams.BYekan(this));
         description = (EditText)findViewById(R.id.input_description);
         description.setTypeface(PublicParams.BYekan(this));
-        progressDialog = new MyProgressDialog(ExchangeRequestActivity.this);
+        progressDialog = new MyProgressDialog(OutDatedCarRequestActivity.this);
 
         name.setText(userInfo.name);
         fatherName.setText(userInfo.fatherName);
@@ -348,7 +296,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
                     PersianCalendar now = new PersianCalendar();
                     now.setPersianDate(1370, 5, 5);
                     DatePickerDialog dpd = DatePickerDialog.newInstance(
-                            ExchangeRequestActivity.this,
+                            OutDatedCarRequestActivity.this,
                             now.getPersianYear(),
                             now.getPersianMonth(),
                             now.getPersianDay()
@@ -370,7 +318,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
                     openImagePicker();
                 }
                 else
-                    customToast.show(getLayoutInflater() , ExchangeRequestActivity.this , "اضافه کردن تصویر بیشتر از سه مورد مجاز نیست");
+                    customToast.show(getLayoutInflater() , OutDatedCarRequestActivity.this , "اضافه کردن تصویر بیشتر از سه مورد مجاز نیست");
                 floatingActionsMenu.collapse();
             }
         });
@@ -384,11 +332,11 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
                         Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(captureIntent, CAMERA_CAPTURE);
                     }catch(ActivityNotFoundException anfe){
-                        customToast.show(getLayoutInflater(), ExchangeRequestActivity.this , "دستگاه شما استفاده از دوربین را پشتیبانی نمی کند!");
+                        customToast.show(getLayoutInflater(), OutDatedCarRequestActivity.this , "دستگاه شما استفاده از دوربین را پشتیبانی نمی کند!");
                     }
                 }
                 else
-                    customToast.show(getLayoutInflater() , ExchangeRequestActivity.this , "اضافه کردن تصویر بیشتر از سه مورد مجاز نیست");
+                    customToast.show(getLayoutInflater() , OutDatedCarRequestActivity.this , "اضافه کردن تصویر بیشتر از سه مورد مجاز نیست");
                 floatingActionsMenu.collapse();
             }
         });
@@ -427,13 +375,11 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
             cropIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
             startActivityForResult(cropIntent, PIC_CROP);
         }catch(ActivityNotFoundException anfe){
-            customToast.show(getLayoutInflater(), ExchangeRequestActivity.this , "متاسفانه دستگاه شما برش تصویر را پشتیبانی نمی کند!");
+            customToast.show(getLayoutInflater(), OutDatedCarRequestActivity.this , "متاسفانه دستگاه شما برش تصویر را پشتیبانی نمی کند!");
         }
     }
 
     public boolean validate() {
-        int company = this.company.getSelectedItemPosition();
-        int product = this.product.getSelectedItemPosition();
         int _buildYear = this.buildYear.getSelectedItemPosition();
         String _km = this.km.getText().toString();
         String _chassisNumber = chassisIdNumber.getText().toString();
@@ -443,22 +389,20 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
         String _idNumber = idNumber.getText().toString();
         String _nationalCode = nationalCode.getText().toString();
         String _mobile = mobile.getText().toString();
+        String _subject = subject.getText().toString();
 
         if (_chassisNumber.isEmpty()){
-            this.chassisIdNumber.setError("شماره شاسی الزامیست!");
+            this.chassisIdNumber.setError("شماره ساشی الزامیست!");
             return false;
-        }else{
+        } else {
             birthDate.setError(null);
         }
 
-        if (((String) this.company.getItemAtPosition(company)).isEmpty()) {
-            setSpinnerError(this.company , "انتخاب شرکت سازنده الزامیست!");
+        if (_subject.isEmpty()){
+            this.subject.setError("نام خودرو الزامیست!");
             return false;
-        }
-
-        if (((String) this.product.getItemAtPosition(product)).isEmpty()) {
-            setSpinnerError(this.product, "انتخاب خودرو الزامیست!");
-            return false;
+        } else {
+            birthDate.setError(null);
         }
 
         if (((String) this.buildYear.getItemAtPosition(_buildYear)).isEmpty()) {
@@ -494,18 +438,18 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
             idNumber.setError(null);
         }
 
-        if (_mobile.isEmpty()) {
-            mobile.setError("شماره همراه الزامبست!");
-            return false;
-        } else {
-            mobile.setError(null);
-        }
-
         if (_birthDate.isEmpty()){
             birthDate.setError("تاریخ تولد الزامیست");
             return false;
         }else{
             birthDate.setError(null);
+        }
+
+        if (_mobile.isEmpty()) {
+            mobile.setError("شماره همراه الزامبست!");
+            return false;
+        } else {
+            mobile.setError(null);
         }
 
         if (_nationalCode.isEmpty()) {
@@ -589,6 +533,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
                     actionInsertColor = android.R.color.black;
                     invalidateOptionsMenu();
+
                 } else {
                     upArrow.setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
                     getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -634,7 +579,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
         MenuItem actionInsert = menu.findItem(R.id.action_insert);
         Drawable drawable = actionInsert.getIcon();
         drawable.mutate();
-        drawable.setColorFilter(getResources().getColor(actionInsertColor), PorterDuff.Mode.SRC_ATOP);
+        drawable.setColorFilter(getResources().getColor(actionInsertColor) , PorterDuff.Mode.SRC_ATOP);
         if (HIDE_INSERT_ACTION_MENU)
         {
             actionInsert.setVisible(false);

@@ -47,6 +47,9 @@ import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestExists;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestExistsParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
+import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarChangePlanRequestParams;
+import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarChangePlans;
+import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarRequestExists;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
 import key_team.com.saipa311.customToast;
@@ -584,7 +587,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
                 public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
                     //Log.d("my log" , ".................... offset" + offset);
                     Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_arrow_back, null);
-                    if (offset < -400) {
+                    if ((Math.abs(offset) + 30) >= appBarLayout.getTotalScrollRange()) {
                         upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
                         getSupportActionBar().setHomeAsUpIndicator(upArrow);
                     } else {
