@@ -7,6 +7,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class DepositRequestExistsParams {
+    @SerializedName("repId")
+    @Expose
+    private Integer repId;
+
     @SerializedName("dId")
     @Expose
     private Integer dId;
@@ -17,5 +21,13 @@ public class DepositRequestExistsParams {
 
     public void setDId(Integer dId) {
         this.dId = dId;
+    }
+
+    public Integer getRepId() {
+        return repId;
+    }
+
+    public void setRepId(Integer repId) {
+        this.repId = repId;
     }
 }

@@ -7,6 +7,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class OldCarRequestExistsParams {
+    @SerializedName("repId")
+    @Expose
+    private Integer repId;
+
     @SerializedName("ocId")
     @Expose
     private Integer ocId;
@@ -17,5 +21,13 @@ public class OldCarRequestExistsParams {
 
     public void setOcId(Integer ocId) {
         this.ocId = ocId;
+    }
+
+    public Integer getRepId() {
+        return repId;
+    }
+
+    public void setRepId(Integer repId) {
+        this.repId = repId;
     }
 }

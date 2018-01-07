@@ -1,4 +1,4 @@
-package key_team.com.saipa311.Sale_services.JsonSchema.NewCars;
+package key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar;
 
 /**
  * Created by ammorteza on 12/11/17.
@@ -6,22 +6,10 @@ package key_team.com.saipa311.Sale_services.JsonSchema.NewCars;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class NewCarRequestExistsParams {
+public class OutDatedCarRequestExistsParams {
     @SerializedName("repId")
     @Expose
     private Integer repId;
-
-    @SerializedName("ncId")
-    @Expose
-    private Integer ncId;
-
-    public Integer getNcId() {
-        return ncId;
-    }
-
-    public void setNcId(Integer ncId) {
-        this.ncId = ncId;
-    }
 
     public Integer getRepId() {
         return repId;

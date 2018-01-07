@@ -165,15 +165,15 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
             params.put("mobile", createRequestBody(mobile.getText().toString()));
             params.put("nationalCode", createRequestBody(nationalCode.getText().toString()));
             params.put("idNumber", createRequestBody(idNumber.getText().toString()));
-            params.put("repId", createRequestBody(1 + ""));
-            //params.put("pId", createRequestBody(selectedProductsList.get(this.product.getSelectedItemPosition() - 1).getId().toString()));
+            params.put("ccpId", createRequestBody(changePlan.getId().toString()));
+            params.put("subject", createRequestBody(subject.getText().toString()));
             params.put("buildYear", createRequestBody(buildYear.getSelectedItem().toString()));
-            params.put("km", createRequestBody(km.getText().toString()));
+            params.put("carInTheParking", createRequestBody(carInTheParking.isChecked() == true ? "1" : "0"));
             params.put("chassisIdNumber", createRequestBody(chassisIdNumber.getText().toString()));
             params.put("description", createRequestBody(description.getText().toString()));
 
             final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-            final Call request = client.registerExchangeRequest(params, files);
+            final Call request = client.registerOutDatedCarChangeRequest(params, files);
             request.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
@@ -392,7 +392,7 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
         String _subject = subject.getText().toString();
 
         if (_chassisNumber.isEmpty()){
-            this.chassisIdNumber.setError("شماره ساشی الزامیست!");
+            this.chassisIdNumber.setError("شماره شاسی الزامیست!");
             return false;
         } else {
             birthDate.setError(null);

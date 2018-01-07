@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
@@ -54,12 +55,19 @@ public class DepositInfoActivity extends AppCompatActivity {
     private TextView notifId;
     private TextView prePaymentAmount;
     private TextView description;
+    private ViewFlipper onTrackPm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deposit_info);
+        this.init();
         this.createActionBar();
         this.getData();
+    }
+
+    private void init()
+    {
+        this.onTrackPm = (ViewFlipper)findViewById(R.id.onTrackPm);
     }
 
     private void createActionBar()
@@ -79,8 +87,7 @@ public class DepositInfoActivity extends AppCompatActivity {
             existNotTrackedRequest();
         }
         else{
-            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+            onTrackPm.setDisplayedChild(1);
         }
 
         car = (TextView) findViewById(R.id.car);
@@ -192,12 +199,11 @@ public class DepositInfoActivity extends AppCompatActivity {
 
     private void existNotTrackedRequest()
     {
-        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
-        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
-        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.VISIBLE);
+        onTrackPm.setDisplayedChild(0);
 
         DepositRequestExistsParams params = new DepositRequestExistsParams();
         params.setDId(depositInfo.getId());
+        params.setRepId(1);
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<DepositRequestExists> request = client.isNotTrackedDepositRequestExist(params);
         request.enqueue(new Callback<DepositRequestExists>() {
@@ -209,14 +215,10 @@ public class DepositInfoActivity extends AppCompatActivity {
                     drExist = response.body();
                     if (drExist.getExist() == true)
                     {
-                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
-                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.VISIBLE);
+                        onTrackPm.setDisplayedChild(2);
                     }
                     else{
-                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
-                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+                        onTrackPm.setDisplayedChild(1);
                     }
                 }else
                 {
@@ -264,8 +266,7 @@ public class DepositInfoActivity extends AppCompatActivity {
             existNotTrackedRequest();
         }
         else{
-            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+            onTrackPm.setDisplayedChild(1);
         }
     }
 }

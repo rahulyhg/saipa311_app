@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
@@ -58,13 +59,20 @@ public class OldCarInfoActivity extends AppCompatActivity {
     public TextView buildYear;
     private TextView description;
     private SliderLayout mDemoSlider;
+    private ViewFlipper onTrackPm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_old_car_info);
         this.createActionBar();
+        this.init();
         this.getData();
         this.initSlider();
+    }
+
+    private void init()
+    {
+        this.onTrackPm = (ViewFlipper)findViewById(R.id.onTrackPm);
     }
 
     private void getData()
@@ -76,8 +84,7 @@ public class OldCarInfoActivity extends AppCompatActivity {
             existNotTrackedRequest();
         }
         else{
-            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+            onTrackPm.setDisplayedChild(1);
         }
 
         title = (TextView)findViewById(R.id.title);
@@ -203,12 +210,11 @@ public class OldCarInfoActivity extends AppCompatActivity {
 
     private void existNotTrackedRequest()
     {
-        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
-        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
-        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.VISIBLE);
+        onTrackPm.setDisplayedChild(0);
 
         OldCarRequestExistsParams params = new OldCarRequestExistsParams();
         params.setOcId(oldCarInfo.getId());
+        params.setRepId(1);
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<OldCarRequestExists> request = client.isNotTrackedOldCarRequestExist(params);
         request.enqueue(new Callback<OldCarRequestExists>() {
@@ -218,13 +224,9 @@ public class OldCarInfoActivity extends AppCompatActivity {
                     OldCarRequestExists ocrExist;
                     ocrExist = response.body();
                     if (ocrExist.getExist() == true) {
-                        ((ProgressBar) findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-                        ((Button) findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
-                        ((TextView) findViewById(R.id.onTrackPm)).setVisibility(TextView.VISIBLE);
+                        onTrackPm.setDisplayedChild(2);
                     } else {
-                        ((ProgressBar) findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-                        ((TextView) findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
-                        ((Button) findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+                        onTrackPm.setDisplayedChild(1);
                     }
                 } else {
                     customToast.show(getLayoutInflater(), OldCarInfoActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
@@ -341,8 +343,7 @@ public class OldCarInfoActivity extends AppCompatActivity {
             existNotTrackedRequest();
         }
         else{
-            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+            onTrackPm.setDisplayedChild(1);
         }
     }
 }

@@ -150,7 +150,7 @@
                         <EditText android:id="@+id/input_subject"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
+                            android:inputType="text"
                             android:hint="خودرو" />
                     </android.support.design.widget.TextInputLayout>
                     <LinearLayout

@@ -19,6 +19,7 @@ import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarChangePlans;
 import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarChangePlanRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarRequestExists;
+import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarRequestExistsParams;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
 import key_team.com.saipa311.customToast;
@@ -36,6 +37,7 @@ public class Junk extends Fragment {
     private TextView description;
     private ViewFlipper junk_view;
     private Button openRequestForm;
+    private int changePlanHttpCode;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.junk_fragment_layout, container, false);
@@ -48,14 +50,13 @@ public class Junk extends Fragment {
             @Override
             public void onClick(View v) {
                 if (UserInfo.isLoggedIn() == false) {
-                    Intent intent = new Intent(getContext() , LoginActivity.class);
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivityForResult(intent, 1);
-                }
-                else{
-                    Intent intent = new Intent(getContext() , OutDatedCarRequestActivity.class);
+                } else {
+                    Intent intent = new Intent(getContext(), OutDatedCarRequestActivity.class);
                     String arrayAsString = new Gson().toJson(changePlan);
                     intent.putExtra("changePlan", arrayAsString);
-                    startActivityForResult(intent , 2);
+                    startActivityForResult(intent, 2);
                 }
             }
         });
@@ -72,6 +73,7 @@ public class Junk extends Fragment {
 
     private void fetchOldDatedCarChangePlans()
     {
+        junk_view.setDisplayedChild(0);
         OutDatedCarChangePlanRequestParams params = new OutDatedCarChangePlanRequestParams();
         params.setRepId(1);
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
@@ -79,14 +81,18 @@ public class Junk extends Fragment {
         request.enqueue(new Callback<OutDatedCarChangePlans>() {
             @Override
             public void onResponse(Call<OutDatedCarChangePlans> call, Response<OutDatedCarChangePlans> response) {
+                changePlanHttpCode = response.code();
                 if (response.code() == 200) {
                     changePlan = response.body();
                     loadActivePlan();
                     if (UserInfo.isLoggedIn() == false) {
-                        if (changePlan != null)
-                            junk_view.setDisplayedChild(1);
-                        else
-                            junk_view.setDisplayedChild(3);
+                        junk_view.setDisplayedChild(1);
+                    }else{
+                        checkIsNoTrackedRequestExist();
+                    }
+                }else if (response.code() == 204) {
+                    if (UserInfo.isLoggedIn() == false) {
+                        junk_view.setDisplayedChild(3);
                     }else{
                         checkIsNoTrackedRequestExist();
                     }
@@ -106,8 +112,10 @@ public class Junk extends Fragment {
 
     private void checkIsNoTrackedRequestExist()
     {
+        OutDatedCarRequestExistsParams params = new OutDatedCarRequestExistsParams();
+        params.setRepId(1);
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-        final Call<OutDatedCarRequestExists> request = client.isNotTrackedODCCRequestExist();
+        final Call<OutDatedCarRequestExists> request = client.isNotTrackedODCCRequestExist(params);
         request.enqueue(new Callback<OutDatedCarRequestExists>() {
             @Override
             public void onResponse(Call<OutDatedCarRequestExists> call, Response<OutDatedCarRequestExists> response) {
@@ -115,7 +123,7 @@ public class Junk extends Fragment {
                 {
                     OutDatedCarRequestExists exist = response.body();
                     if (exist.getExist() == false) {
-                        if (changePlan != null)
+                        if (changePlanHttpCode == 200)
                             junk_view.setDisplayedChild(1);
                         else
                             junk_view.setDisplayedChild(3);
@@ -134,5 +142,11 @@ public class Junk extends Fragment {
                 Log.d("my log", "............  isNoTrackedExist error:" + t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        this.fetchOldDatedCarChangePlans();
     }
 }

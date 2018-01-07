@@ -9,12 +9,12 @@ import android.graphics.Typeface;
 public class PublicParams {
     //public static final String BASE_URL = "http://10.0.2.2/SaipaRepresentation/public/";
     //public static final String BASE_URL = "http://192.168.1.31/SaipaRepresentation/public/";
-    public static final String BASE_URL = "http://192.168.1.4/SaipaRepresentation/public/";
+    public static final String BASE_URL = "http://192.168.1.3/SaipaRepresentation/public/";
     public static final int MAX_IMAGE_ATTACHED = 3;
 
     public static Typeface BYekan(Context context)
     {
-        Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/BYekan.ttf");
+        Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/traffic.ttf");
         return type;
     }
 }

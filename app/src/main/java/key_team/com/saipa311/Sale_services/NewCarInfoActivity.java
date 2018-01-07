@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
@@ -69,13 +70,20 @@ public class NewCarInfoActivity extends AppCompatActivity {
     private ImageView conditionImg;
     private SliderLayout mDemoSlider;
     private CardView conditionImagePart;
+    private ViewFlipper onTrackPm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_car_info);
+        this.init();
         this.createActionBar();
         this.getData();
         this.initSlider();
+    }
+
+    private void init()
+    {
+        this.onTrackPm = (ViewFlipper)findViewById(R.id.onTrackPm);
     }
 
     private void getData()
@@ -87,8 +95,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
             existNotTrackedRequest();
         }
         else{
-            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+            onTrackPm.setDisplayedChild(1);
         }
 
         title = (TextView)findViewById(R.id.title);
@@ -507,12 +514,11 @@ public class NewCarInfoActivity extends AppCompatActivity {
 
     private void existNotTrackedRequest()
     {
-        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
-        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
-        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.VISIBLE);
+        onTrackPm.setDisplayedChild(0);
 
         NewCarRequestExistsParams params = new NewCarRequestExistsParams();
         params.setNcId(newCarInfo.getId());
+        params.setRepId(1);
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<NewCarRequestExists> request = client.isNotTrackedRequestExist(params);
         request.enqueue(new Callback<NewCarRequestExists>() {
@@ -524,14 +530,10 @@ public class NewCarInfoActivity extends AppCompatActivity {
                     ncrExist = response.body();
                     if (ncrExist.getExist() == true)
                     {
-                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.GONE);
-                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.VISIBLE);
+                        onTrackPm.setDisplayedChild(2);
                     }
                     else{
-                        ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-                        ((TextView)findViewById(R.id.onTrackPm)).setVisibility(TextView.GONE);
-                        ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+                        onTrackPm.setDisplayedChild(1);
                     }
                 }else
                 {
@@ -655,8 +657,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
             existNotTrackedRequest();
         }
         else{
-            ((ProgressBar)findViewById(R.id.progressBar)).setVisibility(ProgressBar.GONE);
-            ((Button)findViewById(R.id.requestBtn)).setVisibility(Button.VISIBLE);
+            onTrackPm.setDisplayedChild(1);
         }
     }
 }
