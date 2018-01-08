@@ -410,9 +410,18 @@ public class NewCarInfoActivity extends AppCompatActivity {
         tr13.setPadding(8, 15, 8, 15);
         ts.addView(tr13, tr_params);
         /////////////////////////////
+        String colors = "";
+        for (int i=0 ; i < newCarInfo.getNewCarColor().size() ; i++)
+        {
+            colors += newCarInfo.getNewCarColor().get(i).getColor().getCSubject();
+            if (i < newCarInfo.getNewCarColor().size() - 1)
+            {
+                colors += " , ";
+            }
+        }
         TableRow tr14 = new TableRow(this);
         TextView color = new TextView(this);
-        color.setText(newCarInfo.getNcColor());
+        color.setText(colors);
         color.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
         color.setTextColor(Color.parseColor("#263938"));
         color.setGravity(Gravity.RIGHT);

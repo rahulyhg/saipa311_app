@@ -10,9 +10,6 @@ public class NewCar {
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("ncColor")
-    @Expose
-    private String ncColor;
     @SerializedName("ncState")
     @Expose
     private Integer ncState;
@@ -115,6 +112,9 @@ public class NewCar {
     @SerializedName("product")
     @Expose
     private Product product;
+    @SerializedName("new_car_color")
+    @Expose
+    private List<NewCarColor> newCarColor = null;
 
     public Integer getId() {
         return id;
@@ -122,14 +122,6 @@ public class NewCar {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getNcColor() {
-        return ncColor;
-    }
-
-    public void setNcColor(String ncColor) {
-        this.ncColor = ncColor;
     }
 
     public Integer getNcState() {
@@ -402,6 +394,14 @@ public class NewCar {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public List<NewCarColor> getNewCarColor() {
+        return newCarColor;
+    }
+
+    public void setNewCarColor(List<NewCarColor> newCarColor) {
+        this.newCarColor = newCarColor;
     }
 
 }

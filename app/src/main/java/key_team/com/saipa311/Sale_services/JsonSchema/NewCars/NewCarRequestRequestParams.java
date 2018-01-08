@@ -28,9 +28,9 @@ public class NewCarRequestRequestParams {
     @SerializedName("ncId")
     @Expose
     private Integer ncId;
-    @SerializedName("ncrColor")
+    @SerializedName("nccId")
     @Expose
-    private String ncrColor;
+    private Integer nccId;
     @SerializedName("ncrHaveLicensePlate")
     @Expose
     private Integer ncrHaveLicensePlate;
@@ -100,12 +100,12 @@ public class NewCarRequestRequestParams {
         this.ncId = ncId;
     }
 
-    public String getNcrColor() {
-        return ncrColor;
+    public Integer getNccId() {
+        return nccId;
     }
 
-    public void setNcrColor(String ncrColor) {
-        this.ncrColor = ncrColor;
+    public void setNccId(Integer nccId) {
+        this.nccId = nccId;
     }
 
     public Integer getNcrHaveLicensePlate() {

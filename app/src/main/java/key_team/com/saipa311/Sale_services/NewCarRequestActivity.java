@@ -179,7 +179,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
             params.setMobile(mobile.getText().toString());
             params.setNcId(newCarInfo.getId());
             params.setNcrHaveLicensePlate(haveLicensePlate.isChecked() == true ? 1 : 0);
-            params.setNcrColor(carColor.getSelectedItem().toString());
+            params.setNccId(newCarInfo.getNewCarColor().get(carColor.getSelectedItemPosition() - 1).getId());
             params.setNcrAddress(address.getText().toString());
             params.setNcrDescription(description.getText().toString());
             params.setSelectedOptions(selectedOptions);
@@ -286,7 +286,12 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
             }
         });
 
-        String[] items = new String[]{"سفید", "آبی", "مشکی"};
+        String[] items = new String[this.newCarInfo.getNewCarColor().size() + 1];
+        items[0] = "";
+        for (int i = 1;i <= this.newCarInfo.getNewCarColor().size(); i++)
+        {
+            items[i] = this.newCarInfo.getNewCarColor().get(i - 1).getColor().getCSubject();
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         carColor.setAdapter(adapter);
     }
