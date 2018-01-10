@@ -118,11 +118,9 @@ public class MainActivity extends AppCompatActivity {
         mainViewPager = (ViewPager)findViewById(R.id.viewpager);
         MainViewPagerAdapter adapter = new MainViewPagerAdapter(getSupportFragmentManager() , 4);
         mainViewPager.setAdapter(adapter);
-        mainViewPager.setOnTouchListener(new View.OnTouchListener()
-        {
+        mainViewPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+            public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
         });

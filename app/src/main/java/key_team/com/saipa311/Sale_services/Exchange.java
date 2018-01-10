@@ -72,7 +72,7 @@ public class Exchange extends Fragment {
                         exchange_view.setDisplayedChild(1);
                 }else{
                     exchange_view.setDisplayedChild(0);
-                    customToast.show(getActivity().getLayoutInflater(), getContext(), "خطایی رخ داده است دوباره تلاش کنید");
+                    //customToast.show(getActivity().getLayoutInflater(), getContext(), "خطایی رخ داده است دوباره تلاش کنید");
                     Log.d("my log", "............  isNoTrackedExist error:" + response.code());
                 }
             }

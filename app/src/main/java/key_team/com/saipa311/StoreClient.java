@@ -60,7 +60,7 @@ public interface StoreClient {
     @POST("app/sale_service/deposit/fetchAllData")
     Call<List<Deposit>> fetchDeposits(@Body DepositRequestParams params);
 
-    @POST("login")
+    @POST("app/login")
     Call<TokenInfo> login(@Body TokenRequestParams params);
 
     @POST("refresh_token")

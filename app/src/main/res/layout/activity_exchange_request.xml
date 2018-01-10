@@ -178,6 +178,7 @@
                             android:id="@+id/input_company"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
                             android:layout_marginTop="4dp"
@@ -201,6 +202,7 @@
                             android:id="@+id/input_carType"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                             android:layout_marginTop="4dp"
                             android:spinnerMode="dropdown" />
                     </LinearLayout>
@@ -222,6 +224,7 @@
                             android:id="@+id/input_buildYear"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                             android:layout_marginTop="4dp"
                             android:spinnerMode="dropdown" />
                     </LinearLayout>

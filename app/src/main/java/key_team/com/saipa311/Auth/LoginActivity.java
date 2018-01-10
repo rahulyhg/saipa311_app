@@ -117,15 +117,15 @@ public class LoginActivity extends AppCompatActivity {
             regUser.enqueue(new Callback<RegisterUserResult>() {
                 @Override
                 public void onResponse(Call<RegisterUserResult> call, Response<RegisterUserResult> response) {
+                    Log.d("my log", "................................... register user" + response.code());
                     progressDialog.stop();
                     if (response.code() == 200) {
                         registerUserResult = response.body();
-                        Log.d("my log", "................................... register user" + response.code());
                         Log.d("my log", "................................... register user 200");
                         viewFlipper.setDisplayedChild(2);
                     }else if (response.code() == 409)
                     {
-                        customToast.show(getLayoutInflater(), LoginActivity.this, "نام کاربری تکراری است");
+                        customToast.show(getLayoutInflater(), LoginActivity.this, "شماره همراه یا نام کاربری تکراری است");
                     }
                 }
 

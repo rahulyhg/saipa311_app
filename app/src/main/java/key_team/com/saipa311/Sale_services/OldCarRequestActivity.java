@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
@@ -61,6 +62,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
     private EditText address;
     private EditText description;
     private ViewFlipper viewFlipper;
+    private MyProgressDialog progressDialog;
     private boolean HIDE_INSERT_ACTION_MENU = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +107,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
     {
         if (validate())
         {
+            progressDialog.start();
             UserInfo userInfo = UserInfo.getUserInfo();
             OldCarRequestRequestParams params = new OldCarRequestRequestParams();
             params.setUserId(userInfo.userId);
@@ -122,6 +125,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
             request.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
+                    progressDialog.stop();
                     if (response.code() == 200)
                     {
                         HIDE_INSERT_ACTION_MENU = true;
@@ -138,6 +142,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
+                    progressDialog.stop();
                     customToast.show(getLayoutInflater(), OldCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                 }
             });
@@ -152,23 +157,23 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         UserInfo userInfo = UserInfo.getUserInfo();
         viewFlipper = (ViewFlipper)findViewById(R.id.view_flipper);
         birthDate = (EditText)findViewById(R.id.btn_birthDate);
-        birthDate.setTypeface(PublicParams.BYekan(this));
+        //birthDate.setTypeface(PublicParams.BYekan(this));
         subject = (EditText)findViewById(R.id.input_subject);
-        subject.setTypeface(PublicParams.BYekan(this));
+        //subject.setTypeface(PublicParams.BYekan(this));
         name = (EditText)findViewById(R.id.input_name);
-        name.setTypeface(PublicParams.BYekan(this));
+        //name.setTypeface(PublicParams.BYekan(this));
         fatherName = (EditText)findViewById(R.id.input_fatherName);
-        fatherName.setTypeface(PublicParams.BYekan(this));
+        //fatherName.setTypeface(PublicParams.BYekan(this));
         idNumber = (EditText)findViewById(R.id.input_idNumber);
-        idNumber.setTypeface(PublicParams.BYekan(this));
+        //idNumber.setTypeface(PublicParams.BYekan(this));
         nationalCode = (EditText)findViewById(R.id.input_nationalCode);
-        nationalCode.setTypeface(PublicParams.BYekan(this));
+        //nationalCode.setTypeface(PublicParams.BYekan(this));
         address = (EditText)findViewById(R.id.input_address);
-        address.setTypeface(PublicParams.BYekan(this));
+        //address.setTypeface(PublicParams.BYekan(this));
         description = (EditText)findViewById(R.id.input_description);
-        description.setTypeface(PublicParams.BYekan(this));
+        //description.setTypeface(PublicParams.BYekan(this));
         mobile = (EditText)findViewById(R.id.input_mobile);
-        mobile.setTypeface(PublicParams.BYekan(this));
+        //mobile.setTypeface(PublicParams.BYekan(this));
 
         subject.setText(oldCarInfo.getProduct().getPrSubject());
         name.setText(userInfo.name);
@@ -196,6 +201,8 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
                 }
             }
         });
+
+        progressDialog = new MyProgressDialog(OldCarRequestActivity.this);
     }
 
     public boolean validate() {

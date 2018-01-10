@@ -125,11 +125,11 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
         PersianCalendar pc = new PersianCalendar();
         int start = Integer.parseInt(changePlan.getCcpStartYear());
         int end = Integer.parseInt(changePlan.getCcpEndYear());
-        String[] items = new String[(end - start) + 1];
+        String[] items = new String[(end - start) + 2];
         items[0] = "";
-        for (int i = start ; i<= end ; i++)
+        for (int i = 0 ; i< (end - start) + 1 ; i++)
         {
-            items[i - start] = i + "";
+            items[i + 1] = (start + i) + "";
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         buildYear.setAdapter(adapter);

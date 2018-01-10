@@ -27,7 +27,6 @@ import key_team.com.saipa311.Transformer.FadePageTransformer;
  * Created by ammorteza on 11/16/17.
  */
 public class SaleServicesFragment extends Fragment {
-    int tabCount;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.sale_services_fragment_layout, container, false);

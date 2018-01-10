@@ -23,6 +23,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
@@ -51,6 +52,7 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
     private EditText address;
     private EditText description;
     private ViewFlipper viewFlipper;
+    private MyProgressDialog progressDialog;
     private boolean HIDE_INSERT_ACTION_MENU = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,7 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
     {
         if (validate())
         {
+            progressDialog.start();
             UserInfo userInfo = UserInfo.getUserInfo();
             DepositRequestRequestParams params = new DepositRequestRequestParams();
             params.setUserId(userInfo.userId);
@@ -112,6 +115,7 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
             request.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
+                    progressDialog.stop();
                     if (response.code() == 200)
                     {
                         HIDE_INSERT_ACTION_MENU = true;
@@ -128,6 +132,7 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
+                    progressDialog.stop();
                     customToast.show(getLayoutInflater(), DepositRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                 }
             });
@@ -164,23 +169,23 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
         UserInfo userInfo = UserInfo.getUserInfo();
         viewFlipper = (ViewFlipper)findViewById(R.id.view_flipper);
         birthDate = (EditText)findViewById(R.id.btn_birthDate);
-        birthDate.setTypeface(PublicParams.BYekan(this));
+        //birthDate.setTypeface(PublicParams.BYekan(this));
         subject = (EditText)findViewById(R.id.input_subject);
-        subject.setTypeface(PublicParams.BYekan(this));
+        //subject.setTypeface(PublicParams.BYekan(this));
         name = (EditText)findViewById(R.id.input_name);
-        name.setTypeface(PublicParams.BYekan(this));
+        //name.setTypeface(PublicParams.BYekan(this));
         fatherName = (EditText)findViewById(R.id.input_fatherName);
-        fatherName.setTypeface(PublicParams.BYekan(this));
+        //fatherName.setTypeface(PublicParams.BYekan(this));
         idNumber = (EditText)findViewById(R.id.input_idNumber);
-        idNumber.setTypeface(PublicParams.BYekan(this));
+        //idNumber.setTypeface(PublicParams.BYekan(this));
         nationalCode = (EditText)findViewById(R.id.input_nationalCode);
-        nationalCode.setTypeface(PublicParams.BYekan(this));
+        //nationalCode.setTypeface(PublicParams.BYekan(this));
         address = (EditText)findViewById(R.id.input_address);
-        address.setTypeface(PublicParams.BYekan(this));
+        //address.setTypeface(PublicParams.BYekan(this));
         description = (EditText)findViewById(R.id.input_description);
-        description.setTypeface(PublicParams.BYekan(this));
+        //description.setTypeface(PublicParams.BYekan(this));
         mobile = (EditText)findViewById(R.id.input_mobile);
-        mobile.setTypeface(PublicParams.BYekan(this));
+        //mobile.setTypeface(PublicParams.BYekan(this));
 
         subject.setText(depositInfo.getDCar());
         name.setText(userInfo.name);
@@ -208,6 +213,8 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
                 }
             }
         });
+
+        progressDialog = new MyProgressDialog(DepositRequestActivity.this);
     }
 
     public boolean validate() {
