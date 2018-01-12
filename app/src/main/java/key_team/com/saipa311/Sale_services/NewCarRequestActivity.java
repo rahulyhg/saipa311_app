@@ -75,6 +75,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
     private EditText address;
     private EditText description;
     private ViewFlipper viewFlipper;
+    private MyProgressDialog progressDialog;
     private List<SelectedOption> selectedOptions = new ArrayList<SelectedOption>();
     private boolean HIDE_INSERT_ACTION_MENU = false;
     @Override
@@ -170,8 +171,10 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
     {
         if (validate())
         {
+            progressDialog.start();
             UserInfo userInfo = UserInfo.getUserInfo();
             NewCarRequestRequestParams params = new NewCarRequestRequestParams();
+            params.setName(name.getText().toString());
             params.setUserId(userInfo.userId);
             //Log.d("my log", "................... user id" + userInfo.userId);
             params.setFatherName(fatherName.getText().toString());
@@ -179,10 +182,10 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
             params.setBirthDate(birthDate.getText().toString());
             params.setIdNumber(idNumber.getText().toString());
             params.setMobile(mobile.getText().toString());
+            params.setAddress(address.getText().toString());
             params.setNcId(newCarInfo.getId());
             params.setNcrHaveLicensePlate(haveLicensePlate.isChecked() == true ? 1 : 0);
             params.setNccId(newCarInfo.getNewCarColor().get(carColor.getSelectedItemPosition() - 1).getId());
-            params.setNcrAddress(address.getText().toString());
             params.setNcrDescription(description.getText().toString());
             params.setSelectedOptions(selectedOptions);
             final StoreClient client = ServiceGenerator.createService(StoreClient.class);
@@ -190,6 +193,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
             request.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
+                    progressDialog.stop();
                     if (response.code() == 200)
                     {
                         HIDE_INSERT_ACTION_MENU = true;
@@ -206,6 +210,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
+                    progressDialog.stop();
                     customToast.show(getLayoutInflater(), NewCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                 }
             });
@@ -268,6 +273,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         idNumber.setText(userInfo.idNumber);
         nationalCode.setText(userInfo.nationalCode);
         mobile.setText(userInfo.mobile);
+        address.setText(userInfo.address);
         birthDate.setText(userInfo.birthDate == null ? "" : userInfo.birthDate);
         birthDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -287,6 +293,8 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
                 }
             }
         });
+
+        progressDialog = new MyProgressDialog(NewCarRequestActivity.this);
 
         String[] items = new String[this.newCarInfo.getNewCarColor().size() + 1];
         items[0] = "";
@@ -309,7 +317,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         String _mobile = mobile.getText().toString();
 
         if (((String) carColor.getItemAtPosition(color)).isEmpty()) {
-            setSpinnerError(carColor , "انتخاب رنگ الزامیست!");
+            setSpinnerError(carColor, "انتخاب رنگ الزامیست!");
             return false;
         }
 
@@ -348,18 +356,18 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
             nationalCode.setError(null);
         }
 
-        if (_address.isEmpty()) {
-            address.setError("آدرس الزامیست!");
-            return false;
-        } else {
-            address.setError(null);
-        }
-
         if (_mobile.isEmpty()) {
             mobile.setError("شماره همراه الزامبست!");
             return false;
         } else {
             mobile.setError(null);
+        }
+
+        if (_address.isEmpty()) {
+            address.setError("آدرس الزامیست!");
+            return false;
+        } else {
+            address.setError(null);
         }
 
         return true;

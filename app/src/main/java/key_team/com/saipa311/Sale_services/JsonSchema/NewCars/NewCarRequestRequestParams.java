@@ -10,6 +10,9 @@ public class NewCarRequestRequestParams {
     @SerializedName("user_id")
     @Expose
     private Integer userId;
+    @SerializedName("name")
+    @Expose
+    private String name;
     @SerializedName("fatherName")
     @Expose
     private String fatherName;
@@ -22,6 +25,9 @@ public class NewCarRequestRequestParams {
     @SerializedName("nationalCode")
     @Expose
     private String nationalCode;
+    @SerializedName("address")
+    @Expose
+    private String address;
     @SerializedName("idNumber")
     @Expose
     private String idNumber;
@@ -34,9 +40,6 @@ public class NewCarRequestRequestParams {
     @SerializedName("ncrHaveLicensePlate")
     @Expose
     private Integer ncrHaveLicensePlate;
-    @SerializedName("ncrAddress")
-    @Expose
-    private String ncrAddress;
     @SerializedName("ncrDescription")
     @Expose
     private String ncrDescription;
@@ -50,6 +53,14 @@ public class NewCarRequestRequestParams {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getFatherName() {
@@ -116,12 +127,12 @@ public class NewCarRequestRequestParams {
         this.ncrHaveLicensePlate = ncrHaveLicensePlate;
     }
 
-    public String getNcrAddress() {
-        return ncrAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setNcrAddress(String ncrAddress) {
-        this.ncrAddress = ncrAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getNcrDescription() {

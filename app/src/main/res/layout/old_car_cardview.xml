@@ -16,7 +16,7 @@
         card_view:cardElevation="2dp"
         card_view:cardCornerRadius="0dp"
         card_view:cardPreventCornerOverlap="false">
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -123,43 +123,43 @@
                             android:textColor="@android:color/tab_indicator_text" />
                     </LinearLayout>
             </LinearLayout>
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="1px"
-                    android:background="#DBE0E0"
-                    android:weightSum="2">
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:foregroundGravity="center"
-                            android:layout_gravity="center"
-                            android:background="@android:color/white"
-                            android:layout_marginRight="1px"
-                            android:src="@drawable/ic_action_star_0"/>
-                        <ImageView
-                            android:id="@+id/shareNewCar"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:foregroundGravity="center"
-                            android:background="@android:color/white"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_action_share"/>
-                </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:orientation="vertical"
-                android:background="#DBE0E0"></LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="1px"
+                        android:background="#DBE0E0"
+                        android:weightSum="2">
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:foregroundGravity="center"
+                                android:layout_gravity="center"
+                                android:background="@android:color/white"
+                                android:layout_marginRight="1px"
+                                android:src="@drawable/ic_action_star_0"/>
+                            <ImageView
+                                android:id="@+id/shareNewCar"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:foregroundGravity="center"
+                                android:background="@android:color/white"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_action_share"/>
+                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:orientation="vertical"
+                    android:background="#DBE0E0"></LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

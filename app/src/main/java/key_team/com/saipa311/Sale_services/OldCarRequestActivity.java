@@ -110,6 +110,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
             progressDialog.start();
             UserInfo userInfo = UserInfo.getUserInfo();
             OldCarRequestRequestParams params = new OldCarRequestRequestParams();
+            params.setName(name.getText().toString());
             params.setUserId(userInfo.userId);
             //Log.d("my log", "................... user id" + userInfo.userId);
             params.setFatherName(fatherName.getText().toString());
@@ -118,7 +119,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
             params.setIdNumber(idNumber.getText().toString());
             params.setMobile(mobile.getText().toString());
             params.setOcId(oldCarInfo.getId());
-            params.setOcrAddress(address.getText().toString());
+            params.setAddress(address.getText().toString());
             params.setOcrDescription(description.getText().toString());
             final StoreClient client = ServiceGenerator.createService(StoreClient.class);
             final Call request = client.registerOldCarRequest(params);
@@ -181,6 +182,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         idNumber.setText(userInfo.idNumber);
         nationalCode.setText(userInfo.nationalCode);
         mobile.setText(userInfo.mobile);
+        address.setText(userInfo.address);
 
         birthDate.setText(userInfo.birthDate == null ? "" : userInfo.birthDate);
         birthDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {

@@ -56,16 +56,16 @@ public class AfterSaleServicesFragment extends Fragment {
             //Returning the current tabs
             switch (position) {
                 case 0:
-                    RepairHistory tab1 = new RepairHistory();
+                    Assistance tab1 = new Assistance();
                     return tab1;
                 case 1:
-                    GoldCards tab2 = new GoldCards();
+                    Turning tab2 = new Turning();
                     return tab2;
                 case 2:
-                    Turning tab3 = new Turning();
+                    GoldCards tab3 = new GoldCards();
                     return tab3;
                 case 3:
-                    Assistance tab4 = new Assistance();
+                    RepairHistory tab4 = new RepairHistory();
                     return tab4;
                 default:
                     return null;
@@ -82,10 +82,10 @@ public class AfterSaleServicesFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position)
             {
-                case 0: return "تاریخچه تعمیرات";
-                case 1: return "کارت طلایی";
-                case 2: return "نوبت دهی";
-                case 3: return "امداد";
+                case 0: return "امداد";
+                case 1: return "نوبت دهی";
+                case 2: return "کارت طلایی";
+                case 3: return "تاریخچه تعمیرات";
             }
             return "";
         }

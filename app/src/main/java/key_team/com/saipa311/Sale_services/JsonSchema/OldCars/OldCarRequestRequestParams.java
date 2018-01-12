@@ -9,6 +9,9 @@ public class OldCarRequestRequestParams {
     @SerializedName("user_id")
     @Expose
     private Integer userId;
+    @SerializedName("name")
+    @Expose
+    private String name;
     @SerializedName("fatherName")
     @Expose
     private String fatherName;
@@ -24,12 +27,12 @@ public class OldCarRequestRequestParams {
     @SerializedName("idNumber")
     @Expose
     private String idNumber;
+    @SerializedName("address")
+    @Expose
+    private String address;
     @SerializedName("ocId")
     @Expose
     private Integer ocId;
-    @SerializedName("ocrAddress")
-    @Expose
-    private String ocrAddress;
     @SerializedName("ocrDescription")
     @Expose
     private String ocrDescription;
@@ -40,6 +43,14 @@ public class OldCarRequestRequestParams {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getFatherName() {
@@ -90,12 +101,12 @@ public class OldCarRequestRequestParams {
         this.ocId = ocId;
     }
 
-    public String getOcrAddress() {
-        return ocrAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setOcrAddress(String ocrAddress) {
-        this.ocrAddress = ocrAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getOcrDescription() {

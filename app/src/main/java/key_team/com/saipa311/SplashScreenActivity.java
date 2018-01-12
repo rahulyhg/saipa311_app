@@ -87,6 +87,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 _userInfo.fatherName = user.getFatherName();
                                 _userInfo.idNumber = user.getIdNumber();
                                 _userInfo.nationalCode = user.getNationalCode();
+                                _userInfo.address = user.getAddress();
                                 _userInfo.save();
                                 Log.d("my log", ".................. user name" + userInfo.name + " - " + userInfo.refresh_token);
                             }

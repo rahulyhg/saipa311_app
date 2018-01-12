@@ -83,14 +83,6 @@ public class NewCars extends Fragment {
             public void onFailure(Call<List<NewCar>> call, Throwable t) {
             }
         });
-
-/*        UserInfo userInfo = new UserInfo();
-        userInfo.name = "مرتضی امزاجردی";
-        userInfo.mobile = "09369293829";
-        userInfo.access_token = "gsdfgsdf6gs4fd6g4s6df4g6s4f6gs4d6fg4s6df4g6s4df6gs46df4gsdfg";
-        userInfo.refresh_token = "fsdfgs4df684s6f4g6sdf8gs7df98g7s9d8f46xc4vb6cx4v6b4x6cv4b6x4cvb";
-        userInfo.save();*/
-        //Log.d("my log" , "....................." + UserInfo.getUserInfo().name);
     }
 
     private void prepareAlbums() {

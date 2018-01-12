@@ -27,6 +27,9 @@ public class User {
     @SerializedName("idNumber")
     @Expose
     private String idNumber;
+    @SerializedName("address")
+    @Expose
+    private String address;
 
     public Integer getId() {
         return id;
@@ -82,6 +85,14 @@ public class User {
 
     public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
 }

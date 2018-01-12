@@ -85,6 +85,7 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
     private EditText nationalCode;
     private EditText birthDate;
     private EditText mobile;
+    private EditText address;
     private EditText description;
     private SliderLayout mDemoSlider;
     private MyProgressDialog progressDialog;
@@ -160,11 +161,13 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
             }
             Map<String, RequestBody> params = new HashMap<>();
             params.put("user_id", createRequestBody(userInfo.userId.toString()));
+            params.put("name", createRequestBody(name.getText().toString()));
             params.put("fatherName", createRequestBody(fatherName.getText().toString()));
             params.put("birthDate", createRequestBody(birthDate.getText().toString()));
             params.put("mobile", createRequestBody(mobile.getText().toString()));
             params.put("nationalCode", createRequestBody(nationalCode.getText().toString()));
             params.put("idNumber", createRequestBody(idNumber.getText().toString()));
+            params.put("address", createRequestBody(address.getText().toString()));
             params.put("ccpId", createRequestBody(changePlan.getId().toString()));
             params.put("subject", createRequestBody(subject.getText().toString()));
             params.put("buildYear", createRequestBody(buildYear.getSelectedItem().toString()));
@@ -260,27 +263,28 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
 
         UserInfo userInfo = UserInfo.getUserInfo();
         subject = (EditText)findViewById(R.id.input_subject);
-        subject.setTypeface(PublicParams.BYekan(this));
+        //subject.setTypeface(PublicParams.BYekan(this));
         carInTheParking = (Switch)findViewById(R.id.input_carInTheParking);
         buildYear = (Spinner)findViewById(R.id.input_buildYear);
         birthDate = (EditText)findViewById(R.id.btn_birthDate);
-        birthDate.setTypeface(PublicParams.BYekan(this));
+        //birthDate.setTypeface(PublicParams.BYekan(this));
         km = (EditText)findViewById(R.id.input_km);
-        km.setTypeface(PublicParams.BYekan(this));
+        //km.setTypeface(PublicParams.BYekan(this));
         chassisIdNumber = (EditText)findViewById(R.id.input_chassisIdNumber);
-        chassisIdNumber.setTypeface(PublicParams.BYekan(this));
+        //chassisIdNumber.setTypeface(PublicParams.BYekan(this));
         name = (EditText)findViewById(R.id.input_name);
-        name.setTypeface(PublicParams.BYekan(this));
+        //name.setTypeface(PublicParams.BYekan(this));
         fatherName = (EditText)findViewById(R.id.input_fatherName);
-        fatherName.setTypeface(PublicParams.BYekan(this));
+        //fatherName.setTypeface(PublicParams.BYekan(this));
         idNumber = (EditText)findViewById(R.id.input_idNumber);
-        idNumber.setTypeface(PublicParams.BYekan(this));
+        //idNumber.setTypeface(PublicParams.BYekan(this));
         mobile = (EditText)findViewById(R.id.input_mobile);
-        mobile.setTypeface(PublicParams.BYekan(this));
+        //mobile.setTypeface(PublicParams.BYekan(this));
         nationalCode = (EditText)findViewById(R.id.input_nationalCode);
-        nationalCode.setTypeface(PublicParams.BYekan(this));
+        //nationalCode.setTypeface(PublicParams.BYekan(this));
+        address = (EditText)findViewById(R.id.input_address);
         description = (EditText)findViewById(R.id.input_description);
-        description.setTypeface(PublicParams.BYekan(this));
+        //description.setTypeface(PublicParams.BYekan(this));
         progressDialog = new MyProgressDialog(OutDatedCarRequestActivity.this);
 
         name.setText(userInfo.name);
@@ -288,6 +292,7 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
         idNumber.setText(userInfo.idNumber);
         nationalCode.setText(userInfo.nationalCode);
         mobile.setText(userInfo.mobile);
+        address.setText(userInfo.address);
         birthDate.setText(userInfo.birthDate == null ? "" : userInfo.birthDate);
         birthDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -390,6 +395,7 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
         String _nationalCode = nationalCode.getText().toString();
         String _mobile = mobile.getText().toString();
         String _subject = subject.getText().toString();
+        String _address = address.getText().toString();
 
         if (_chassisNumber.isEmpty()){
             this.chassisIdNumber.setError("شماره شاسی الزامیست!");
@@ -457,6 +463,13 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
             return false;
         } else {
             nationalCode.setError(null);
+        }
+
+        if (_address.isEmpty()) {
+            address.setError("آدرس الزامیست!");
+            return false;
+        } else {
+            address.setError(null);
         }
 
         return true;

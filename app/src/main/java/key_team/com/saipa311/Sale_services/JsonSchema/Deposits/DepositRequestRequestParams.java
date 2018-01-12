@@ -9,6 +9,9 @@ public class DepositRequestRequestParams {
     @SerializedName("user_id")
     @Expose
     private Integer userId;
+    @SerializedName("name")
+    @Expose
+    private String name;
     @SerializedName("fatherName")
     @Expose
     private String fatherName;
@@ -24,12 +27,12 @@ public class DepositRequestRequestParams {
     @SerializedName("idNumber")
     @Expose
     private String idNumber;
+    @SerializedName("address")
+    @Expose
+    private String address;
     @SerializedName("dId")
     @Expose
     private Integer dId;
-    @SerializedName("drAddress")
-    @Expose
-    private String drAddress;
     @SerializedName("drDescription")
     @Expose
     private String drDescription;
@@ -40,6 +43,14 @@ public class DepositRequestRequestParams {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getFatherName() {
@@ -90,12 +101,12 @@ public class DepositRequestRequestParams {
         this.dId = dId;
     }
 
-    public String getDrAddress() {
-        return drAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setDrAddress(String drAddress) {
-        this.drAddress = drAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getDrDescription() {

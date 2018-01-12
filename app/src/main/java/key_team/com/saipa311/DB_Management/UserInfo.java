@@ -33,6 +33,9 @@ public class UserInfo extends Model {
     @Column(name = "idNumber")
     public String idNumber;
 
+    @Column(name = "address")
+    public String address;
+
     @Column(name = "access_token")
     public String access_token;
 

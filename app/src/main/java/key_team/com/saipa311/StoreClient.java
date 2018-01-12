@@ -3,6 +3,8 @@ package key_team.com.saipa311;
 import java.util.List;
 import java.util.Map;
 
+import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RefreshTokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserResult;
@@ -108,7 +110,7 @@ public interface StoreClient {
     @POST("app/sale_service/exchange/isNotTrackedRequestExist")
     Call<ExchangeRequestExists> isNotTrackedExchangeRequestExist(@Body ExchangeRequestExistsParams params);
 
-    @POST("app/sale_service/outDatedCar/fetchActivePlan")
+    @POST("app/sale_service/outDatedCar/plan/fetchActivePlan")
     Call<OutDatedCarChangePlans> getOutDatedCarChangeActivePlan(@Body OutDatedCarChangePlanRequestParams params);
 
     @POST("app/sale_service/outDatedCar/isNotTrackedRequestExist")
@@ -120,4 +122,6 @@ public interface StoreClient {
             @PartMap Map<String, RequestBody> params,
             @Part MultipartBody.Part[] files);
 
+    @POST("app/after_sale_service/gold_card/fetchAllData")
+    Call<List<GoldCard>> fetchGoldCards(@Body GoldCardRequestParams params);
 }

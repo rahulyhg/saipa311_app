@@ -78,6 +78,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
     private EditText nationalCode;
     private EditText birthDate;
     private EditText mobile;
+    private EditText address;
     private EditText description;
     private SliderLayout mDemoSlider;
     private MyProgressDialog progressDialog;
@@ -205,11 +206,13 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
             }
             Map<String, RequestBody> params = new HashMap<>();
             params.put("user_id", createRequestBody(userInfo.userId.toString()));
+            params.put("name", createRequestBody(name.getText().toString()));
             params.put("fatherName", createRequestBody(fatherName.getText().toString()));
             params.put("birthDate", createRequestBody(birthDate.getText().toString()));
             params.put("mobile", createRequestBody(mobile.getText().toString()));
             params.put("nationalCode", createRequestBody(nationalCode.getText().toString()));
             params.put("idNumber", createRequestBody(idNumber.getText().toString()));
+            params.put("address", createRequestBody(address.getText().toString()));
             params.put("repId", createRequestBody(1 + ""));
             params.put("pId", createRequestBody(selectedProductsList.get(this.product.getSelectedItemPosition() - 1).getId().toString()));
             params.put("buildYear", createRequestBody(buildYear.getSelectedItem().toString()));
@@ -331,6 +334,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
         //mobile.setTypeface(PublicParams.BYekan(this));
         nationalCode = (EditText)findViewById(R.id.input_nationalCode);
         //nationalCode.setTypeface(PublicParams.BYekan(this));
+        address = (EditText)findViewById(R.id.input_address);
         description = (EditText)findViewById(R.id.input_description);
         //description.setTypeface(PublicParams.BYekan(this));
         progressDialog = new MyProgressDialog(ExchangeRequestActivity.this);
@@ -340,6 +344,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
         idNumber.setText(userInfo.idNumber);
         nationalCode.setText(userInfo.nationalCode);
         mobile.setText(userInfo.mobile);
+        address.setText(userInfo.address);
         birthDate.setText(userInfo.birthDate == null ? "" : userInfo.birthDate);
         birthDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -443,6 +448,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
         String _idNumber = idNumber.getText().toString();
         String _nationalCode = nationalCode.getText().toString();
         String _mobile = mobile.getText().toString();
+        String _address = address.getText().toString();
 
         if (_chassisNumber.isEmpty()){
             this.chassisIdNumber.setError("شماره شاسی الزامیست!");
@@ -513,6 +519,13 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
             return false;
         } else {
             nationalCode.setError(null);
+        }
+
+        if (_address.isEmpty()) {
+            address.setError("آدرس الزامیست!");
+            return false;
+        } else {
+            address.setError(null);
         }
 
         return true;

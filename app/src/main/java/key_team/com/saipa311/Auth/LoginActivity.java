@@ -205,6 +205,7 @@ public class LoginActivity extends AppCompatActivity {
                                 userInfo.fatherName = user.getFatherName();
                                 userInfo.idNumber = user.getIdNumber();
                                 userInfo.nationalCode = user.getNationalCode();
+                                userInfo.address = user.getAddress();
                                 userInfo.save();
                                 progressDialog.stop();
                                 Log.d("my log", ".................. user name" + userInfo.name + " - " + userInfo.refresh_token);

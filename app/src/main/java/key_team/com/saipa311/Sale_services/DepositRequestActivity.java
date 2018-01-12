@@ -100,6 +100,7 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
             progressDialog.start();
             UserInfo userInfo = UserInfo.getUserInfo();
             DepositRequestRequestParams params = new DepositRequestRequestParams();
+            params.setName(name.getText().toString());
             params.setUserId(userInfo.userId);
             //Log.d("my log", "................... user id" + userInfo.userId);
             params.setFatherName(fatherName.getText().toString());
@@ -108,7 +109,7 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
             params.setIdNumber(idNumber.getText().toString());
             params.setMobile(mobile.getText().toString());
             params.setDId(depositInfo.getId());
-            params.setDrAddress(address.getText().toString());
+            params.setAddress(address.getText().toString());
             params.setDrDescription(description.getText().toString());
             final StoreClient client = ServiceGenerator.createService(StoreClient.class);
             final Call request = client.registerDepositRequest(params);
@@ -193,6 +194,7 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
         idNumber.setText(userInfo.idNumber);
         nationalCode.setText(userInfo.nationalCode);
         mobile.setText(userInfo.mobile);
+        address.setText(userInfo.address);
 
         birthDate.setText(userInfo.birthDate == null ? "" : userInfo.birthDate);
         birthDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
