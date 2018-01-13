@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExists;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExistsParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestParams;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RefreshTokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserResult;
@@ -124,4 +127,10 @@ public interface StoreClient {
 
     @POST("app/after_sale_service/gold_card/fetchAllData")
     Call<List<GoldCard>> fetchGoldCards(@Body GoldCardRequestParams params);
+
+    @POST("app/after_sale_service/gold_card/registerRequest")
+    Call<Void> registerGoldCardRequest(@Body GoldCardRequestRequestParams params);
+
+    @POST("app/after_sale_service/gold_card/isNotTrackedRequestExist")
+    Call<GoldCardRequestExists> isNotTrackedGoldCardRequestExist(@Body GoldCardRequestExistsParams params);
 }

@@ -123,6 +123,7 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
                         invalidateOptionsMenu();
                         viewFlipper.setDisplayedChild(1);
                         showDialog();
+                        updateUserInfo();
                     }else
                     {
                         customToast.show(getLayoutInflater(), DepositRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
@@ -138,6 +139,19 @@ public class DepositRequestActivity extends AppCompatActivity implements DatePic
                 }
             });
         }
+    }
+
+    private void updateUserInfo()
+    {
+        UserInfo userInfo = UserInfo.getUserInfo();
+        userInfo.address = address.getText().toString();
+        userInfo.nationalCode = nationalCode.getText().toString();
+        userInfo.idNumber = idNumber.getText().toString();
+        userInfo.fatherName = fatherName.getText().toString();
+        userInfo.birthDate = birthDate.getText().toString();
+        userInfo.mobile = mobile.getText().toString();
+        userInfo.name = name.getText().toString();
+        userInfo.save();
     }
 
     private void showDialog()

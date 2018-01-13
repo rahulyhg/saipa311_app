@@ -1,7 +1,6 @@
-package key_team.com.saipa311.Sale_services;
+package key_team.com.saipa311.AfterSale_services;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -13,12 +12,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -26,20 +20,13 @@ import com.google.gson.Gson;
 import com.mohamadamin.persianmaterialdatetimepicker.date.DatePickerDialog;
 import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestRequestParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyProgressDialog;
-import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
-import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
-import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOption;
-import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarOptionsParams;
-import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestRequestParams;
-import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.SelectedOption;
-import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCar;
-import key_team.com.saipa311.Sale_services.JsonSchema.OldCars.OldCarRequestRequestParams;
+import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
+import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestRequestParams;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
 import key_team.com.saipa311.customToast;
@@ -50,8 +37,9 @@ import retrofit2.Response;
 /**
  * Created by ammorteza on 12/1/17.
  */
-public class OldCarRequestActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private OldCar oldCarInfo;
+public class GoldCardRequestActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    private GoldCard goldCardInfo;
+    private EditText chassisIdNumber;
     private EditText birthDate;
     private EditText subject;
     private EditText name;
@@ -67,7 +55,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_old_car_request);
+        setContentView(R.layout.activity_gold_card_request);
         createActionBar();
         init();
     }
@@ -86,7 +74,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         PersianCalendar now = new PersianCalendar();
         now.setPersianDate(1370, 5, 5);
         DatePickerDialog dpd = DatePickerDialog.newInstance(
-                OldCarRequestActivity.this,
+                GoldCardRequestActivity.this,
                 now.getPersianYear(),
                 now.getPersianMonth(),
                 now.getPersianDay()
@@ -109,7 +97,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         {
             progressDialog.start();
             UserInfo userInfo = UserInfo.getUserInfo();
-            OldCarRequestRequestParams params = new OldCarRequestRequestParams();
+            GoldCardRequestRequestParams params = new GoldCardRequestRequestParams();
             params.setName(name.getText().toString());
             params.setUserId(userInfo.userId);
             //Log.d("my log", "................... user id" + userInfo.userId);
@@ -118,11 +106,12 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
             params.setBirthDate(birthDate.getText().toString());
             params.setIdNumber(idNumber.getText().toString());
             params.setMobile(mobile.getText().toString());
-            params.setOcId(oldCarInfo.getId());
+            params.setGcId(goldCardInfo.getId());
+            params.setChassisIdNumber(chassisIdNumber.getText().toString());
             params.setAddress(address.getText().toString());
-            params.setOcrDescription(description.getText().toString());
+            params.setDescription(description.getText().toString());
             final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-            final Call request = client.registerOldCarRequest(params);
+            final Call request = client.registerGoldCardRequest(params);
             request.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
@@ -136,7 +125,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
                         updateUserInfo();
                     }else
                     {
-                        customToast.show(getLayoutInflater(), OldCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                        customToast.show(getLayoutInflater(), GoldCardRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                     }
 
                     Log.d("my log" , "..................." + response.code() + " = " + response.message());
@@ -145,7 +134,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
                 @Override
                 public void onFailure(Call call, Throwable t) {
                     progressDialog.stop();
-                    customToast.show(getLayoutInflater(), OldCarRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                    customToast.show(getLayoutInflater(), GoldCardRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                 }
             });
         }
@@ -164,33 +153,47 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         userInfo.save();
     }
 
+    private void showDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        TextView title = new TextView(this);
+        title.setPadding(0 , 30 , 45 , 10);
+        title.setGravity(Gravity.RIGHT);
+        //title.setTextSize((int) getResources().getDimension(R.dimen.textSizeXSmaller));
+        title.setTextColor(getResources().getColor(R.color.colorPrimary));
+        title.setTypeface(title.getTypeface() , Typeface.BOLD);
+        title.setText("مشتری گرامی");
+        builder.setCustomTitle(title);
+        builder.setMessage(R.string.register_pm);
+        builder.setCancelable(false);
+        builder.setPositiveButton("منتظر می مانم", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.show();
+    }
+
     private void init()
     {
-        String oldCarInfo_string = getIntent().getExtras().getString("oldCarInfo");
-        oldCarInfo = new Gson().fromJson(oldCarInfo_string, OldCar.class);
+        String goldCardInfo_string = getIntent().getExtras().getString("goldCardInfo");
+        goldCardInfo = new Gson().fromJson(goldCardInfo_string, GoldCard.class);
 
         UserInfo userInfo = UserInfo.getUserInfo();
         viewFlipper = (ViewFlipper)findViewById(R.id.view_flipper);
         birthDate = (EditText)findViewById(R.id.btn_birthDate);
-        //birthDate.setTypeface(PublicParams.BYekan(this));
         subject = (EditText)findViewById(R.id.input_subject);
-        //subject.setTypeface(PublicParams.BYekan(this));
+        chassisIdNumber = (EditText)findViewById(R.id.input_chassisIdNumber);
         name = (EditText)findViewById(R.id.input_name);
-        //name.setTypeface(PublicParams.BYekan(this));
         fatherName = (EditText)findViewById(R.id.input_fatherName);
-        //fatherName.setTypeface(PublicParams.BYekan(this));
         idNumber = (EditText)findViewById(R.id.input_idNumber);
-        //idNumber.setTypeface(PublicParams.BYekan(this));
         nationalCode = (EditText)findViewById(R.id.input_nationalCode);
-        //nationalCode.setTypeface(PublicParams.BYekan(this));
         address = (EditText)findViewById(R.id.input_address);
-        //address.setTypeface(PublicParams.BYekan(this));
         description = (EditText)findViewById(R.id.input_description);
-        //description.setTypeface(PublicParams.BYekan(this));
         mobile = (EditText)findViewById(R.id.input_mobile);
-        //mobile.setTypeface(PublicParams.BYekan(this));
 
-        subject.setText(oldCarInfo.getProduct().getPrSubject());
+        subject.setText(goldCardInfo.getGcSubject());
         name.setText(userInfo.name);
         fatherName.setText(userInfo.fatherName);
         idNumber.setText(userInfo.idNumber);
@@ -206,7 +209,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
                     PersianCalendar now = new PersianCalendar();
                     now.setPersianDate(1370, 5, 5);
                     DatePickerDialog dpd = DatePickerDialog.newInstance(
-                            OldCarRequestActivity.this,
+                            GoldCardRequestActivity.this,
                             now.getPersianYear(),
                             now.getPersianMonth(),
                             now.getPersianDay()
@@ -218,7 +221,7 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
             }
         });
 
-        progressDialog = new MyProgressDialog(OldCarRequestActivity.this);
+        progressDialog = new MyProgressDialog(GoldCardRequestActivity.this);
     }
 
     public boolean validate() {
@@ -229,6 +232,14 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         String _nationalCode = nationalCode.getText().toString();
         String _address = address.getText().toString();
         String _mobile = mobile.getText().toString();
+        String _chassisIdNumber = chassisIdNumber.getText().toString();
+
+        if (_chassisIdNumber.isEmpty()){
+            chassisIdNumber.setError("شماره شاسی الزامیست!");
+            return false;
+        }else{
+            birthDate.setError(null);
+        }
 
         if (_birthDate.isEmpty()){
             birthDate.setError("تاریخ تولد الزامیست");
@@ -280,28 +291,6 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         }
 
         return true;
-    }
-
-    private void showDialog()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        TextView title = new TextView(this);
-        title.setPadding(0 , 30 , 45 , 10);
-        title.setGravity(Gravity.RIGHT);
-        //title.setTextSize((int) getResources().getDimension(R.dimen.textSizeXSmaller));
-        title.setTextColor(getResources().getColor(R.color.colorPrimary));
-        title.setTypeface(title.getTypeface() , Typeface.BOLD);
-        title.setText("مشتری گرامی");
-        builder.setCustomTitle(title);
-        builder.setCancelable(false);
-        builder.setMessage(R.string.register_pm);
-        builder.setPositiveButton("منتظر می مانم", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        builder.show();
     }
 
     @Override

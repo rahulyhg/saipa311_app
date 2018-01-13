@@ -229,6 +229,7 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
                     if (response.code() == 200)
                     {
                         showDialog();
+                        updateUserInfo();
 
                     } else{
                         customToast.show(getLayoutInflater(), ExchangeRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
@@ -244,6 +245,19 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
                 }
             });
         }
+    }
+
+    private void updateUserInfo()
+    {
+        UserInfo userInfo = UserInfo.getUserInfo();
+        userInfo.address = address.getText().toString();
+        userInfo.nationalCode = nationalCode.getText().toString();
+        userInfo.idNumber = idNumber.getText().toString();
+        userInfo.fatherName = fatherName.getText().toString();
+        userInfo.birthDate = birthDate.getText().toString();
+        userInfo.mobile = mobile.getText().toString();
+        userInfo.name = name.getText().toString();
+        userInfo.save();
     }
 
     private void showDialog()

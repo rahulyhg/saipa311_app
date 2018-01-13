@@ -196,6 +196,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
                     progressDialog.stop();
                     if (response.code() == 200)
                     {
+                        updateUserInfo();
                         HIDE_INSERT_ACTION_MENU = true;
                         invalidateOptionsMenu();
                         viewFlipper.setDisplayedChild(1);
@@ -215,6 +216,20 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
                 }
             });
         }
+    }
+
+    private void updateUserInfo()
+    {
+        //Log.d("my log" , "..................... name : " + name.getText().toString());
+        UserInfo userInfo = UserInfo.getUserInfo();
+        userInfo.address = address.getText().toString();
+        userInfo.nationalCode = nationalCode.getText().toString();
+        userInfo.idNumber = idNumber.getText().toString();
+        userInfo.fatherName = fatherName.getText().toString();
+        userInfo.birthDate = birthDate.getText().toString();
+        userInfo.mobile = mobile.getText().toString();
+        userInfo.name = name.getText().toString();
+        userInfo.save();
     }
 
     private void showDialog()

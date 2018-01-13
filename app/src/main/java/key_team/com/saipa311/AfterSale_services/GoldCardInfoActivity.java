@@ -33,6 +33,8 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExists;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExistsParams;
 import key_team.com.saipa311.Auth.LoginActivity;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.PhotoViewer;
@@ -131,19 +133,18 @@ public class GoldCardInfoActivity extends AppCompatActivity {
     {
         onTrackPm.setDisplayedChild(0);
 
-/*        NewCarRequestExistsParams params = new NewCarRequestExistsParams();
-        params.setNcId(newCarInfo.getId());
-        params.setRepId(1);
+        GoldCardRequestExistsParams params = new GoldCardRequestExistsParams();
+        params.setGcId(goldCardInfo.getId());
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-        final Call<NewCarRequestExists> request = client.isNotTrackedRequestExist(params);
-        request.enqueue(new Callback<NewCarRequestExists>() {
+        final Call<GoldCardRequestExists> request = client.isNotTrackedGoldCardRequestExist(params);
+        request.enqueue(new Callback<GoldCardRequestExists>() {
             @Override
-            public void onResponse(Call<NewCarRequestExists> call, Response<NewCarRequestExists> response) {
+            public void onResponse(Call<GoldCardRequestExists> call, Response<GoldCardRequestExists> response) {
                 if (response.code() == 200)
                 {
-                    NewCarRequestExists ncrExist;
-                    ncrExist = response.body();
-                    if (ncrExist.getExist() == true)
+                    GoldCardRequestExists gcrExist;
+                    gcrExist = response.body();
+                    if (gcrExist.getExist() == true)
                     {
                         onTrackPm.setDisplayedChild(2);
                     }
@@ -157,10 +158,10 @@ public class GoldCardInfoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<NewCarRequestExists> call, Throwable t) {
+            public void onFailure(Call<GoldCardRequestExists> call, Throwable t) {
                 customToast.show(getLayoutInflater(), GoldCardInfoActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
             }
-        });*/
+        });
     }
 
     private void createActionBar()
@@ -174,16 +175,16 @@ public class GoldCardInfoActivity extends AppCompatActivity {
 
     public void createRequest(View view)
     {
-/*        if (UserInfo.isLoggedIn() == false) {
+        if (UserInfo.isLoggedIn() == false) {
             Intent intent = new Intent(GoldCardInfoActivity.this, LoginActivity.class);
             startActivityForResult(intent, 1);
         }
         else{
-            Intent intent = new Intent(GoldCardInfoActivity.this, NewCarRequestActivity.class);
-            String arrayAsString = new Gson().toJson(newCarInfo);
-            intent.putExtra("newCarInfo", arrayAsString);
+            Intent intent = new Intent(GoldCardInfoActivity.this, GoldCardRequestActivity.class);
+            String arrayAsString = new Gson().toJson(goldCardInfo);
+            intent.putExtra("goldCardInfo", arrayAsString);
             startActivityForResult(intent, 2);
-        }*/
+        }
     }
 
     @Override
