@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import key_team.com.saipa311.Auth.LoginActivity;
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.ExchangeRequestActivity;
 
@@ -20,6 +21,8 @@ import key_team.com.saipa311.Sale_services.ExchangeRequestActivity;
  */
 public class Turning extends Fragment {
     private Button selectMyCar;
+    private int LOGIN_REQUEST = 1;
+    private int MY_CAR_REQUEST = 2;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,15 +33,29 @@ public class Turning extends Fragment {
             public void onClick(View v) {
                 if (UserInfo.isLoggedIn() == false) {
                     Intent intent = new Intent(getContext(), LoginActivity.class);
-                    startActivityForResult(intent, 1);
+                    startActivityForResult(intent, LOGIN_REQUEST);
                 }
                 else{
                     Intent mayCar = new Intent(getContext() , MyCarActivity.class);
-                    startActivity(mayCar);
+                    mayCar.putExtra("recursive", true);
+                    startActivityForResult(mayCar , MY_CAR_REQUEST);
                 }
             }
         });
         return view;
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOGIN_REQUEST)
+        {
+
+        }else if (requestCode == MY_CAR_REQUEST)
+        {
+
+        }
+        //this.checkIsNoTrackedRequestExist();
     }
 }

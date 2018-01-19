@@ -16,6 +16,16 @@
         android:id="@+id/myCar_view"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:indeterminateDrawable="@drawable/progress_animation" />
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,14 +42,14 @@
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="@dimen/textSizeLarge"
-                android:text="موردی یافت نشد!"/>
+                android:text="شما تا کنون خودرویی ثبت نکرده اید!"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/bottomNavigationViewItemColor"
                 android:textSize="@dimen/textSizeLarge"
-                android:text="مشخصات ماشینتو ثبت کن"/>
+                android:text="ماشینتو ثبت کن"/>
             <Button
                 android:id="@+id/openNewCarForm"
                 android:layout_width="150dp"
@@ -55,13 +65,14 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:layout_gravity="center"
-            android:gravity="center">
-
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_car_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -181,6 +192,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="text"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="false"
                                     android:onClick="openDatePicker"
                                     android:hint="تاریخ شروع گارانتی" />
                             </android.support.design.widget.TextInputLayout>
@@ -195,17 +208,53 @@
                                     android:inputType="text"
                                     android:hint="شماره موتور" />
                             </android.support.design.widget.TextInputLayout>
-                            <android.support.design.widget.TextInputLayout
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp">
-                                <EditText android:id="@+id/input_licensePlate"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:inputType="text"
-                                    android:hint="پلاک" />
-                            </android.support.design.widget.TextInputLayout>
+                                android:gravity="right"
+                                android:textSize="@dimen/textSizeNormal"
+                                android:textColor="@android:color/black"
+                                android:text="پلاک"/>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:layout_gravity="center"
+                                android:orientation="horizontal">
+                                <EditText
+                                    android:id="@+id/input_licensePlate_part1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:inputType="number"
+                                    android:minWidth="50dp"
+                                    android:maxLength="2"/>
+                                <Spinner
+                                    android:id="@+id/input_licensePlate_part2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:spinnerMode="dropdown" />
+                                <EditText
+                                    android:id="@+id/input_licensePlate_part3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:inputType="number"
+                                    android:minWidth="60dp"
+                                    android:maxLength="3"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:textSize="@dimen/textSizeNormal"
+                                    android:text="ایران"/>
+                                <EditText
+                                    android:id="@+id/input_licensePlate_part5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:inputType="number"
+                                    android:minWidth="50dp"
+                                    android:maxLength="2"/>
+                            </LinearLayout>
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                     <android.support.v7.widget.CardView
@@ -284,6 +333,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:inputType="text"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="false"
                                     android:onClick="openDatePicker"
                                     android:hint="تاریخ تولد" />
                             </android.support.design.widget.TextInputLayout>
