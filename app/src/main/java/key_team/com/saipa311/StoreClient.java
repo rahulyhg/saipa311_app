@@ -8,6 +8,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardReq
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExistsParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestRequestParams;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.MyCars.MyCarsRegisterParams;
 import key_team.com.saipa311.Auth.JsonSchema.RefreshTokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserResult;
@@ -133,4 +134,7 @@ public interface StoreClient {
 
     @POST("app/after_sale_service/gold_card/isNotTrackedRequestExist")
     Call<GoldCardRequestExists> isNotTrackedGoldCardRequestExist(@Body GoldCardRequestExistsParams params);
+
+    @POST("app/after_sale_service/my_car/register")
+    Call<Void> registerMyCar(@Body MyCarsRegisterParams params);
 }

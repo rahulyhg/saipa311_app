@@ -11,8 +11,10 @@ import android.text.TextWatcher;
 public class PublicParams {
     //public static final String BASE_URL = "http://10.0.2.2/SaipaRepresentation/public/";
     //public static final String BASE_URL = "http://192.168.1.10/SaipaRepresentation/public/";
-    public static final String BASE_URL = "http://192.168.1.2/SaipaRepresentation/public/";
+    public static final String BASE_URL = "http://192.168.1.3/SaipaRepresentation/public/";
     public static final int MAX_IMAGE_ATTACHED = 3;
+    public static final long REPEAT_TIME = 1000 * 60 * 1;
+    public static final int NOTIFICATION_ID = 136561951;
 
     public static Typeface BYekan(Context context)
     {

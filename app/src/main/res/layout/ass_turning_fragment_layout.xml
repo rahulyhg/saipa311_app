@@ -1,21 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ViewFlipper
+    android:id="@+id/exchange_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
     android:theme="@style/AppTheme.AppBarOverlay"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+    android:paddingBottom="100dp">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/bottomNavigationHeight">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/turning_recycler_view"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:layout_gravity="center"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@android:color/secondary_text_dark"
+            android:background="@drawable/rounded_view_image_background"
+            android:src="@drawable/turning"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSizeLarge"
+            android:text="فرصت نداری برای دریافت نوبت به نمایندگی مراجعه کنی؟"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/bottomNavigationViewItemColor"
+            android:textSize="@dimen/textSizeLarge"
+            android:text="خیلی راحته"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/bottomNavigationViewItemColor"
+            android:textSize="@dimen/textSizeNormal"
+            android:text="ماشینتو انتخاب کن"/>
+        <Button
+            android:id="@+id/selectMyCar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent_button"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_marginTop="20dp"
+            android:textSize="@dimen/textSizeNormal"
+            android:text="خودروی من" />
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:layout_gravity="center">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/textSizeNormal"
+                android:textStyle="bold"
+                android:gravity="right"
+                android:text="سفارش شما در حال بررسی است"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/bottomNavigationViewItemColor"
+                android:textSize="@dimen/textSizeNormal"
+                android:gravity="right"
+                android:text="منتظر تماس اپراتور بمانید"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:tint="@android:color/secondary_text_dark"
+                android:background="@drawable/rounded_view_image_background"
+                android:src="@drawable/ic_access_alarms_black_48dp"
+                android:layout_gravity="left|center_vertical"/>
+        </LinearLayout>
+    </LinearLayout>
+</ViewFlipper>
