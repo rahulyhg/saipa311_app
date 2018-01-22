@@ -1,5 +1,6 @@
 package key_team.com.saipa311.AfterSale_services;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -740,6 +741,13 @@ public class MyCarActivity extends AppCompatActivity implements DatePickerDialog
                 view.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
+                        if (recursive == true) {
+                            Intent resultIntent = new Intent();
+                            String arrayAsString = new Gson().toJson(myCars.get(getAdapterPosition()));
+                            resultIntent.putExtra("selectedMyCar", arrayAsString);
+                            setResult(Activity.RESULT_OK, resultIntent);
+                            finish();
+                        }
                         //Log.d("my log" , "............................ " + getAdapterPosition());
 /*                        Intent intent = new Intent(getActivity(), NewCarInfoActivity.class);
                         String arrayAsString = new Gson().toJson(newCarData.get(getAdapterPosition()));

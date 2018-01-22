@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ViewFlipper
-    android:id="@+id/exchange_view"
+    android:id="@+id/turning_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tint="@android:color/secondary_text_dark"
+            android:tint="@color/icon_gray_color"
             android:background="@drawable/rounded_view_image_background"
             android:src="@drawable/turning"/>
         <TextView
@@ -56,6 +56,15 @@
             android:layout_marginTop="20dp"
             android:textSize="@dimen/textSizeNormal"
             android:text="خودروی من" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/text_button"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSizeNormal"
+            android:text="لغو نوبت"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,10 +105,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:tint="@android:color/secondary_text_dark"
+                android:tint="@color/icon_gray_color"
                 android:background="@drawable/rounded_view_image_background"
                 android:src="@drawable/ic_access_alarms_black_48dp"
                 android:layout_gravity="left|center_vertical"/>
         </LinearLayout>
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/progress_animation" />
+    </RelativeLayout>
 </ViewFlipper>

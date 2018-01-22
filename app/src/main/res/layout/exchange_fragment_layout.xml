@@ -18,7 +18,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tint="@android:color/secondary_text_dark"
+            android:tint="@color/icon_gray_color"
             android:background="@drawable/rounded_view_image_background"
             android:src="@drawable/ic_exchange_car"/>
         <TextView
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:tint="@android:color/secondary_text_dark"
+                android:tint="@color/icon_gray_color"
                 android:background="@drawable/rounded_view_image_background"
                 android:src="@drawable/ic_access_alarms_black_48dp"
                 android:layout_gravity="left|center_vertical"/>

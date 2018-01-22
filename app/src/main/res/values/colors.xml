@@ -16,6 +16,8 @@
     <color name="mdtp_accent_color_dark">@color/colorPrimaryDark</color>
     <color name="icon_color_inactive">#858585</color>
     <color name="icon_color">#000000</color>
+    <color name="icon_gray_color">#66F4F4F4</color>
+    <color name="text_button">#6DAAD9</color>
 
     <color name="black_semi_transparent">#B2000000</color>
     <color name="background">#e5e5e5</color>
