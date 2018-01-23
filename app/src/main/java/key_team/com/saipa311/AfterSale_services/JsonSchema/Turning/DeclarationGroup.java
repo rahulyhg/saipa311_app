@@ -1,6 +1,7 @@
 
 package key_team.com.saipa311.AfterSale_services.JsonSchema.Turning;
 
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -21,6 +22,9 @@ public class DeclarationGroup {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("declaration")
+    @Expose
+    private List<Declaration> declaration = null;
 
     public Integer getId() {
         return id;
@@ -60,6 +64,14 @@ public class DeclarationGroup {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Declaration> getDeclaration() {
+        return declaration;
+    }
+
+    public void setDeclaration(List<Declaration> declaration) {
+        this.declaration = declaration;
     }
 
 }

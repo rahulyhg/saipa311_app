@@ -1,27 +1,23 @@
 
 package key_team.com.saipa311.AfterSale_services.JsonSchema.Turning;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class AdmissionServiceType {
+public class AdmissionCapacityTime {
 
     @SerializedName("id")
     @Expose
     private Integer id;
-    @SerializedName("astSubject")
+    @SerializedName("actSubject")
     @Expose
-    private String astSubject;
+    private String actSubject;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
-    @SerializedName("declaration_group")
-    @Expose
-    private List<DeclarationGroup> declarationGroup = null;
 
     public Integer getId() {
         return id;
@@ -31,12 +27,12 @@ public class AdmissionServiceType {
         this.id = id;
     }
 
-    public String getAstSubject() {
-        return astSubject;
+    public String getActSubject() {
+        return actSubject;
     }
 
-    public void setAstSubject(String astSubject) {
-        this.astSubject = astSubject;
+    public void setActSubject(String actSubject) {
+        this.actSubject = actSubject;
     }
 
     public String getCreatedAt() {
@@ -53,14 +49,6 @@ public class AdmissionServiceType {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public List<DeclarationGroup> getDeclarationGroup() {
-        return declarationGroup;
-    }
-
-    public void setDeclarationGroup(List<DeclarationGroup> declarationGroup) {
-        this.declarationGroup = declarationGroup;
     }
 
 }

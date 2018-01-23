@@ -10,12 +10,14 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -58,6 +60,9 @@ import retrofit2.Response;
  * Created by ammorteza on 12/1/17.
  */
 public class LoginActivity extends AppCompatActivity {
+    private Button login_btn;
+    private Button register_btn;
+    private Button activation_btn;
     private EditText emailText;
     private EditText passwordText;
     private MyProgressDialog progressDialog;
@@ -90,6 +95,29 @@ public class LoginActivity extends AppCompatActivity {
         mobileText_reg = (EditText)findViewById(R.id.input_mobile);
 
         activationCodeText = (EditText)findViewById(R.id.input_activationCode);
+        login_btn = (Button)findViewById(R.id.btn_login);
+        login_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+
+        register_btn = (Button)findViewById(R.id.btn_register);
+        register_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                register();
+            }
+        });
+
+        activation_btn = (Button)findViewById(R.id.activeAccount);
+        activation_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activeAccount();
+            }
+        });
     }
 
     public void registerForm(View view)
@@ -102,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
         viewFlipper.setDisplayedChild(0);
     }
 
-    public void register(View view)
+    private void register()
     {
         if (validateRegisterForm())
         {
@@ -138,7 +166,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void activeAccount(View view)
+    private void activeAccount()
     {
         if (activationFormValidate())
         {
@@ -159,7 +187,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else if (response.code() == 412){
                         progressDialog.stop();
-                        customToast.show(getLayoutInflater() , LoginActivity.this , "کد فعالسازی اشتباه است");
+                        customToast.show(getLayoutInflater(), LoginActivity.this, "کد فعالسازی اشتباه است");
                     }
                 }
 
@@ -235,11 +263,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
-    }
-
-    public void login(View view)
-    {
-        this.signIn();
     }
 
     public boolean validateRegisterForm() {

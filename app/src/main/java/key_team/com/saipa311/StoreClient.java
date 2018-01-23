@@ -10,6 +10,12 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardReq
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.MyCars.MyCar;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.MyCars.MyCarsRegisterParams;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionList;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionListRequestParams;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionServiceType;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.DeclarationGroup;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TheTurnRequestParams;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TrackingCode;
 import key_team.com.saipa311.Auth.JsonSchema.RefreshTokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserResult;
@@ -141,4 +147,13 @@ public interface StoreClient {
 
     @POST("app/after_sale_service/my_car/fetchAllData")
     Call<List<MyCar>> fetchMyCars();
+
+    @POST("app/after_sale_service/admission_capacity/getAllTimesForMyCarWithRepId")
+    Call<List<AdmissionList>> getAllTimesForMyCarWithRepId(@Body AdmissionListRequestParams params);
+
+    @POST("admissionServiceType/getAllType")
+    Call<List<AdmissionServiceType>> getAllAdmissionServiceType();
+
+    @POST("app/after_sale_service/admission_capacity/registerTheTurn")
+    Call<TrackingCode> registerTheTurn(@Body TheTurnRequestParams params);
 }

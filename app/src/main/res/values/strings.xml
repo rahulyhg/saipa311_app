@@ -2,4 +2,5 @@
     <string name="app_name">سایپا</string>
     <string name="action_settings">Settings</string>
     <string name="register_pm"> درخواست شما با موفقیت ثبت شد، لطفا منتظر تماس اپراتور بمانید، از صبر و شکیبایی شما سپاسگزاریم.</string>
+    <string name="afterSaleServiceDoesnotExistInRep_pm">این نمایندگی خدمات پس از فروش خودروی انتخاب شده را ندارد، شما می تواند برای دریافت نوبت از طریق نمایندگی های دیگر اقدام نمایید.</string>
 </resources>
