@@ -21,20 +21,11 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp">
                     <TextView
-                        android:id="@+id/reg_admission_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/textSizeLarge"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"/>
-                    <TextView
-                        android:id="@+id/reg_admission_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
+                        android:text="لطفا فرم را تکمیل و درخواست خود را ثبت کنید"
                         android:textSize="@dimen/textSizeNormal"
                         android:textColor="@color/bottom_nav_color"/>
                 </RelativeLayout>
@@ -46,74 +37,28 @@
                     android:paddingRight="10dp"
                     android:paddingLeft="10dp"
                     android:orientation="vertical">
-                    <LinearLayout
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="8dp">
-                        <TextView
+                        <EditText android:id="@+id/input_assis_req_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:gravity="right"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/textSizeNormal"
-                            android:text="نوع سرویس"/>
-                        <Spinner
-                            android:id="@+id/input_admissionServiceType"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:layout_marginTop="4dp"
-                            android:spinnerMode="dropdown" />
-                    </LinearLayout>
-                    <LinearLayout
+                            android:inputType="text"
+                            android:hint="نام و نام خانوادگی" />
+                    </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="8dp">
-                        <TextView
+                        <EditText android:id="@+id/input_assis_req_phoneNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:gravity="right"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/textSizeNormal"
-                            android:text="گروه اظهار"/>
-                        <Spinner
-                            android:id="@+id/input_declarationGroup"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-                            android:layout_marginTop="4dp"
-                            android:spinnerMode="dropdown" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:gravity="right"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/textSizeNormal"
-                            android:text="اظهار"/>
-                        <Spinner
-                            android:id="@+id/input_declaration"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-                            android:layout_marginTop="4dp"
-                            android:spinnerMode="dropdown" />
-                    </LinearLayout>
+                            android:inputType="phone"
+                            android:hint="شماره همراه" />
+                    </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

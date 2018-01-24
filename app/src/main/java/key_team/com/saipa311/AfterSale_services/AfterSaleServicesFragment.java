@@ -33,6 +33,7 @@ public class AfterSaleServicesFragment extends Fragment {
     {
         AfterSaleServicesPagerAdapter adapter = new AfterSaleServicesPagerAdapter(getActivity().getSupportFragmentManager() , 4);
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.afterSaleServicesViewpager);
+        viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout)view.findViewById(R.id.afterSaleServicesTabLayout);
         tabLayout.setupWithViewPager(viewPager);

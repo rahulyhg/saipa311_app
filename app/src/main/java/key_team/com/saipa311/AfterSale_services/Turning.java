@@ -20,18 +20,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.MyCars.MyCar;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionList;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionListRequestParams;
@@ -42,14 +39,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TheTurnReques
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TrackingCode;
 import key_team.com.saipa311.Auth.LoginActivity;
 import key_team.com.saipa311.DB_Management.UserInfo;
-import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
-import key_team.com.saipa311.Sale_services.DepositInfoActivity;
-import key_team.com.saipa311.Sale_services.ExchangeRequestActivity;
-import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
-import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestParams;
-import key_team.com.saipa311.Sale_services.JsonSchema.Exchange.CompanyWithProduct;
-import key_team.com.saipa311.Sale_services.JsonSchema.Exchange.Product;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
 import key_team.com.saipa311.customToast;
@@ -116,6 +106,7 @@ public class Turning extends Fragment {
         AdmissionListRequestParams params = new AdmissionListRequestParams();
         params.setRepId(1);
         params.setPId(selectedMyCar.getPId());
+        params.setMcId(selectedMyCar.getId());
         StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<List<AdmissionList>> admissions = client.getAllTimesForMyCarWithRepId(params);
         admissions.enqueue(new Callback<List<AdmissionList>>() {
@@ -124,11 +115,21 @@ public class Turning extends Fragment {
                 if (response.code() == 200) {
                     admissionData = response.body();
                     Log.d("my log", "................................. admission size:" + admissionData.size());
-                    reloadTurningList();
+                    if (admissionData.size() > 0)
+                        reloadTurningList();
+                    else{
+                        changeFragmentView(TURNING_MODE);
+                        showDialog(getResources().getString(R.string.admissionCapacityDoesNotExistInRep_pm));
+                    }
                 } else if (response.code() == 306) {
                     changeFragmentView(TURNING_MODE);
-                    showDialog();
-                } else {
+                    showDialog(getResources().getString(R.string.afterSaleServiceDoesnotExistInRep_pm));
+                }else if (response.code() == 409)
+                {
+                    changeFragmentView(TURNING_MODE);
+                    showDialog("برای خودروی انتخاب شده در این نمایندگی نوبت پذیرش رزرو شده است!");
+                }
+                else {
                     customToast.show(getActivity().getLayoutInflater(), getActivity(), "خطایی رخ داده است دوباره تلاش کنید");
                 }
 
@@ -142,7 +143,7 @@ public class Turning extends Fragment {
         });
     }
 
-    private void showDialog()
+    private void showDialog(String pm)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         TextView title = new TextView(getContext());
@@ -153,7 +154,7 @@ public class Turning extends Fragment {
         title.setTypeface(title.getTypeface(), Typeface.BOLD);
         title.setText("مشتری گرامی");
         builder.setCustomTitle(title);
-        builder.setMessage(R.string.afterSaleServiceDoesnotExistInRep_pm);
+        builder.setMessage(pm);
         builder.setCancelable(false);
         builder.setPositiveButton("تعویض نمایندگی", new DialogInterface.OnClickListener() {
             @Override
@@ -300,6 +301,7 @@ public class Turning extends Fragment {
             @Override
             public void onFailure(Call<TrackingCode> call, Throwable t) {
                 Log.d("my log" , "............................ register turn request:" + t.getMessage());
+                customToast.show(getActivity().getLayoutInflater(), getContext(), "خطایی رخ داده است، دوباره تلاش کنید");
             }
         });
     }
@@ -442,6 +444,9 @@ public class Turning extends Fragment {
             public TextView totalCapacity;
             public TextView remainingCapacity;
             public TextView turningRequest;
+            public LinearLayout capacityBoard;
+            public RelativeLayout completedPm;
+            public LinearLayout registerBtnBoard;
 
             public TurningViewHolder(View view) {
                 super(view);
@@ -450,6 +455,9 @@ public class Turning extends Fragment {
                 totalCapacity = (TextView) view.findViewById(R.id.totalCapacity);
                 remainingCapacity = (TextView) view.findViewById(R.id.remainingCapacity);
                 turningRequest = (TextView)view.findViewById(R.id.turningRequest);
+                capacityBoard = (LinearLayout)view.findViewById(R.id.capacityBoard);
+                registerBtnBoard = (LinearLayout)view.findViewById(R.id.registerBtnBoard);
+                completedPm = (RelativeLayout)view.findViewById(R.id.completedPm);
 
             }
         }
@@ -481,6 +489,15 @@ public class Turning extends Fragment {
                     showRegDialog(listPosition);
                 }
             });
+            if (Integer.parseInt(dataSet.get(listPosition).getTotalCapacity()) > Integer.parseInt(dataSet.get(listPosition).getRemainingCapacity())) {
+                holder.completedPm.setVisibility(RelativeLayout.GONE);
+                holder.registerBtnBoard.setVisibility(LinearLayout.VISIBLE);
+                holder.capacityBoard.setVisibility(LinearLayout.VISIBLE);
+            }else{
+                holder.capacityBoard.setVisibility(LinearLayout.GONE);
+                holder.registerBtnBoard.setVisibility(LinearLayout.GONE);
+                holder.completedPm.setVisibility(RelativeLayout.VISIBLE);
+            }
         }
 
         public void addItem(admissionCapacity dataObj) {

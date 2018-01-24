@@ -34,20 +34,20 @@ public class SaleServicesFragment extends Fragment {
         return view;
     }
 
+
     public void initTabLayout(View view)
     {
         SaleServicesPagerAdapter adapter = new SaleServicesPagerAdapter(getActivity().getSupportFragmentManager() , 5);
         ViewPager viewPager = (ViewPager)view.findViewById(R.id.saleServicesViewpager);
+        viewPager.setOffscreenPageLimit(5);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout)view.findViewById(R.id.saleServicesTabLayout);
         tabLayout.setupWithViewPager(viewPager);
     }
 
     public class SaleServicesPagerAdapter extends FragmentStatePagerAdapter {
-
         //integer to count number of tabs
         int tabCount;
-
         //Constructor to the class
         public SaleServicesPagerAdapter(FragmentManager fm, int tabCount) {
             super(fm);

@@ -3,6 +3,7 @@ package key_team.com.saipa311;
 import java.util.List;
 import java.util.Map;
 
+import key_team.com.saipa311.AfterSale_services.JsonSchema.Assistance.AssistanceRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExists;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExistsParams;
@@ -156,4 +157,7 @@ public interface StoreClient {
 
     @POST("app/after_sale_service/admission_capacity/registerTheTurn")
     Call<TrackingCode> registerTheTurn(@Body TheTurnRequestParams params);
+
+    @POST("app/after_sale_service/assistance_request/registerRequest")
+    Call<TrackingCode> registerAssistanceRequest(@Body AssistanceRequestParams params);
 }

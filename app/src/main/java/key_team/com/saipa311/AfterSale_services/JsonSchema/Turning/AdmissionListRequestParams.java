@@ -12,6 +12,9 @@ public class AdmissionListRequestParams {
     @SerializedName("pId")
     @Expose
     private Integer pId;
+    @SerializedName("mcId")
+    @Expose
+    private Integer mcId;
 
     public Integer getRepId() {
         return repId;
@@ -27,6 +30,14 @@ public class AdmissionListRequestParams {
 
     public void setPId(Integer pId) {
         this.pId = pId;
+    }
+
+    public Integer getMcId() {
+        return mcId;
+    }
+
+    public void setMcId(Integer mcId) {
+        this.mcId = mcId;
     }
 
 }
