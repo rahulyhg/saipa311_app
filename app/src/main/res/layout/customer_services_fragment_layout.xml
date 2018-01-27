@@ -1,10 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:paddingBottom="100dp">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tint="@color/icon_gray_color"
+        android:background="@drawable/rounded_view_image_background"
+        android:src="@drawable/ic_suggestion"/>
     <TextView
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textSize="@dimen/textSizeLarge"
+        android:text="انتقاد، پیشنهاد و شکایت خود را با ما درمیان بگذارید"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/bottomNavigationViewItemColor"
+        android:textSize="@dimen/textSizeNormal"
+        android:text="شما می تواند انتقاد، پیشنهاد و شکایت خود را در خصوص نحوه عملکرد نمایندگی برای ما ارسال کنید"/>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:text="myName is customerServices fragment">
-    </TextView>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/openComplaintForm"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent_button"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="@dimen/textSizeNormal"
+            android:text="شکایت" />
+        <Button
+            android:id="@+id/openSuggestionDialog"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent_button"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:textSize="@dimen/textSizeNormal"
+            android:text="انتقاد و پیشنهاد" />
+    </LinearLayout>
 </LinearLayout>

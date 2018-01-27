@@ -86,6 +86,15 @@
             android:textSize="@dimen/textSizeLarge"
             android:text="منتظر تماس امدادگر نمایندگی ما بمانید، از صبر و شکیبایی شما سپاسگزاریم"/>
         <TextView
+            android:id="@+id/assis_trackingCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/textSizeLarge" />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -93,13 +102,67 @@
             android:textSize="@dimen/textSizeLarge"
             android:text="لطفا کد پیگیری را فراموش نکنید"/>
         <TextView
-            android:id="@+id/assis_trackingCode"
+            android:id="@+id/assis_countDownTimer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/textSizeNormal" />
+            android:textStyle="bold"
+            android:textColor="@color/blue_semi_transparent"
+            android:textSize="@dimen/textSizeLarge" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingRight="20dp"
+        android:paddingLeft="20dp"
+        android:layout_marginBottom="@dimen/bottomNavigationHeight"
+        android:layout_gravity="center"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/icon_gray_color"
+            android:background="@drawable/rounded_view_image_background"
+            android:src="@drawable/ic_assistance"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:textSize="@dimen/textSizeLarge"
+            android:text="در صورت عدم تماس امدادگر"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/bottomNavigationViewItemColor"
+            android:textSize="@dimen/textSizeLarge"
+            android:text="می توانید از شماره تماس ذیل استفاده کنید"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="25dp">
+            <Button
+                android:id="@+id/assis_alternativePhonenumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/transparent_button"
+                android:drawableRight="@drawable/ic_call_black_48dp"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/textSizeLarge"
+                android:textStyle="bold"
+                android:paddingBottom="2dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="2dp"/>
+        </RelativeLayout>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"

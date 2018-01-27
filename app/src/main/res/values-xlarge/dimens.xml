@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Default screen margins, per the Android Design guidelines. -->
     <!-- Height of the status bar -->
-    <dimen name="textSizeLarge">30dp</dimen>
+    <dimen name="textSizeLarge">32dp</dimen>
     <dimen name="textSizeNormal">28dp</dimen>
     <dimen name="textSizeSmall">26dp</dimen>
     <dimen name="textSizeSmaller" tools:override="true">24dp</dimen>

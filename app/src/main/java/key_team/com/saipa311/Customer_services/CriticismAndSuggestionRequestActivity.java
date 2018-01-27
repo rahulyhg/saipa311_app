@@ -1,4 +1,4 @@
-package key_team.com.saipa311.AfterSale_services;
+package key_team.com.saipa311.Customer_services;
 
 import android.content.DialogInterface;
 import android.graphics.Typeface;
@@ -22,11 +22,10 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestRequestParams;
+import key_team.com.saipa311.Customer_services.JsonSchema.CriticismAndSuggestionRequestParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.R;
-import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
-import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestRequestParams;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
 import key_team.com.saipa311.customToast;
@@ -37,11 +36,8 @@ import retrofit2.Response;
 /**
  * Created by ammorteza on 12/1/17.
  */
-public class GoldCardRequestActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private GoldCard goldCardInfo;
-    private EditText chassisIdNumber;
+public class CriticismAndSuggestionRequestActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private EditText birthDate;
-    private EditText subject;
     private EditText name;
     private EditText fatherName;
     private EditText idNumber;
@@ -49,13 +45,12 @@ public class GoldCardRequestActivity extends AppCompatActivity implements DatePi
     private EditText mobile;
     private EditText address;
     private EditText description;
-    private ViewFlipper viewFlipper;
     private MyProgressDialog progressDialog;
     private boolean HIDE_INSERT_ACTION_MENU = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gold_card_request);
+        setContentView(R.layout.activity_suggestion_request);
         createActionBar();
         init();
     }
@@ -74,7 +69,7 @@ public class GoldCardRequestActivity extends AppCompatActivity implements DatePi
         PersianCalendar now = new PersianCalendar();
         now.setPersianDate(1370, 5, 5);
         DatePickerDialog dpd = DatePickerDialog.newInstance(
-                GoldCardRequestActivity.this,
+                CriticismAndSuggestionRequestActivity.this,
                 now.getPersianYear(),
                 now.getPersianMonth(),
                 now.getPersianDay()
@@ -96,48 +91,62 @@ public class GoldCardRequestActivity extends AppCompatActivity implements DatePi
         if (validate())
         {
             progressDialog.start();
-            UserInfo userInfo = UserInfo.getUserInfo();
-            GoldCardRequestRequestParams params = new GoldCardRequestRequestParams();
+            CriticismAndSuggestionRequestParams params = new CriticismAndSuggestionRequestParams();
+            params.setRepId(1);
+            params.setDescription(description.getText().toString());
             params.setName(name.getText().toString());
-            params.setUserId(userInfo.userId);
-            //Log.d("my log", "................... user id" + userInfo.userId);
             params.setFatherName(fatherName.getText().toString());
             params.setNationalCode(nationalCode.getText().toString());
             params.setBirthDate(birthDate.getText().toString());
             params.setIdNumber(idNumber.getText().toString());
             params.setMobile(mobile.getText().toString());
-            params.setGcId(goldCardInfo.getId());
-            params.setChassisIdNumber(chassisIdNumber.getText().toString());
             params.setAddress(address.getText().toString());
-            params.setDescription(description.getText().toString());
             final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-            final Call request = client.registerGoldCardRequest(params);
-            request.enqueue(new Callback() {
+            final Call<Void> request = client.registerCriticismAndSuggestion(params);
+            request.enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(Call call, Response response) {
+                public void onResponse(Call<Void> call, Response<Void> response) {
                     progressDialog.stop();
                     if (response.code() == 200)
                     {
                         HIDE_INSERT_ACTION_MENU = true;
                         invalidateOptionsMenu();
-                        viewFlipper.setDisplayedChild(1);
-                        showDialog();
+                        showDialog("از توجه شما سپاسگزاریم، امید است که نظرات سازنده شما ما را در بهبود نحوه خدمت رسانی به شما مشتریان گرامی همراهی نماید.");
                         updateUserInfo();
-                    }else
-                    {
-                        customToast.show(getLayoutInflater(), GoldCardRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                    }else{
+                        customToast.show(getLayoutInflater(), CriticismAndSuggestionRequestActivity.this, "خطایی رخ داده است، دوباره تلاش کنید");
                     }
-
-                    Log.d("my log" , "..................." + response.code() + " = " + response.message());
                 }
 
                 @Override
-                public void onFailure(Call call, Throwable t) {
+                public void onFailure(Call<Void> call, Throwable t) {
                     progressDialog.stop();
-                    customToast.show(getLayoutInflater(), GoldCardRequestActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                    customToast.show(getLayoutInflater(), CriticismAndSuggestionRequestActivity.this, "خطایی رخ داده است، دوباره تلاش کنید");
                 }
             });
         }
+    }
+
+    private void showDialog(String pm)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CriticismAndSuggestionRequestActivity.this);
+        TextView title = new TextView(CriticismAndSuggestionRequestActivity.this);
+        title.setPadding(0, 30, 40, 30);
+        title.setGravity(Gravity.RIGHT);
+        //title.setTextSize((int) getResources().getDimension(R.dimen.textSizeXSmaller));
+        title.setTextColor(getResources().getColor(R.color.colorPrimary));
+        title.setTypeface(title.getTypeface(), Typeface.BOLD);
+        title.setText("مشتری گرامی");
+        builder.setCustomTitle(title);
+        builder.setMessage(pm);
+        builder.setCancelable(false);
+        builder.setPositiveButton("بله", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.show();
     }
 
     private void updateUserInfo()
@@ -177,14 +186,8 @@ public class GoldCardRequestActivity extends AppCompatActivity implements DatePi
 
     private void init()
     {
-        String goldCardInfo_string = getIntent().getExtras().getString("goldCardInfo");
-        goldCardInfo = new Gson().fromJson(goldCardInfo_string, GoldCard.class);
-
         UserInfo userInfo = UserInfo.getUserInfo();
-        viewFlipper = (ViewFlipper)findViewById(R.id.view_flipper);
         birthDate = (EditText)findViewById(R.id.btn_birthDate);
-        subject = (EditText)findViewById(R.id.input_subject);
-        chassisIdNumber = (EditText)findViewById(R.id.input_chassisIdNumber);
         name = (EditText)findViewById(R.id.input_name);
         fatherName = (EditText)findViewById(R.id.input_fatherName);
         idNumber = (EditText)findViewById(R.id.input_idNumber);
@@ -193,7 +196,6 @@ public class GoldCardRequestActivity extends AppCompatActivity implements DatePi
         description = (EditText)findViewById(R.id.input_description);
         mobile = (EditText)findViewById(R.id.input_mobile);
 
-        subject.setText(goldCardInfo.getGcSubject());
         name.setText(userInfo.name);
         fatherName.setText(userInfo.fatherName);
         idNumber.setText(userInfo.idNumber);
@@ -209,7 +211,7 @@ public class GoldCardRequestActivity extends AppCompatActivity implements DatePi
                     PersianCalendar now = new PersianCalendar();
                     now.setPersianDate(1370, 5, 5);
                     DatePickerDialog dpd = DatePickerDialog.newInstance(
-                            GoldCardRequestActivity.this,
+                            CriticismAndSuggestionRequestActivity.this,
                             now.getPersianYear(),
                             now.getPersianMonth(),
                             now.getPersianDay()
@@ -221,7 +223,7 @@ public class GoldCardRequestActivity extends AppCompatActivity implements DatePi
             }
         });
 
-        progressDialog = new MyProgressDialog(GoldCardRequestActivity.this);
+        progressDialog = new MyProgressDialog(CriticismAndSuggestionRequestActivity.this);
     }
 
     public boolean validate() {
@@ -232,13 +234,13 @@ public class GoldCardRequestActivity extends AppCompatActivity implements DatePi
         String _nationalCode = nationalCode.getText().toString();
         String _address = address.getText().toString();
         String _mobile = mobile.getText().toString();
-        String _chassisIdNumber = chassisIdNumber.getText().toString();
+        String _description = description.getText().toString();
 
-        if (_chassisIdNumber.isEmpty()){
-            chassisIdNumber.setError("شماره شاسی الزامیست!");
+        if (_description.isEmpty()){
+            description.setError("شرح الزامیست!");
             return false;
         }else{
-            chassisIdNumber.setError(null);
+            description.setError(null);
         }
 
         if (_birthDate.isEmpty()){

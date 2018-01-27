@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager()
     {
         mainViewPager = (ViewPager)findViewById(R.id.viewpager);
+        mainViewPager.setOffscreenPageLimit(4);
         MainViewPagerAdapter adapter = new MainViewPagerAdapter(getSupportFragmentManager() , 4);
         mainViewPager.setAdapter(adapter);
         mainViewPager.setOnTouchListener(new View.OnTouchListener() {

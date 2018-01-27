@@ -17,6 +17,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionServ
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.DeclarationGroup;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TheTurnRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TrackingCode;
+import key_team.com.saipa311.Auth.JsonSchema.NewActivationCodeRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RefreshTokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserResult;
@@ -24,6 +25,7 @@ import key_team.com.saipa311.Auth.JsonSchema.TokenInfo;
 import key_team.com.saipa311.Auth.JsonSchema.TokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.User;
 import key_team.com.saipa311.Auth.JsonSchema.UserActivationRequestParams;
+import key_team.com.saipa311.Customer_services.JsonSchema.CriticismAndSuggestionRequestParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExists;
@@ -160,4 +162,10 @@ public interface StoreClient {
 
     @POST("app/after_sale_service/assistance_request/registerRequest")
     Call<TrackingCode> registerAssistanceRequest(@Body AssistanceRequestParams params);
+
+    @POST("app/get_customer_user_active_code")
+    Call<Void> getNewActivationCode(@Body NewActivationCodeRequestParams params);
+
+    @POST("app/customer_service/criticism_and_suggestion/registerCriticismAndSuggestion")
+    Call<Void> registerCriticismAndSuggestion(@Body CriticismAndSuggestionRequestParams params);
 }

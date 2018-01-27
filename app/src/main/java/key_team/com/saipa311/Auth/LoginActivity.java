@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -35,7 +36,9 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import key_team.com.saipa311.Auth.JsonSchema.NewActivationCodeRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserResult;
 import key_team.com.saipa311.Auth.JsonSchema.TokenInfo;
@@ -73,6 +76,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText nameText_reg;
     private EditText mobileText_reg;
     private RegisterUserResult registerUserResult;
+    private TextView countDownTimer;
+    private TextView reActivationCode;
 
     private EditText activationCodeText;
     @Override
@@ -111,6 +116,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        countDownTimer = (TextView)findViewById(R.id.activate_countDownTimer);
+        reActivationCode = (TextView)findViewById(R.id.link_reActivationCode);
+
+        reActivationCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getNewActivationCode();
+            }
+        });
+
         activation_btn = (Button)findViewById(R.id.activeAccount);
         activation_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +133,31 @@ public class LoginActivity extends AppCompatActivity {
                 activeAccount();
             }
         });
+    }
+
+    private void setCountDownTimer(int start , final int end)
+    {
+        reActivationCode.setVisibility(TextView.GONE);
+        countDownTimer.setVisibility(TextView.VISIBLE);
+        new CountDownTimer(end, start) { // adjust the milli seconds here
+
+            public void onTick(long millisUntilFinished) {
+                if (millisUntilFinished > (int)(end / 2))
+                    countDownTimer.setTextColor(getResources().getColor(R.color.count_down_green));
+                else if (millisUntilFinished < 30000)
+                    countDownTimer.setTextColor(getResources().getColor(R.color.count_down_red));
+                else
+                    countDownTimer.setTextColor(getResources().getColor(R.color.count_down_orange));
+                countDownTimer.setText(""+String.format("%d:%d",
+                        TimeUnit.MILLISECONDS.toMinutes( millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+            }
+
+            public void onFinish() {
+                countDownTimer.setVisibility(TextView.GONE);
+                reActivationCode.setVisibility(TextView.VISIBLE);
+            }
+        }.start();
     }
 
     public void registerForm(View view)
@@ -128,6 +168,32 @@ public class LoginActivity extends AppCompatActivity {
     public void loginForm(View view)
     {
         viewFlipper.setDisplayedChild(0);
+    }
+
+    private void getNewActivationCode()
+    {
+        progressDialog.start();
+        NewActivationCodeRequestParams params = new NewActivationCodeRequestParams();
+        params.setId(registerUserResult.getId());
+        final StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        Call<Void> newActivationCode = client.getNewActivationCode(params);
+        newActivationCode.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                progressDialog.stop();
+                if (response.code() == 200) {
+                    setCountDownTimer(1000, 120000);
+                } else{
+                    customToast.show(getLayoutInflater(), LoginActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                progressDialog.stop();
+                customToast.show(getLayoutInflater(), LoginActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
+            }
+        });
     }
 
     private void register()
@@ -151,6 +217,7 @@ public class LoginActivity extends AppCompatActivity {
                         registerUserResult = response.body();
                         Log.d("my log", "................................... register user 200");
                         viewFlipper.setDisplayedChild(2);
+                        setCountDownTimer(1000, 120000);
                     }else if (response.code() == 409)
                     {
                         customToast.show(getLayoutInflater(), LoginActivity.this, "شماره همراه یا نام کاربری تکراری است");

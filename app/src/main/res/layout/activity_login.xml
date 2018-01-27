@@ -165,6 +165,16 @@
                 android:text="لطفا منتظر دریافت کد فعالسازی بمانید"
                 android:gravity="center"
                 android:textSize="@dimen/textSizeSmall"/>
+            <TextView
+                android:id="@+id/activate_countDownTimer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/blue_semi_transparent"
+                android:textSize="@dimen/textSizeLarge" />
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -185,5 +195,17 @@
                 android:padding="12dp"
                 android:text="فعالسازی "/>
         </LinearLayout>
+        <TextView
+            android:id="@+id/link_reActivationCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="درخواست مجدد کد فعالسازی"
+            android:layout_marginBottom="100dp"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:onClick="reRequestActivationCode"
+            android:textSize="16dip"
+            android:visibility="gone"
+            android:textColor="@color/text_button"/>
     </RelativeLayout>
 </ViewFlipper>

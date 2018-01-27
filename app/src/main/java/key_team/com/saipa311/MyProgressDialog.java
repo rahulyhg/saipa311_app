@@ -16,6 +16,7 @@ public class MyProgressDialog {
     {
         progressDialog = new ProgressDialog(activity, R.style.TransparentProgressDialog);
         progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
         progressDialog.setMessage("منتظر بمانید ...");
         Drawable drawable = new ProgressBar(activity).getIndeterminateDrawable().mutate();
         drawable.setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
