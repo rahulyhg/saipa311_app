@@ -37,10 +37,12 @@ import retrofit2.Response;
  */
 public class CustomerServicesFragment extends Fragment {
     private Button suggestionBtn;
+    private Button complaintBtn;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.customer_services_fragment_layout, container, false);
-        suggestionBtn = (Button)view.findViewById(R.id.openSuggestionDialog);
+        suggestionBtn = (Button)view.findViewById(R.id.openSuggestionForm);
+        complaintBtn = (Button)view.findViewById(R.id.openComplaintForm);
         init();
         return view;
     }
@@ -56,6 +58,19 @@ public class CustomerServicesFragment extends Fragment {
                 } else {
                     Intent intent = new Intent(getContext(), CriticismAndSuggestionRequestActivity.class);
                     startActivityForResult(intent, 2);
+                }
+            }
+        });
+
+        complaintBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (UserInfo.isLoggedIn() == false) {
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivityForResult(intent, 1);
+                } else {
+                    Intent intent = new Intent(getContext(), RegisterComplaintActivity.class);
+                    startActivityForResult(intent, 3);
                 }
             }
         });

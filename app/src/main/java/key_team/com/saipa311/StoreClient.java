@@ -25,7 +25,9 @@ import key_team.com.saipa311.Auth.JsonSchema.TokenInfo;
 import key_team.com.saipa311.Auth.JsonSchema.TokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.User;
 import key_team.com.saipa311.Auth.JsonSchema.UserActivationRequestParams;
+import key_team.com.saipa311.Customer_services.JsonSchema.ComplaintType;
 import key_team.com.saipa311.Customer_services.JsonSchema.CriticismAndSuggestionRequestParams;
+import key_team.com.saipa311.Customer_services.JsonSchema.RegisterComplaintRequestParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExists;
@@ -168,4 +170,10 @@ public interface StoreClient {
 
     @POST("app/customer_service/criticism_and_suggestion/registerCriticismAndSuggestion")
     Call<Void> registerCriticismAndSuggestion(@Body CriticismAndSuggestionRequestParams params);
+
+    @POST("complaintType/getAllItem")
+    Call<List<ComplaintType>> getAllComplainttypes();
+
+    @POST("app/customer_service/complaint_box/registerComplaint")
+    Call<key_team.com.saipa311.Customer_services.JsonSchema.TrackingCode> registerComplaintRequest(@Body RegisterComplaintRequestParams params);
 }

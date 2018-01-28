@@ -52,7 +52,7 @@
             android:textSize="@dimen/textSizeNormal"
             android:text="شکایت" />
         <Button
-            android:id="@+id/openSuggestionDialog"
+            android:id="@+id/openSuggestionForm"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"

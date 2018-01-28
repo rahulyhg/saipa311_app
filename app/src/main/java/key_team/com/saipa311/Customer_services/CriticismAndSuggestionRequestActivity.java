@@ -162,7 +162,7 @@ public class CriticismAndSuggestionRequestActivity extends AppCompatActivity imp
         userInfo.save();
     }
 
-    private void showDialog()
+/*    private void showDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         TextView title = new TextView(this);
@@ -182,7 +182,7 @@ public class CriticismAndSuggestionRequestActivity extends AppCompatActivity imp
             }
         });
         builder.show();
-    }
+    }*/
 
     private void init()
     {
