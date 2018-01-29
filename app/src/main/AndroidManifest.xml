@@ -137,6 +137,13 @@
             android:screenOrientation="portrait"
             android:launchMode="singleTask">
         </activity>
+        <activity
+            android:name=".Options.OptionInfoActivity"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask">
+        </activity>
         <service android:name=".Services.MyService" ></service>
         <receiver android:name=".Services.MyStartServiceReceiver" ></receiver>
         <!-- Will not be called unless the application explicitly enables it -->

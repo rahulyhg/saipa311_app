@@ -29,6 +29,8 @@ import key_team.com.saipa311.Customer_services.JsonSchema.ComplaintType;
 import key_team.com.saipa311.Customer_services.JsonSchema.CriticismAndSuggestionRequestParams;
 import key_team.com.saipa311.Customer_services.JsonSchema.RegisterComplaintRequestParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.Options.JsonSchema.CarOption;
+import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExists;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExistsParams;
@@ -176,4 +178,7 @@ public interface StoreClient {
 
     @POST("app/customer_service/complaint_box/registerComplaint")
     Call<key_team.com.saipa311.Customer_services.JsonSchema.TrackingCode> registerComplaintRequest(@Body RegisterComplaintRequestParams params);
+
+    @POST("app/option/fetchAllData")
+    Call<List<CarOption>> fetchAllCarOptions(@Body CarOptionsRequestParams params);
 }

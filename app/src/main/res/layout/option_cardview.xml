@@ -7,10 +7,6 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="1dp"
-        android:layout_marginTop="15dp"
         card_view:cardBackgroundColor="@android:color/background_light"
         card_view:cardElevation="2dp"
         card_view:cardCornerRadius="2dp"
@@ -21,14 +17,13 @@
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="200dp">
+                android:layout_height="wrap_content">
                 <ProgressBar
                     android:id="@+id/progressBar"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_centerInParent="true"
-                    android:indeterminateDrawable="@drawable/progress_animation" />
+                    android:indeterminateDrawable="@drawable/progress_animation_tiny" />
                 <ImageView
                     android:id="@+id/thumbnail"
                     android:layout_width="fill_parent"
@@ -50,15 +45,16 @@
                         android:id="@+id/subject"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/textSizeLarge"
+                        android:textSize="@dimen/textSizeNormal"
                         android:layout_gravity="right"
                         android:textStyle="bold"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:textColor="#263938"/>
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp">
+                        android:layout_marginTop="5dp">
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -80,24 +76,8 @@
                                 android:layout_marginLeft="3dp"
                                 android:layout_marginRight="3dp"
                                 android:textSize="@dimen/textSizeNormal" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:textColor="@android:color/tab_indicator_text"
-                                android:textSize="@dimen/textSizeNormal"
-                                android:text="قیمت:"/>
                         </LinearLayout>
                     </RelativeLayout>
-                    <TextView
-                        android:id="@+id/description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/textSizeNormal"
-                        android:layout_gravity="right"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@android:color/tab_indicator_text" />
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -120,9 +100,10 @@
                         android:layout_gravity="center"
                         android:background="@android:color/white"
                         android:layout_marginRight="1px"
+                        android:tint="@android:color/black"
                         android:src="@drawable/ic_action_star_0"/>
                     <ImageView
-                        android:id="@+id/shareGoldCard"
+                        android:id="@+id/shareOption"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -130,6 +111,7 @@
                         android:foregroundGravity="center"
                         android:background="@android:color/white"
                         android:layout_gravity="center"
+                        android:tint="@android:color/black"
                         android:src="@drawable/ic_action_share"/>
                 </LinearLayout>
                 <LinearLayout
