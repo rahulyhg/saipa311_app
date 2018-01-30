@@ -28,6 +28,8 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardReq
 import key_team.com.saipa311.Auth.LoginActivity;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Options.JsonSchema.CarOption;
+import key_team.com.saipa311.Options.JsonSchema.CarOptionRequestExists;
+import key_team.com.saipa311.Options.JsonSchema.CarOptionRequestExistsParams;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.ServiceGenerator;
@@ -119,18 +121,19 @@ public class OptionInfoActivity extends AppCompatActivity {
     {
         onTrackPm.setDisplayedChild(0);
 
-/*        GoldCardRequestExistsParams params = new GoldCardRequestExistsParams();
-        params.setGcId(goldCardInfo.getId());
+        CarOptionRequestExistsParams params = new CarOptionRequestExistsParams();
+        params.setRepId(1);
+        params.setCoId(carOptionInfo.getId());
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-        final Call<GoldCardRequestExists> request = client.isNotTrackedGoldCardRequestExist(params);
-        request.enqueue(new Callback<GoldCardRequestExists>() {
+        final Call<CarOptionRequestExists> request = client.isNotTrackedCarOptionRequestExist(params);
+        request.enqueue(new Callback<CarOptionRequestExists>() {
             @Override
-            public void onResponse(Call<GoldCardRequestExists> call, Response<GoldCardRequestExists> response) {
+            public void onResponse(Call<CarOptionRequestExists> call, Response<CarOptionRequestExists> response) {
                 if (response.code() == 200)
                 {
-                    GoldCardRequestExists gcrExist;
-                    gcrExist = response.body();
-                    if (gcrExist.getExist() == true)
+                    CarOptionRequestExists corExist;
+                    corExist = response.body();
+                    if (corExist.getExist() == true)
                     {
                         onTrackPm.setDisplayedChild(2);
                     }
@@ -144,10 +147,10 @@ public class OptionInfoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<GoldCardRequestExists> call, Throwable t) {
+            public void onFailure(Call<CarOptionRequestExists> call, Throwable t) {
                 customToast.show(getLayoutInflater(), OptionInfoActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
             }
-        });*/
+        });
     }
 
     private void createActionBar()
@@ -166,9 +169,9 @@ public class OptionInfoActivity extends AppCompatActivity {
             startActivityForResult(intent, 1);
         }
         else{
-            Intent intent = new Intent(OptionInfoActivity.this, GoldCardRequestActivity.class);
+            Intent intent = new Intent(OptionInfoActivity.this, OptionRequestActivity.class);
             String arrayAsString = new Gson().toJson(carOptionInfo);
-            intent.putExtra("goldCardInfo", arrayAsString);
+            intent.putExtra("carOptionInfo", arrayAsString);
             startActivityForResult(intent, 2);
         }
     }

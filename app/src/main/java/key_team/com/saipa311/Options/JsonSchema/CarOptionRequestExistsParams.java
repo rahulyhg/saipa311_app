@@ -1,4 +1,4 @@
-package key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards;
+package key_team.com.saipa311.Options.JsonSchema;
 
 /**
  * Created by ammorteza on 12/11/17.
@@ -6,20 +6,21 @@ package key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class GoldCardRequestExistsParams {
+public class CarOptionRequestExistsParams {
     @SerializedName("repId")
     @Expose
     private Integer repId;
-    @SerializedName("gcId")
-    @Expose
-    private Integer gcId;
 
-    public Integer getGcId() {
-        return gcId;
+    @SerializedName("coId")
+    @Expose
+    private Integer coId;
+
+    public Integer getCoId() {
+        return coId;
     }
 
-    public void setGcId(Integer gcId) {
-        this.gcId = gcId;
+    public void setCoId(Integer coId) {
+        this.coId = coId;
     }
 
     public Integer getRepId() {

@@ -135,6 +135,7 @@ public class GoldCardInfoActivity extends AppCompatActivity {
 
         GoldCardRequestExistsParams params = new GoldCardRequestExistsParams();
         params.setGcId(goldCardInfo.getId());
+        params.setRepId(1);
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<GoldCardRequestExists> request = client.isNotTrackedGoldCardRequestExist(params);
         request.enqueue(new Callback<GoldCardRequestExists>() {

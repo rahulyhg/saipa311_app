@@ -30,7 +30,10 @@ import key_team.com.saipa311.Customer_services.JsonSchema.CriticismAndSuggestion
 import key_team.com.saipa311.Customer_services.JsonSchema.RegisterComplaintRequestParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Options.JsonSchema.CarOption;
+import key_team.com.saipa311.Options.JsonSchema.CarOptionRequestExists;
+import key_team.com.saipa311.Options.JsonSchema.CarOptionRequestExistsParams;
 import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
+import key_team.com.saipa311.Options.JsonSchema.RegisterCarOptionRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExists;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExistsParams;
@@ -181,4 +184,10 @@ public interface StoreClient {
 
     @POST("app/option/fetchAllData")
     Call<List<CarOption>> fetchAllCarOptions(@Body CarOptionsRequestParams params);
+
+    @POST("app/option/registerRequest")
+    Call<Void> registerCarOptionRequest(@Body RegisterCarOptionRequestParams params);
+
+    @POST("app/option/isNotTrackedRequestExist")
+    Call<CarOptionRequestExists> isNotTrackedCarOptionRequestExist(@Body CarOptionRequestExistsParams params);
 }
