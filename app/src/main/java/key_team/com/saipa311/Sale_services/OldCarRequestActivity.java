@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
@@ -70,6 +71,18 @@ public class OldCarRequestActivity extends AppCompatActivity implements DatePick
         setContentView(R.layout.activity_old_car_request);
         createActionBar();
         init();
+    }
+
+    @Override
+    protected void onPause() {
+        MyCustomApplication.activityPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        MyCustomApplication.activityResumed();
+        super.onResume();
     }
 
     private void createActionBar()

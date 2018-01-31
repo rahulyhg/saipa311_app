@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
@@ -22,6 +24,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import key_team.com.saipa311.Sale_services.SaleServicesFragment;
 import key_team.com.saipa311.Services.MyStartServiceReceiver;
@@ -34,27 +38,102 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mainViewPager;
     private BottomNavigationView bottomNavigationView;
     private MenuItem prevMenuItem;
+    private int intentType;
+    private Toast endToast;
+    private boolean doubleBackToExitPressedOnce = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        this.getIntentType();
+        MyCustomApplication.appCreate();
         this.createActionBar();
         this.createNavigationDrawer();
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
         this.initBottomNavigationView();
         this.setupViewPager();
         this.setNotifService(this);
-/*       FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        this.checkIntentType();
+        this.init();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        this.getIntentType();
+        super.onNewIntent(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        MyCustomApplication.appDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        MyCustomApplication.activityPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        MyCustomApplication.activityResumed();
+        super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT))
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        else {
+            if (doubleBackToExitPressedOnce) {
+                endToast.cancel();
+                finish();
+                super.onBackPressed();
+                return;
             }
-        });*/
+
+            this.doubleBackToExitPressedOnce = true;
+            endToast.setDuration(Toast.LENGTH_SHORT);
+            LayoutInflater inflater = getLayoutInflater();
+            View layout = inflater.inflate(R.layout.custom_toast,null);
+            TextView textView=(TextView)layout.findViewById(R.id.toastText);
+            textView.setText("لطفا برای خروج دو بار لمس کنید");
+            endToast.setDuration(Toast.LENGTH_SHORT);
+            endToast.setView(layout);
+            endToast.show();
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        }
+    }
+
+    private void init()
+    {
+        endToast = new Toast(MainActivity.this);
+    }
+
+    private void checkIntentType()
+    {
+        if (intentType == PublicParams.OPTION_NOTIFICATION_ID)
+        {
+            View view = bottomNavigationView.findViewById(R.id.options);
+            view.performClick();
+        }else if (intentType == PublicParams.EVENT_NOTIFICATION_ID)
+        {
+            mDrawerLayout.openDrawer(Gravity.LEFT);
+        }
+    }
+
+    private void getIntentType()
+    {
+        Intent intent = getIntent();
+        intentType = intent.getIntExtra("notificationType", 0);
     }
 
     private void createNavigationDrawer()

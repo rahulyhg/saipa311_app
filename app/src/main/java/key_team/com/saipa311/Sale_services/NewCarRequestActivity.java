@@ -43,6 +43,7 @@ import key_team.com.saipa311.Auth.JsonSchema.TokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.User;
 import key_team.com.saipa311.Auth.JsonSchema.UserActivationRequestParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
@@ -85,6 +86,18 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         createActionBar();
         init();
         loadOptions();
+    }
+
+    @Override
+    protected void onPause() {
+        MyCustomApplication.activityPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        MyCustomApplication.activityResumed();
+        super.onResume();
     }
 
     private void loadOptions()

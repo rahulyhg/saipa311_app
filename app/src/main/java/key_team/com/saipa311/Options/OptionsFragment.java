@@ -75,6 +75,7 @@ public class OptionsFragment extends Fragment {
         swipeContainer.setRefreshing(true);
         CarOptionsRequestParams params = new CarOptionsRequestParams();
         params.setRepId(1);
+        params.setDeviceId(PublicParams.deviceId(getContext()));
         StoreClient client = ServiceGenerator.createService(StoreClient.class);
         Call<List<CarOption>> request = client.fetchAllCarOptions(params);
         request.enqueue(new Callback<List<CarOption>>() {

@@ -1,6 +1,7 @@
 package key_team.com.saipa311;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
 
@@ -17,20 +18,24 @@ public class MyCustomApplication extends Application {
 
     public static void activityResumed() {
         activityVisible = true;
+        Log.d("MyApplication", "Application is visible");
     }
 
     public static void activityPaused() {
         activityVisible = false;
+        Log.d("MyApplication", "Application is invisible");
     }
 
     public static void appDestroy()
     {
         appIsRunning = false;
+        Log.d("MyApplication", "Application is not running");
     }
 
     public static void appCreate()
     {
         appIsRunning = true;
+        Log.d("MyApplication", "Application is running");
     }
 
     private static boolean activityVisible;

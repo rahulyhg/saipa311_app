@@ -27,6 +27,18 @@ public class PhotoViewer extends AppCompatActivity {
         this.initZoomImageView();
     }
 
+    @Override
+    protected void onPause() {
+        MyCustomApplication.activityPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        MyCustomApplication.activityResumed();
+        super.onResume();
+    }
+
     private void initZoomImageView()
     {
         imageView = (ImageView)findViewById(R.id.imageView);

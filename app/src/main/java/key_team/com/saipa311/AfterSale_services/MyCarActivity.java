@@ -43,6 +43,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardReq
 import key_team.com.saipa311.AfterSale_services.JsonSchema.MyCars.MyCar;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.MyCars.MyCarsRegisterParams;
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
@@ -103,6 +104,18 @@ public class MyCarActivity extends AppCompatActivity implements DatePickerDialog
         loadBuildYear();
         loadLicensePlateLetter();
         getAllCompanyWithProduct();
+    }
+
+    @Override
+    protected void onPause() {
+        MyCustomApplication.activityPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        MyCustomApplication.activityResumed();
+        super.onResume();
     }
 
     private void createActionBar()

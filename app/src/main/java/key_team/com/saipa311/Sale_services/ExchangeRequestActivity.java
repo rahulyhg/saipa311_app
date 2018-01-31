@@ -48,6 +48,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
@@ -100,6 +101,18 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
         loadBuildYear();
         getAllCompanyWithProduct();
         initSlider();
+    }
+
+    @Override
+    protected void onPause() {
+        MyCustomApplication.activityPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        MyCustomApplication.activityResumed();
+        super.onResume();
     }
 
     private void getAllCompanyWithProduct()

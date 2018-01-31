@@ -39,6 +39,7 @@ import key_team.com.saipa311.Customer_services.JsonSchema.RegisterComplaintReque
 import key_team.com.saipa311.Customer_services.JsonSchema.SelectedComplaint;
 import key_team.com.saipa311.Customer_services.JsonSchema.TrackingCode;
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.Exchange.CompanyWithProduct;
@@ -82,6 +83,18 @@ public class RegisterComplaintActivity extends AppCompatActivity implements Date
         createActionBar();
         getAllComplaintTypes();
         init();
+    }
+
+    @Override
+    protected void onPause() {
+        MyCustomApplication.activityPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        MyCustomApplication.activityResumed();
+        super.onResume();
     }
 
     private void createActionBar()

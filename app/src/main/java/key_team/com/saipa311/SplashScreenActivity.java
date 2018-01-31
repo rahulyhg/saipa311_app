@@ -39,6 +39,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        MyCustomApplication.appCreate();
         refreshToken();
         Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.fade_in);
         ImageView imageView = (ImageView)findViewById(R.id.saipa_logo);
@@ -53,6 +54,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                 finish();
             }
         }, 3000);
+    }
+
+    @Override
+    protected void onResume() {
+        MyCustomApplication.activityResumed();
+        super.onResume();
     }
 
     private void refreshToken()

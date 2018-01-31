@@ -58,6 +58,8 @@ import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarCha
 import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarChangePlanRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarRequestExists;
 import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarRequestExistsParams;
+import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOption;
+import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOptionsRequestParams;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -190,4 +192,7 @@ public interface StoreClient {
 
     @POST("app/option/isNotTrackedRequestExist")
     Call<CarOptionRequestExists> isNotTrackedCarOptionRequestExist(@Body CarOptionRequestExistsParams params);
+
+    @POST("app/option/fetchAllUnDeliveredOptions")
+    Call<List<UnDeliveredCarOption>> fetchAllUnDeliveredCarOptions(@Body UnDeliveredCarOptionsRequestParams params);
 }

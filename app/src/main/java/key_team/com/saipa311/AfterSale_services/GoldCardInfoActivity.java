@@ -37,6 +37,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardReq
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExistsParams;
 import key_team.com.saipa311.Auth.LoginActivity;
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.PhotoViewer;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
@@ -68,6 +69,18 @@ public class GoldCardInfoActivity extends AppCompatActivity {
         this.init();
         this.createActionBar();
         this.getData();
+    }
+
+    @Override
+    protected void onPause() {
+        MyCustomApplication.activityPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        MyCustomApplication.activityResumed();
+        super.onResume();
     }
 
     private void init()

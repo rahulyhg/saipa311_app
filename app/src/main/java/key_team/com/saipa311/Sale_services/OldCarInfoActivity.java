@@ -35,6 +35,7 @@ import java.util.HashMap;
 
 import key_team.com.saipa311.Auth.LoginActivity;
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCarRequestExists;
@@ -68,6 +69,18 @@ public class OldCarInfoActivity extends AppCompatActivity {
         this.init();
         this.getData();
         this.initSlider();
+    }
+
+    @Override
+    protected void onPause() {
+        MyCustomApplication.activityPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        MyCustomApplication.activityResumed();
+        super.onResume();
     }
 
     private void init()

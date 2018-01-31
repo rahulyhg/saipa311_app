@@ -52,6 +52,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import key_team.com.saipa311.DB_Management.UserInfo;
+import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
@@ -104,6 +105,18 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
         init();
         loadBuildYear();
         initSlider();
+    }
+
+    @Override
+    protected void onPause() {
+        MyCustomApplication.activityPaused();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        MyCustomApplication.activityResumed();
+        super.onResume();
     }
 
     public void openDatePicker(View  view)

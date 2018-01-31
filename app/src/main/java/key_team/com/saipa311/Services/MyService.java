@@ -19,10 +19,21 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import key_team.com.saipa311.MainActivity;
+import key_team.com.saipa311.Options.JsonSchema.CarOption;
+import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
+import key_team.com.saipa311.ServiceGenerator;
+import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOption;
+import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOptionsRequestParams;
+import key_team.com.saipa311.StoreClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.PUT;
 
 /**
  * Created by Am on 08/31/2015.
@@ -35,6 +46,7 @@ public class MyService extends IntentService {
     //private ArrayList<HashMap<String, Object>> newOffers;
     //private LotusJSONMethods ss;
     //private User user;
+    private List<UnDeliveredCarOption> unDeliveredCarOptions;
     private boolean state;
     private boolean applicationIsVisible = false;
     private boolean applicationIsRunning = false;
@@ -85,29 +97,61 @@ public class MyService extends IntentService {
         }
 
         db.close();*/
-        //sendNotification(MyService.this);
+        //sendEventNotification(MyService.this);
+        this.fetchAllUnDeliveredCarOptions();
+
     }
 
-    private void sendNotification(Context context) {
+    private void fetchAllUnDeliveredCarOptions()
+    {
+        UnDeliveredCarOptionsRequestParams params = new UnDeliveredCarOptionsRequestParams();
+        params.setDeviceId(PublicParams.deviceId(MyService.this));
+        StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        final Call<List<UnDeliveredCarOption>> request = client.fetchAllUnDeliveredCarOptions(params);
+        request.enqueue(new Callback<List<UnDeliveredCarOption>>() {
+            @Override
+            public void onResponse(Call<List<UnDeliveredCarOption>> call, Response<List<UnDeliveredCarOption>> response) {
+                unDeliveredCarOptions = response.body();
+                if (unDeliveredCarOptions.size() > 0)
+                {
+                    sendOptionsNotification(MyService.this);
+                }
+
+                Log.d("my log" , "............. in service car Option request:" + response.code() + " - " + response.body().size());
+            }
+
+            @Override
+            public void onFailure(Call<List<UnDeliveredCarOption>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void sendOptionsNotification(Context context) {
         if (!applicationIsVisible) {
             Intent notificationIntent = new Intent(context, MainActivity.class);
+            notificationIntent.putExtra("notificationType" , PublicParams.OPTION_NOTIFICATION_ID);
+            notificationIntent.setAction( Intent.ACTION_MAIN );
+            notificationIntent.addCategory( Intent.CATEGORY_LAUNCHER );
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             PendingIntent contentIntent;
             if (applicationIsRunning)
-                contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                contentIntent = PendingIntent.getActivity(context, PublicParams.OPTION_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             else
-                contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                contentIntent = PendingIntent.getActivity(context, PublicParams.OPTION_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             Resources res = context.getResources();
 
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context)
-                            .setContentTitle("نمایندگی سایپا")
+                            .setContentTitle("آپشن خودرو")
+                                    //.setContentText("آپشن")
                                     //.setContentText(dailySubscriptionsOffersArrayList.get(0).get("description").toString())
                                     //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
                             .setSmallIcon(R.drawable.ic_action_car)
                             .setAutoCancel(true)
-                            .setTicker("نمایندگی سایپا")
+                            .setTicker("بیشتر ...")
                             .setPriority(Notification.PRIORITY_MAX)
-                            //.setSound((boolean)db.getSetting().get("soundState") == true ? Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound) : null)
+                            .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound))
                             .setVibrate(vibrate)
                             .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_action_car));
 
@@ -115,7 +159,63 @@ public class MyService extends IntentService {
             builder.setContentIntent(contentIntent);
             NotificationCompat.InboxStyle inboxStyle =
                     new NotificationCompat.InboxStyle();
-            inboxStyle.addLine("برای تست");
+/*            for (int i = 0; i < newOffers.size(); i++) {
+
+                inboxStyle.addLine(newOffers.get(i).get("title").toString());
+            }*/
+            for (int i = 0 ; i<unDeliveredCarOptions.size() ; i++)
+            {
+                inboxStyle.addLine(unDeliveredCarOptions.get(i).getOption().getOName().toLowerCase() +
+                        " - " +
+                        unDeliveredCarOptions.get(i).getProduct().getPrSubject().toString() +
+                        " در نمایندگی " +
+                        unDeliveredCarOptions.get(i).getRepresentation().getRName().toString() +
+                        " کد " + unDeliveredCarOptions.get(i).getRepresentation().getRCode().toString());
+            }
+            inboxStyle.setSummaryText("سایپا");
+            builder.setStyle(inboxStyle);
+            NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            nManager.notify(PublicParams.OPTION_NOTIFICATION_ID, builder.build());
+        }
+        else
+        {
+            new playAlarm().execute();
+        }
+    }
+
+    private void sendEventNotification(Context context) {
+        if (!applicationIsVisible) {
+            Intent notificationIntent = new Intent(context, MainActivity.class);
+            notificationIntent.putExtra("notificationType", PublicParams.EVENT_NOTIFICATION_ID);
+            notificationIntent.setAction(Intent.ACTION_MAIN);
+            notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            PendingIntent contentIntent;
+            if (applicationIsRunning)
+                contentIntent = PendingIntent.getActivity(context, PublicParams.EVENT_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            else
+                contentIntent = PendingIntent.getActivity(context, PublicParams.EVENT_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            Resources res = context.getResources();
+
+            NotificationCompat.Builder builder =
+                    new NotificationCompat.Builder(context)
+                            .setContentTitle("نمایندگی سایپا")
+                            .setContentText("رویداد")
+                                    //.setContentText(dailySubscriptionsOffersArrayList.get(0).get("description").toString())
+                                    //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
+                            .setSmallIcon(R.drawable.ic_action_car)
+                            .setAutoCancel(true)
+                            .setTicker("نمایندگی سایپا")
+                            .setPriority(Notification.PRIORITY_MAX)
+                            .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound))
+                            .setVibrate(vibrate)
+                            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_action_car));
+
+
+            builder.setContentIntent(contentIntent);
+            NotificationCompat.InboxStyle inboxStyle =
+                    new NotificationCompat.InboxStyle();
+            inboxStyle.addLine("رویداد");
 /*            for (int i = 0; i < newOffers.size(); i++) {
 
                 inboxStyle.addLine(newOffers.get(i).get("title").toString());
@@ -123,7 +223,7 @@ public class MyService extends IntentService {
             inboxStyle.setSummaryText("سایپا");
             builder.setStyle(inboxStyle);
             NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            nManager.notify(PublicParams.NOTIFICATION_ID, builder.build());
+            nManager.notify(PublicParams.EVENT_NOTIFICATION_ID, builder.build());
         }
         else
         {
