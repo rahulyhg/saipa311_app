@@ -71,6 +71,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_alignRight="@id/tool_bar_notif_btn"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 android:background="@drawable/rounded_view_notif_count">
                 <TextView
                     android:id="@+id/notif_unread_count"
@@ -79,7 +80,6 @@
                     android:textSize="10sp"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:text="5"
                     android:textColor="@android:color/white"/>
             </LinearLayout>
         </RelativeLayout>

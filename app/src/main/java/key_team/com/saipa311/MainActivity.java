@@ -16,6 +16,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,16 +27,38 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import key_team.com.saipa311.Options.JsonSchema.CarOption;
+import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
+import key_team.com.saipa311.Options.OptionInfoActivity;
 import key_team.com.saipa311.Sale_services.SaleServicesFragment;
+import key_team.com.saipa311.Services.JsonSchema.Events.Event;
+import key_team.com.saipa311.Services.JsonSchema.Events.EventRequestParams;
 import key_team.com.saipa311.Services.MyStartServiceReceiver;
 import key_team.com.saipa311.Services.RunState;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-
+    private List<Event> events;
+    private RecyclerView eventRecyclerView;
+    private List<CarOption> eventData;
+    private EventsAdapter eventsAdapter;
+    private ArrayList<eventItem> eventList;
     private DrawerLayout mDrawerLayout;
     private ImageButton toolBarBotifButton;
     private ViewPager mainViewPager;
@@ -56,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         this.setNotifService(this);
         this.checkIntentType();
         this.init();
+        this.fetchAllEvents();
     }
 
     @Override
@@ -116,6 +143,14 @@ public class MainActivity extends AppCompatActivity {
     private void init()
     {
         endToast = new Toast(MainActivity.this);
+        eventList = new ArrayList<>();
+        eventsAdapter = new EventsAdapter(eventList);
+        eventRecyclerView = (RecyclerView)findViewById(R.id.event_recycler_view);
+        eventRecyclerView.addItemDecoration(new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL));
+        eventRecyclerView.setAdapter(eventsAdapter);
+        eventRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(this, R.dimen.recycler_item_offset);
+        eventRecyclerView.addItemDecoration(itemDecoration);
     }
 
     private void checkIntentType()
@@ -256,6 +291,52 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void fetchAllEvents()
+    {
+        EventRequestParams params = new EventRequestParams();
+        params.setDeviceId(PublicParams.deviceId(this));
+        StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        Call<List<Event>> request = client.fetchAllEvents(params);
+        request.enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                if (response.code() == 200) {
+                    events = response.body();
+                    displayUnViewedEvents();
+                    prepareEvents();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void displayUnViewedEvents()
+    {
+        LinearLayout alarm = (LinearLayout)findViewById(R.id.notif_unread_count_alarm);
+        TextView unViewedEvent = (TextView)findViewById(R.id.notif_unread_count);
+        int count = 0;
+        for (int i =0 ; i < events.size() ; i++)
+        {
+            if (events.get(i).getViewed().get(0).getEdViewed() == 0)
+                count++;
+        }
+
+        if (count > 0)
+        {
+            alarm.setVisibility(LinearLayout.VISIBLE);
+            unViewedEvent.setText(count + "");
+        }
+        else
+        {
+            alarm.setVisibility(LinearLayout.GONE);
+            unViewedEvent.setText("");
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -277,4 +358,113 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void prepareEvents()
+    {
+        eventsAdapter.clearData();
+        for (int i=0 ; i < events.size() ; i++) {
+            eventItem a = new eventItem(events.get(i).getESubject(),
+                    events.get(i).getEDescription(),
+                    "نمایندگی " + events.get(i).getRepresentation().getRCode() + " " + events.get(i).getRepresentation().getRName(),
+                    events.get(i).getViewed().get(0).getEdViewed());
+            eventsAdapter.addItem(a);
+        }
+    }
+
+    public class eventItem {
+        String subject;
+        String description;
+        String repInfo;
+        int viewed;
+        public eventItem(String subject, String desc, String repInfo , int viewed) {
+            this.subject = subject;
+            this.description = desc;
+            this.repInfo = repInfo;
+            this.viewed = viewed;
+        }
+
+        public String getSubject() {
+            return this.subject;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getRepInfo() {
+            return repInfo;
+        }
+
+        public int getViewed() {
+            return viewed;
+        }
+    }
+
+    public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsViewHolder> {
+
+        private ArrayList<eventItem> dataSet;
+        public class EventsViewHolder extends RecyclerView.ViewHolder {
+            public TextView subject;
+            public TextView description;
+            public TextView repInfo;
+
+            public EventsViewHolder(View view) {
+                super(view);
+                subject = (TextView) view.findViewById(R.id.subject);
+                description = (TextView) view.findViewById(R.id.description);
+                repInfo = (TextView) view.findViewById(R.id.repInto);
+                view.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        //Log.d("my log" , "............................ " + getAdapterPosition());
+                        Intent intent = new Intent(MainActivity.this, EventInfoActivity.class);
+                        String arrayAsString = new Gson().toJson(events.get(getAdapterPosition()));
+                        intent.putExtra("eventInfo", arrayAsString);
+                        startActivity(intent);
+                        events.get(getAdapterPosition()).getViewed().get(0).setEdViewed(1);
+                        displayUnViewedEvents();
+                        prepareEvents();
+                    }
+                });
+            }
+        }
+
+        public void clearData(){
+            dataSet.clear();
+            eventsAdapter.notifyDataSetChanged();
+        }
+        public EventsAdapter(ArrayList<eventItem> data) {
+            this.dataSet = data;
+        }
+
+        @Override
+        public EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_cardview, parent, false);
+            // view.setOnClickListener(MainActivity.myOnClickListener);
+            EventsViewHolder myViewHolder = new EventsViewHolder(view);
+            return myViewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(final EventsViewHolder holder, final int listPosition) {
+            holder.subject.setText(dataSet.get(listPosition).getSubject());
+            if (dataSet.get(listPosition).getViewed() == 1)
+            {
+                holder.subject.setTypeface(null, Typeface.NORMAL);
+            }
+            holder.description.setText(dataSet.get(listPosition).getDescription());
+            holder.repInfo.setText(dataSet.get(listPosition).getRepInfo());
+        }
+
+        public void addItem(eventItem dataObj) {
+            this.dataSet.add(dataObj);
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getItemCount() {
+            return dataSet.size();
+        }
+    }
+
 }

@@ -27,6 +27,8 @@ import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.ServiceGenerator;
+import key_team.com.saipa311.Services.JsonSchema.Events.UnDeliveredEvent;
+import key_team.com.saipa311.Services.JsonSchema.Events.UnDeliveredEventsRequestParams;
 import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOption;
 import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOptionsRequestParams;
 import key_team.com.saipa311.StoreClient;
@@ -47,6 +49,7 @@ public class MyService extends IntentService {
     //private LotusJSONMethods ss;
     //private User user;
     private List<UnDeliveredCarOption> unDeliveredCarOptions;
+    private List<UnDeliveredEvent> unDeliveredEvents;
     private boolean state;
     private boolean applicationIsVisible = false;
     private boolean applicationIsRunning = false;
@@ -99,6 +102,7 @@ public class MyService extends IntentService {
         db.close();*/
         //sendEventNotification(MyService.this);
         this.fetchAllUnDeliveredCarOptions();
+        this.fetchAllUnDeliveredEvents();
 
     }
 
@@ -112,16 +116,40 @@ public class MyService extends IntentService {
             @Override
             public void onResponse(Call<List<UnDeliveredCarOption>> call, Response<List<UnDeliveredCarOption>> response) {
                 unDeliveredCarOptions = response.body();
-                if (unDeliveredCarOptions.size() > 0)
-                {
+                if (unDeliveredCarOptions.size() > 0) {
                     sendOptionsNotification(MyService.this);
                 }
 
-                Log.d("my log" , "............. in service car Option request:" + response.code() + " - " + response.body().size());
+                Log.d("my log", "............. in service car Option request:" + response.code() + " - " + response.body().size());
             }
 
             @Override
             public void onFailure(Call<List<UnDeliveredCarOption>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void fetchAllUnDeliveredEvents()
+    {
+        UnDeliveredEventsRequestParams params = new UnDeliveredEventsRequestParams();
+        params.setDeviceId(PublicParams.deviceId(MyService.this));
+        StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        final Call<List<UnDeliveredEvent>> request = client.fetchAllUnDeliveredEvents(params);
+        request.enqueue(new Callback<List<UnDeliveredEvent>>() {
+            @Override
+            public void onResponse(Call<List<UnDeliveredEvent>> call, Response<List<UnDeliveredEvent>> response) {
+                unDeliveredEvents = response.body();
+                if (unDeliveredEvents.size() > 0)
+                {
+                    sendEventNotification(MyService.this);
+                }
+
+                Log.d("my log" , "............. in service event request:" + response.code() + " - " + response.body().size());
+            }
+
+            @Override
+            public void onFailure(Call<List<UnDeliveredEvent>> call, Throwable t) {
 
             }
         });
@@ -143,7 +171,7 @@ public class MyService extends IntentService {
 
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context)
-                            .setContentTitle("آپشن خودرو")
+                            .setContentTitle(unDeliveredCarOptions.size() + " آپشن جدید")
                                     //.setContentText("آپشن")
                                     //.setContentText(dailySubscriptionsOffersArrayList.get(0).get("description").toString())
                                     //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
@@ -157,22 +185,17 @@ public class MyService extends IntentService {
 
 
             builder.setContentIntent(contentIntent);
-            NotificationCompat.InboxStyle inboxStyle =
-                    new NotificationCompat.InboxStyle();
-/*            for (int i = 0; i < newOffers.size(); i++) {
-
-                inboxStyle.addLine(newOffers.get(i).get("title").toString());
-            }*/
+            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
             for (int i = 0 ; i<unDeliveredCarOptions.size() ; i++)
             {
-                inboxStyle.addLine(unDeliveredCarOptions.get(i).getOption().getOName().toLowerCase() +
+                inboxStyle.addLine(unDeliveredCarOptions.get(i).getOption().getOName().toString() +
                         " - " +
                         unDeliveredCarOptions.get(i).getProduct().getPrSubject().toString() +
                         " در نمایندگی " +
                         unDeliveredCarOptions.get(i).getRepresentation().getRName().toString() +
                         " کد " + unDeliveredCarOptions.get(i).getRepresentation().getRCode().toString());
             }
-            inboxStyle.setSummaryText("سایپا");
+            //inboxStyle.setSummaryText("سایپا");
             builder.setStyle(inboxStyle);
             NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             nManager.notify(PublicParams.OPTION_NOTIFICATION_ID, builder.build());
@@ -199,13 +222,13 @@ public class MyService extends IntentService {
 
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context)
-                            .setContentTitle("نمایندگی سایپا")
-                            .setContentText("رویداد")
+                            .setContentTitle(unDeliveredEvents.size() + " رویداد جدید")
+                            //.setContentText("رویداد")
                                     //.setContentText(dailySubscriptionsOffersArrayList.get(0).get("description").toString())
                                     //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
                             .setSmallIcon(R.drawable.ic_action_car)
                             .setAutoCancel(true)
-                            .setTicker("نمایندگی سایپا")
+                            .setTicker("بیشتر ...")
                             .setPriority(Notification.PRIORITY_MAX)
                             .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound))
                             .setVibrate(vibrate)
@@ -215,12 +238,15 @@ public class MyService extends IntentService {
             builder.setContentIntent(contentIntent);
             NotificationCompat.InboxStyle inboxStyle =
                     new NotificationCompat.InboxStyle();
-            inboxStyle.addLine("رویداد");
-/*            for (int i = 0; i < newOffers.size(); i++) {
-
-                inboxStyle.addLine(newOffers.get(i).get("title").toString());
-            }*/
-            inboxStyle.setSummaryText("سایپا");
+            for (int i = 0 ; i<unDeliveredEvents.size() ; i++)
+            {
+                inboxStyle.addLine(unDeliveredEvents.get(i).getESubject().toString() +
+                        " - " +
+                        " : نمایندگی " +
+                        unDeliveredEvents.get(i).getRepresentation().getRName().toString() +
+                        " کد " + unDeliveredEvents.get(i).getRepresentation().getRCode().toString());
+            }
+            //inboxStyle.setSummaryText("سایپا");
             builder.setStyle(inboxStyle);
             NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             nManager.notify(PublicParams.EVENT_NOTIFICATION_ID, builder.build());

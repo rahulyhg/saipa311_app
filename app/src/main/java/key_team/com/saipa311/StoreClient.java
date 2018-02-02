@@ -1,5 +1,7 @@
 package key_team.com.saipa311;
 
+import android.view.View;
+
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +60,11 @@ import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarCha
 import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarChangePlanRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarRequestExists;
 import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarRequestExistsParams;
+import key_team.com.saipa311.Services.JsonSchema.Events.ChangeViewStateRequestParams;
+import key_team.com.saipa311.Services.JsonSchema.Events.Event;
+import key_team.com.saipa311.Services.JsonSchema.Events.EventRequestParams;
+import key_team.com.saipa311.Services.JsonSchema.Events.UnDeliveredEvent;
+import key_team.com.saipa311.Services.JsonSchema.Events.UnDeliveredEventsRequestParams;
 import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOption;
 import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOptionsRequestParams;
 import okhttp3.MultipartBody;
@@ -195,4 +202,13 @@ public interface StoreClient {
 
     @POST("app/option/fetchAllUnDeliveredOptions")
     Call<List<UnDeliveredCarOption>> fetchAllUnDeliveredCarOptions(@Body UnDeliveredCarOptionsRequestParams params);
+
+    @POST("app/event/fetchAllEvents")
+    Call<List<Event>> fetchAllEvents(@Body EventRequestParams params);
+
+    @POST("app/event/changeViewState")
+    Call<Void> changeEventViewState(@Body ChangeViewStateRequestParams params);
+
+    @POST("app/event/fetchAllUnDeliveredEvents")
+    Call<List<UnDeliveredEvent>> fetchAllUnDeliveredEvents(@Body UnDeliveredEventsRequestParams params);
 }
