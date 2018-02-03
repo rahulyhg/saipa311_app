@@ -67,6 +67,7 @@ import key_team.com.saipa311.Services.JsonSchema.Events.UnDeliveredEvent;
 import key_team.com.saipa311.Services.JsonSchema.Events.UnDeliveredEventsRequestParams;
 import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOption;
 import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOptionsRequestParams;
+import key_team.com.saipa311.Services.JsonSchema.Surveys.Survey;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -211,4 +212,7 @@ public interface StoreClient {
 
     @POST("app/event/fetchAllUnDeliveredEvents")
     Call<List<UnDeliveredEvent>> fetchAllUnDeliveredEvents(@Body UnDeliveredEventsRequestParams params);
+
+    @POST("app/survey/fetchUnDeliveredForm")
+    Call<Survey> fetchUnDeliveredSurveyForm();
 }

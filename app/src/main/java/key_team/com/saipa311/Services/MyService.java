@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import key_team.com.saipa311.Auth.JsonSchema.User;
+import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MainActivity;
 import key_team.com.saipa311.Options.JsonSchema.CarOption;
 import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
@@ -31,6 +33,7 @@ import key_team.com.saipa311.Services.JsonSchema.Events.UnDeliveredEvent;
 import key_team.com.saipa311.Services.JsonSchema.Events.UnDeliveredEventsRequestParams;
 import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOption;
 import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOptionsRequestParams;
+import key_team.com.saipa311.Services.JsonSchema.Surveys.Survey;
 import key_team.com.saipa311.StoreClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,6 +53,7 @@ public class MyService extends IntentService {
     //private User user;
     private List<UnDeliveredCarOption> unDeliveredCarOptions;
     private List<UnDeliveredEvent> unDeliveredEvents;
+    private Survey survey;
     private boolean state;
     private boolean applicationIsVisible = false;
     private boolean applicationIsRunning = false;
@@ -103,7 +107,9 @@ public class MyService extends IntentService {
         //sendEventNotification(MyService.this);
         this.fetchAllUnDeliveredCarOptions();
         this.fetchAllUnDeliveredEvents();
-
+        if (UserInfo.isLoggedIn()) {
+            fetchUnDeliveredSurveyForm();
+        }
     }
 
     private void fetchAllUnDeliveredCarOptions()
@@ -155,6 +161,68 @@ public class MyService extends IntentService {
         });
     }
 
+    private void fetchUnDeliveredSurveyForm()
+    {
+        StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        final Call<Survey> request = client.fetchUnDeliveredSurveyForm();
+        request.enqueue(new Callback<Survey>() {
+            @Override
+            public void onResponse(Call<Survey> call, Response<Survey> response) {
+                if (response.code() == 200)
+                {
+                    survey = response.body();
+                    sendSurveyNotification(MyService.this);
+                }
+
+                Log.d("my log" , "............. in service survey request:" + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<Survey> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void sendSurveyNotification(Context context) {
+        if (!applicationIsVisible) {
+            Intent notificationIntent = new Intent(context, MainActivity.class);
+            notificationIntent.putExtra("notificationType" , PublicParams.OPTION_NOTIFICATION_ID);
+            notificationIntent.setAction( Intent.ACTION_MAIN );
+            notificationIntent.addCategory( Intent.CATEGORY_LAUNCHER );
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            PendingIntent contentIntent;
+            if (applicationIsRunning)
+                contentIntent = PendingIntent.getActivity(context, PublicParams.OPTION_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            else
+                contentIntent = PendingIntent.getActivity(context, PublicParams.OPTION_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            Resources res = context.getResources();
+
+            NotificationCompat.Builder builder =
+                    new NotificationCompat.Builder(context)
+                            .setContentTitle(" نظر سنجی")
+                            .setContentText("نمایندگی " + survey.getRepresentation().getRCode().toString() + " - " + survey.getRepresentation().getRName().toString())
+                            //.setContentText(dailySubscriptionsOffersArrayList.get(0).get("description").toString())
+                            //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
+                            .setSmallIcon(R.drawable.saipa_notif_icon)
+                            .setAutoCancel(true)
+                            .setTicker("بیشتر ...")
+                            .setPriority(Notification.PRIORITY_MAX)
+                            .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound))
+                            .setVibrate(vibrate)
+                            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.saipa_notif_icon));
+
+
+            builder.setContentIntent(contentIntent);
+            NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            nManager.notify(PublicParams.SURVEY_NOTIFICATION_ID, builder.build());
+        }
+        else
+        {
+            new playAlarm().execute();
+        }
+    }
+
     private void sendOptionsNotification(Context context) {
         if (!applicationIsVisible) {
             Intent notificationIntent = new Intent(context, MainActivity.class);
@@ -171,17 +239,16 @@ public class MyService extends IntentService {
 
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context)
-                            .setContentTitle(unDeliveredCarOptions.size() + " آپشن جدید")
-                                    //.setContentText("آپشن")
-                                    //.setContentText(dailySubscriptionsOffersArrayList.get(0).get("description").toString())
+                            .setContentTitle("آپشن خودرو")
+                            .setContentText(unDeliveredCarOptions.size() + " آپشن جدید" + "در نمایندگی های مختلف")
                                     //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
-                            .setSmallIcon(R.drawable.ic_action_car)
+                            .setSmallIcon(R.drawable.saipa_notif_icon)
                             .setAutoCancel(true)
                             .setTicker("بیشتر ...")
                             .setPriority(Notification.PRIORITY_MAX)
                             .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound))
                             .setVibrate(vibrate)
-                            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_action_car));
+                            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.saipa_notif_icon));
 
 
             builder.setContentIntent(contentIntent);
@@ -222,17 +289,16 @@ public class MyService extends IntentService {
 
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context)
-                            .setContentTitle(unDeliveredEvents.size() + " رویداد جدید")
-                            //.setContentText("رویداد")
-                                    //.setContentText(dailySubscriptionsOffersArrayList.get(0).get("description").toString())
+                            .setContentTitle("رویدادهای نمایندگی")
+                            .setContentText(unDeliveredEvents.size() + " رویداد جدید")
                                     //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
-                            .setSmallIcon(R.drawable.ic_action_car)
+                            .setSmallIcon(R.drawable.saipa_notif_icon)
                             .setAutoCancel(true)
                             .setTicker("بیشتر ...")
                             .setPriority(Notification.PRIORITY_MAX)
                             .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound))
                             .setVibrate(vibrate)
-                            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_action_car));
+                            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.saipa_notif_icon));
 
 
             builder.setContentIntent(contentIntent);
