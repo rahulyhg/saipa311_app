@@ -35,6 +35,7 @@ import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOption;
 import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOptionsRequestParams;
 import key_team.com.saipa311.Services.JsonSchema.Surveys.Survey;
 import key_team.com.saipa311.StoreClient;
+import key_team.com.saipa311.SurveyFormActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -186,14 +187,14 @@ public class MyService extends IntentService {
 
     private void sendSurveyNotification(Context context) {
         if (!applicationIsVisible) {
-            Intent notificationIntent = new Intent(context, MainActivity.class);
-            notificationIntent.putExtra("notificationType" , PublicParams.OPTION_NOTIFICATION_ID);
-            notificationIntent.setAction( Intent.ACTION_MAIN );
-            notificationIntent.addCategory( Intent.CATEGORY_LAUNCHER );
-            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            Intent notificationIntent = new Intent(context, SurveyFormActivity.class);
+            notificationIntent.putExtra("surveyFormId" , survey.getId());
+            notificationIntent.setAction(Intent.ACTION_MAIN );
+            notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER );
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent contentIntent;
             if (applicationIsRunning)
-                contentIntent = PendingIntent.getActivity(context, PublicParams.OPTION_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                contentIntent = PendingIntent.getActivity(context, PublicParams.OPTION_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             else
                 contentIntent = PendingIntent.getActivity(context, PublicParams.OPTION_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             Resources res = context.getResources();
@@ -204,7 +205,7 @@ public class MyService extends IntentService {
                             .setContentText("نمایندگی " + survey.getRepresentation().getRCode().toString() + " - " + survey.getRepresentation().getRName().toString())
                             //.setContentText(dailySubscriptionsOffersArrayList.get(0).get("description").toString())
                             //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
-                            .setSmallIcon(R.drawable.saipa_notif_icon)
+                            .setSmallIcon(R.drawable.saipa_notif_icon_small)
                             .setAutoCancel(true)
                             .setTicker("بیشتر ...")
                             .setPriority(Notification.PRIORITY_MAX)
@@ -242,7 +243,7 @@ public class MyService extends IntentService {
                             .setContentTitle("آپشن خودرو")
                             .setContentText(unDeliveredCarOptions.size() + " آپشن جدید" + "در نمایندگی های مختلف")
                                     //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
-                            .setSmallIcon(R.drawable.saipa_notif_icon)
+                            .setSmallIcon(R.drawable.saipa_notif_icon_small)
                             .setAutoCancel(true)
                             .setTicker("بیشتر ...")
                             .setPriority(Notification.PRIORITY_MAX)
@@ -292,7 +293,7 @@ public class MyService extends IntentService {
                             .setContentTitle("رویدادهای نمایندگی")
                             .setContentText(unDeliveredEvents.size() + " رویداد جدید")
                                     //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
-                            .setSmallIcon(R.drawable.saipa_notif_icon)
+                            .setSmallIcon(R.drawable.saipa_notif_icon_small)
                             .setAutoCancel(true)
                             .setTicker("بیشتر ...")
                             .setPriority(Notification.PRIORITY_MAX)

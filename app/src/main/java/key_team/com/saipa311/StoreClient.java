@@ -67,7 +67,11 @@ import key_team.com.saipa311.Services.JsonSchema.Events.UnDeliveredEvent;
 import key_team.com.saipa311.Services.JsonSchema.Events.UnDeliveredEventsRequestParams;
 import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOption;
 import key_team.com.saipa311.Services.JsonSchema.Options.UnDeliveredCarOptionsRequestParams;
+import key_team.com.saipa311.Services.JsonSchema.Surveys.CauseOfReferral;
 import key_team.com.saipa311.Services.JsonSchema.Surveys.Survey;
+import key_team.com.saipa311.Services.JsonSchema.Surveys.SurveyForm;
+import key_team.com.saipa311.Services.JsonSchema.Surveys.SurveyFormRequestParams;
+import key_team.com.saipa311.Services.JsonSchema.Surveys.SurveyQuestion;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -215,4 +219,13 @@ public interface StoreClient {
 
     @POST("app/survey/fetchUnDeliveredForm")
     Call<Survey> fetchUnDeliveredSurveyForm();
+
+    @POST("causeOfReferral/getAllItem")
+    Call<List<CauseOfReferral>> fetchAllCauseOfReferrals();
+
+    @POST("surveyQuestion/getAllQuestionAndAnswer")
+    Call<List<SurveyQuestion>> fetchAllSurveyQuestions();
+
+    @POST("app/survey/fetchFormWithId")
+    Call<SurveyForm> fetchSurveyForm(@Body SurveyFormRequestParams params);
 }
