@@ -56,6 +56,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     private List<Event> events;
     private RecyclerView eventRecyclerView;
+    private MainViewPagerAdapter adapter;
     private List<CarOption> eventData;
     private EventsAdapter eventsAdapter;
     private ArrayList<eventItem> eventList;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private int intentType;
     private Toast endToast;
     private boolean doubleBackToExitPressedOnce = false;
+    private NoInternetConnectionDialog noInternetConnectionDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,11 +80,10 @@ public class MainActivity extends AppCompatActivity {
         this.createActionBar();
         this.createNavigationDrawer();
         this.initBottomNavigationView();
+        this.init();
         this.setupViewPager();
         this.setNotifService(this);
         this.checkIntentType();
-        this.init();
-        this.fetchAllEvents();
     }
 
     @Override
@@ -151,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
         eventRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(this, R.dimen.recycler_item_offset);
         eventRecyclerView.addItemDecoration(itemDecoration);
+        noInternetConnectionDialog = new NoInternetConnectionDialog(this);
     }
 
     private void checkIntentType()
@@ -258,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
     {
         mainViewPager = (ViewPager)findViewById(R.id.viewpager);
         mainViewPager.setOffscreenPageLimit(4);
-        MainViewPagerAdapter adapter = new MainViewPagerAdapter(getSupportFragmentManager() , 4);
+        adapter = new MainViewPagerAdapter(getSupportFragmentManager() , 4);
         mainViewPager.setAdapter(adapter);
         mainViewPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -289,29 +291,53 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        if (PublicParams.getConnectionState(this))
+        {
+            this.fetchAllEvents();
+        }else{
+            noInternetConnectionDialog.show(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setupViewPager();
+                    noInternetConnectionDialog.hide();
+                    fetchAllEvents();
+                }
+            });
+        }
     }
 
     private void fetchAllEvents()
     {
-        EventRequestParams params = new EventRequestParams();
-        params.setDeviceId(PublicParams.deviceId(this));
-        StoreClient client = ServiceGenerator.createService(StoreClient.class);
-        Call<List<Event>> request = client.fetchAllEvents(params);
-        request.enqueue(new Callback<List<Event>>() {
-            @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                if (response.code() == 200) {
-                    events = response.body();
-                    displayUnViewedEvents();
-                    prepareEvents();
+        if (PublicParams.getConnectionState(this)) {
+            EventRequestParams params = new EventRequestParams();
+            params.setDeviceId(PublicParams.deviceId(this));
+            StoreClient client = ServiceGenerator.createService(StoreClient.class);
+            Call<List<Event>> request = client.fetchAllEvents(params);
+            request.enqueue(new Callback<List<Event>>() {
+                @Override
+                public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                    if (response.code() == 200) {
+                        events = response.body();
+                        displayUnViewedEvents();
+                        prepareEvents();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
+                @Override
+                public void onFailure(Call<List<Event>> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }else{
+            noInternetConnectionDialog.show(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    noInternetConnectionDialog.hide();
+                    fetchAllEvents();
+                }
+            });
+        }
     }
 
     private void displayUnViewedEvents()

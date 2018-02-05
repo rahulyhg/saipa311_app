@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="عدم اتصال به اینترنت"
+                        android:textSize="@dimen/textSizeNormal"
+                        android:textStyle="bold"
+                        android:gravity="right"
+                        android:textColor="@android:color/black"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="شما به اینترنت متصل نیستید، برای ادامه استفاده از برنامه به اینترنت متصل شوید."
+                        android:gravity="right"
+                        android:textSize="@dimen/textSizeNormal"
+                        android:textColor="@color/bottom_nav_color"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="1px"
+                    android:background="#DBE0E0"
+                    android:weightSum="2">
+                    <TextView
+                        android:id="@+id/reTry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:foregroundGravity="center"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:background="@android:color/white"
+                        android:textColor="@android:color/black"
+                        android:text="تلاش مجدد"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+</LinearLayout>

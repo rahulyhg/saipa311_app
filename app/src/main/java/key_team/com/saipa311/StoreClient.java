@@ -72,6 +72,7 @@ import key_team.com.saipa311.Services.JsonSchema.Surveys.Survey;
 import key_team.com.saipa311.Services.JsonSchema.Surveys.SurveyForm;
 import key_team.com.saipa311.Services.JsonSchema.Surveys.SurveyFormRequestParams;
 import key_team.com.saipa311.Services.JsonSchema.Surveys.SurveyQuestion;
+import key_team.com.saipa311.Services.JsonSchema.Surveys.UserSurveyAnswerRegisterRequestParams;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -228,4 +229,7 @@ public interface StoreClient {
 
     @POST("app/survey/fetchFormWithId")
     Call<SurveyForm> fetchSurveyForm(@Body SurveyFormRequestParams params);
+
+    @POST("app/survey/register")
+    Call<Void> registerUserSurveyAnswer(@Body UserSurveyAnswerRegisterRequestParams params);
 }
