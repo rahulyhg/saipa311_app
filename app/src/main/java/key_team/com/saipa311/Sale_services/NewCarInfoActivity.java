@@ -1,5 +1,6 @@
 package key_team.com.saipa311.Sale_services;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -11,6 +12,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -79,7 +81,6 @@ public class NewCarInfoActivity extends AppCompatActivity {
         this.init();
         this.createActionBar();
         this.getData();
-        this.initSlider();
     }
 
     @Override
@@ -94,6 +95,30 @@ public class NewCarInfoActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
+            }
+        });
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
+                dTemp.dismiss();
+            }
+        });
+    }
+
     private void init()
     {
         this.onTrackPm = (ViewFlipper)findViewById(R.id.onTrackPm);
@@ -106,23 +131,21 @@ public class NewCarInfoActivity extends AppCompatActivity {
 
         if (UserInfo.isLoggedIn()) {
             existNotTrackedRequest();
-        }
-        else{
+        } else {
             onTrackPm.setDisplayedChild(1);
         }
 
-        title = (TextView)findViewById(R.id.title);
-        isConditions = (TextView)findViewById(R.id.isConditions);
-        price = (TextView)findViewById(R.id.price);
-        description = (TextView)findViewById(R.id.description);
-        conditionImagePart = (CardView)findViewById(R.id.conditionImagePart);
+        title = (TextView) findViewById(R.id.title);
+        isConditions = (TextView) findViewById(R.id.isConditions);
+        price = (TextView) findViewById(R.id.price);
+        description = (TextView) findViewById(R.id.description);
+        conditionImagePart = (CardView) findViewById(R.id.conditionImagePart);
 
         title.setText(newCarInfo.getProduct().getPrSubject());
         if (newCarInfo.getNcConditions() == 0) {
             isConditions.setVisibility(View.GONE);
             conditionImagePart.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             isConditions.setVisibility(View.VISIBLE);
             conditionImagePart.setVisibility(View.VISIBLE);
         }
@@ -154,7 +177,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
         //subject.setTextSize(R.dimen.textSizeSmall);
         tr.addView(ncWheelbase_subject);
         tr.setBackgroundColor(getResources().getColor(R.color.background_color_light));
-        tr.setPadding(8 , 15 , 8 , 15);
+        tr.setPadding(8, 15, 8, 15);
         ts.addView(tr, tr_params);
         /////////////////////////////
         TableRow tr1 = new TableRow(this);
@@ -424,11 +447,9 @@ public class NewCarInfoActivity extends AppCompatActivity {
         ts.addView(tr13, tr_params);
         /////////////////////////////
         String colors = "";
-        for (int i=0 ; i < newCarInfo.getNewCarColor().size() ; i++)
-        {
+        for (int i = 0; i < newCarInfo.getNewCarColor().size(); i++) {
             colors += newCarInfo.getNewCarColor().get(i).getColor().getCSubject();
-            if (i < newCarInfo.getNewCarColor().size() - 1)
-            {
+            if (i < newCarInfo.getNewCarColor().size() - 1) {
                 colors += " , ";
             }
         }
@@ -514,8 +535,8 @@ public class NewCarInfoActivity extends AppCompatActivity {
         tr17.setPadding(8, 15, 8, 15);
         ts.addView(tr17, tr_params);
 
-        conditionImg = (ImageView)findViewById(R.id.condition);
-        Log.d("............" , PublicParams.BASE_URL + newCarInfo.getNcTermsOfSaleImg());
+        conditionImg = (ImageView) findViewById(R.id.condition);
+        Log.d("............", PublicParams.BASE_URL + newCarInfo.getNcTermsOfSaleImg());
         Picasso.with(NewCarInfoActivity.this)
                 .load(PublicParams.BASE_URL + newCarInfo.getNcTermsOfSaleImg())
                 .placeholder(R.drawable.place_holder)
@@ -532,6 +553,10 @@ public class NewCarInfoActivity extends AppCompatActivity {
 
                     }
                 });
+        this.initSlider();
+        if (!PublicParams.getConnectionState(this)){
+            displayNoInternetConnectionError();
+        }
     }
 
     private void existNotTrackedRequest()
@@ -580,6 +605,7 @@ public class NewCarInfoActivity extends AppCompatActivity {
     private void initSlider()
     {
         mDemoSlider = (SliderLayout)findViewById(R.id.slider);
+        mDemoSlider.removeAllSliders();
         HashMap<String,String> file_maps = new HashMap<String, String>();
         for (int i = 0 ; i < newCarInfo.getNewCarImage().size() ; i++ )
         {

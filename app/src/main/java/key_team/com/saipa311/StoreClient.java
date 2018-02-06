@@ -36,6 +36,7 @@ import key_team.com.saipa311.Options.JsonSchema.CarOptionRequestExists;
 import key_team.com.saipa311.Options.JsonSchema.CarOptionRequestExistsParams;
 import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
 import key_team.com.saipa311.Options.JsonSchema.RegisterCarOptionRequestParams;
+import key_team.com.saipa311.Representations.JsonSchema.Representation;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExists;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExistsParams;
@@ -232,4 +233,7 @@ public interface StoreClient {
 
     @POST("app/survey/register")
     Call<Void> registerUserSurveyAnswer(@Body UserSurveyAnswerRegisterRequestParams params);
+
+    @POST("app/representation/fetchAllItems")
+    Call<List<Representation>> fetchAllRepresentations();
 }

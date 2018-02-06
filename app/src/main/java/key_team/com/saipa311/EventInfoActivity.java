@@ -1,5 +1,6 @@
 package key_team.com.saipa311;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -9,6 +10,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -59,8 +61,6 @@ public class EventInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event_info);
         this.createActionBar();
         this.getData();
-        this.initSlider();
-        this.changeViewState();
     }
 
     @Override
@@ -73,6 +73,30 @@ public class EventInfoActivity extends AppCompatActivity {
     protected void onResume() {
         MyCustomApplication.activityResumed();
         super.onResume();
+    }
+
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
+            }
+        });
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
+                dTemp.dismiss();
+            }
+        });
     }
 
     private void changeViewState()
@@ -96,20 +120,27 @@ public class EventInfoActivity extends AppCompatActivity {
     {
         String eventInfo_string = getIntent().getExtras().getString("eventInfo");
         eventInfo = new Gson().fromJson(eventInfo_string, Event.class);
+        if (PublicParams.getConnectionState(this)) {
+            title = (TextView) findViewById(R.id.title);
+            repInfo = (TextView) findViewById(R.id.repInto);
+            description = (TextView) findViewById(R.id.description);
 
-        title = (TextView)findViewById(R.id.title);
-        repInfo = (TextView)findViewById(R.id.repInto);
-        description = (TextView)findViewById(R.id.description);
+            title.setText(eventInfo.getESubject());
+            repInfo.setText("نمایندگی " + eventInfo.getRepresentation().getRCode() + " " + eventInfo.getRepresentation().getRName());
 
-        title.setText(eventInfo.getESubject());
-        repInfo.setText("نمایندگی " + eventInfo.getRepresentation().getRCode() + " " + eventInfo.getRepresentation().getRName());
-
-        description.setText(eventInfo.getEDescription());
+            description.setText(eventInfo.getEDescription());
+            this.initSlider();
+            this.changeViewState();
+        }else{
+            this.initSlider();
+            displayNoInternetConnectionError();
+        }
     }
 
     private void initSlider()
     {
         mDemoSlider = (SliderLayout)findViewById(R.id.slider);
+        mDemoSlider.removeAllSliders();
         HashMap<String,String> file_maps = new HashMap<String, String>();
         for (int i = 0 ; i < eventInfo.getEventImg().size() ; i++ )
         {

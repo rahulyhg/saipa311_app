@@ -1,5 +1,6 @@
 package key_team.com.saipa311.AfterSale_services;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -9,6 +10,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -83,6 +85,30 @@ public class GoldCardInfoActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
+            }
+        });
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
+                dTemp.dismiss();
+            }
+        });
+    }
+
     private void init()
     {
         this.onTrackPm = (ViewFlipper)findViewById(R.id.onTrackPm);
@@ -108,38 +134,41 @@ public class GoldCardInfoActivity extends AppCompatActivity {
         String goldCardInfo_string = getIntent().getExtras().getString("goldCardInfo");
         goldCardInfo = new Gson().fromJson(goldCardInfo_string, GoldCard.class);
 
-        if (UserInfo.isLoggedIn()) {
-            existNotTrackedRequest();
+        if (PublicParams.getConnectionState(this)) {
+            if (UserInfo.isLoggedIn()) {
+                existNotTrackedRequest();
+            } else {
+                onTrackPm.setDisplayedChild(1);
+            }
+
+            subject = (TextView) findViewById(R.id.subject);
+            price = (TextView) findViewById(R.id.price);
+            description = (TextView) findViewById(R.id.description);
+
+            subject.setText(goldCardInfo.getGcSubject());
+            price.setText(goldCardInfo.getGcPrice());
+            price.setTypeface(PublicParams.BYekan(this));
+            description.setText(goldCardInfo.getGcDescription());
+            cardImg = (ImageView) findViewById(R.id.goldCardImg);
+            Picasso.with(GoldCardInfoActivity.this)
+                    .load(PublicParams.BASE_URL + goldCardInfo.getGcImgPath())
+                    .placeholder(R.drawable.gold_card_place_holder)
+                    .error(R.drawable.oops)
+                    .fit()
+                    .centerInside()
+                    .into(cardImg, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+        }else{
+            displayNoInternetConnectionError();
         }
-        else{
-            onTrackPm.setDisplayedChild(1);
-        }
-
-        subject = (TextView)findViewById(R.id.subject);
-        price = (TextView)findViewById(R.id.price);
-        description = (TextView)findViewById(R.id.description);
-
-        subject.setText(goldCardInfo.getGcSubject());
-        price.setText(goldCardInfo.getGcPrice());
-        price.setTypeface(PublicParams.BYekan(this));
-        description.setText(goldCardInfo.getGcDescription());
-        cardImg = (ImageView)findViewById(R.id.goldCardImg);
-        Picasso.with(GoldCardInfoActivity.this)
-                .load(PublicParams.BASE_URL + goldCardInfo.getGcImgPath())
-                .placeholder(R.drawable.gold_card_place_holder)
-                .error(R.drawable.oops)
-                .fit()
-                .centerInside()
-                .into(cardImg, new com.squareup.picasso.Callback() {
-                    @Override
-                    public void onSuccess() {
-                    }
-
-                    @Override
-                    public void onError() {
-
-                    }
-                });
     }
 
     private void existNotTrackedRequest()

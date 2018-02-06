@@ -98,9 +98,6 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
         setContentView(R.layout.activity_exchange_request);
         createActionBar();
         init();
-        loadBuildYear();
-        getAllCompanyWithProduct();
-        initSlider();
     }
 
     @Override
@@ -113,6 +110,30 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
     protected void onResume() {
         MyCustomApplication.activityResumed();
         super.onResume();
+    }
+
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
+            }
+        });
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                init();
+                dTemp.dismiss();
+            }
+        });
     }
 
     private void getAllCompanyWithProduct()
@@ -434,6 +455,15 @@ public class ExchangeRequestActivity extends AppCompatActivity implements DatePi
                 floatingActionsMenu.collapse();
             }
         });
+
+        if (PublicParams.getConnectionState(this))
+        {
+            loadBuildYear();
+            getAllCompanyWithProduct();
+            initSlider();
+        }else{
+            displayNoInternetConnectionError();
+        }
     }
 
     private boolean allowAttacheImage()

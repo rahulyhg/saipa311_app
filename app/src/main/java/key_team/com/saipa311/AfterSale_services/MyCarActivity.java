@@ -100,10 +100,6 @@ public class MyCarActivity extends AppCompatActivity implements DatePickerDialog
         setContentView(R.layout.activity_my_car);
         createActionBar();
         init();
-        fetchMyCars();
-        loadBuildYear();
-        loadLicensePlateLetter();
-        getAllCompanyWithProduct();
     }
 
     @Override
@@ -116,6 +112,30 @@ public class MyCarActivity extends AppCompatActivity implements DatePickerDialog
     protected void onResume() {
         MyCustomApplication.activityResumed();
         super.onResume();
+    }
+
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
+            }
+        });
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                init();
+                dTemp.dismiss();
+            }
+        });
     }
 
     private void createActionBar()
@@ -383,6 +403,16 @@ public class MyCarActivity extends AppCompatActivity implements DatePickerDialog
         myCarAdapter = new MyCarsAdapter(myCarList);
         recyclerView.setAdapter(myCarAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        if (PublicParams.getConnectionState(this))
+        {
+            fetchMyCars();
+            loadBuildYear();
+            loadLicensePlateLetter();
+            getAllCompanyWithProduct();
+        }else{
+            displayNoInternetConnectionError();
+        }
 
     }
 

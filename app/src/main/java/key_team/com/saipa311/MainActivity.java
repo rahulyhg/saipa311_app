@@ -1,9 +1,11 @@
 package key_team.com.saipa311;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -15,6 +17,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -68,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
     private int intentType;
     private Toast endToast;
     private boolean doubleBackToExitPressedOnce = false;
-    private NoInternetConnectionDialog noInternetConnectionDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
         this.createNavigationDrawer();
         this.initBottomNavigationView();
         this.init();
-        this.setupViewPager();
         this.setNotifService(this);
         this.checkIntentType();
+        this.setupViewPager();
     }
 
     @Override
@@ -152,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
         eventRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(this, R.dimen.recycler_item_offset);
         eventRecyclerView.addItemDecoration(itemDecoration);
-        noInternetConnectionDialog = new NoInternetConnectionDialog(this);
     }
 
     private void checkIntentType()
@@ -258,86 +259,94 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager()
     {
-        mainViewPager = (ViewPager)findViewById(R.id.viewpager);
-        mainViewPager.setOffscreenPageLimit(4);
-        adapter = new MainViewPagerAdapter(getSupportFragmentManager() , 4);
-        mainViewPager.setAdapter(adapter);
-        mainViewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
-        mainViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (prevMenuItem != null) {
-                    prevMenuItem.setChecked(false);
-                } else {
-                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
-                }
-
-                bottomNavigationView.getMenu().getItem(position).setChecked(true);
-                prevMenuItem = bottomNavigationView.getMenu().getItem(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
 
         if (PublicParams.getConnectionState(this))
         {
-            this.fetchAllEvents();
-        }else{
-            noInternetConnectionDialog.show(new View.OnClickListener() {
+            mainViewPager = (ViewPager)findViewById(R.id.viewpager);
+            mainViewPager.setOffscreenPageLimit(4);
+            adapter = new MainViewPagerAdapter(getSupportFragmentManager() , 4);
+            mainViewPager.setAdapter(adapter);
+            mainViewPager.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View v) {
-                    setupViewPager();
-                    noInternetConnectionDialog.hide();
-                    fetchAllEvents();
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
                 }
             });
+            mainViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (prevMenuItem != null) {
+                        prevMenuItem.setChecked(false);
+                    } else {
+                        bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                    }
+
+                    bottomNavigationView.getMenu().getItem(position).setChecked(true);
+                    prevMenuItem = bottomNavigationView.getMenu().getItem(position);
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+            this.fetchAllEvents();
+        }else{
+            displayNoInternetConnectionError();
         }
     }
 
     private void fetchAllEvents()
     {
-        if (PublicParams.getConnectionState(this)) {
-            EventRequestParams params = new EventRequestParams();
-            params.setDeviceId(PublicParams.deviceId(this));
-            StoreClient client = ServiceGenerator.createService(StoreClient.class);
-            Call<List<Event>> request = client.fetchAllEvents(params);
-            request.enqueue(new Callback<List<Event>>() {
-                @Override
-                public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                    if (response.code() == 200) {
-                        events = response.body();
-                        displayUnViewedEvents();
-                        prepareEvents();
-                    }
+        EventRequestParams params = new EventRequestParams();
+        params.setDeviceId(PublicParams.deviceId(this));
+        StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        Call<List<Event>> request = client.fetchAllEvents(params);
+        request.enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                if (response.code() == 200) {
+                    events = response.body();
+                    displayUnViewedEvents();
+                    prepareEvents();
                 }
+            }
 
-                @Override
-                public void onFailure(Call<List<Event>> call, Throwable t) {
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
 
-                }
-            });
-        }else{
-            noInternetConnectionDialog.show(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    noInternetConnectionDialog.hide();
-                    fetchAllEvents();
-                }
-            });
-        }
+            }
+        });
+    }
+
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
+            }
+        });
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupViewPager();
+                dTemp.dismiss();
+            }
+        });
+
     }
 
     private void displayUnViewedEvents()

@@ -85,7 +85,6 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         setContentView(R.layout.activity_new_car_request);
         createActionBar();
         init();
-        loadOptions();
     }
 
     @Override
@@ -98,6 +97,30 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
     protected void onResume() {
         MyCustomApplication.activityResumed();
         super.onResume();
+    }
+
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
+            }
+        });
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                init();
+                dTemp.dismiss();
+            }
+        });
     }
 
     private void loadOptions()
@@ -332,6 +355,14 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         carColor.setAdapter(adapter);
+
+        if (PublicParams.getConnectionState(this))
+        {
+            loadOptions();
+        }else
+        {
+            displayNoInternetConnectionError();
+        }
     }
 
     public boolean validate() {

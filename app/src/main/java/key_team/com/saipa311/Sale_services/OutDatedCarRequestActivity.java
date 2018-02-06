@@ -103,8 +103,6 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
         setContentView(R.layout.activity_out_dated_car_request);
         createActionBar();
         init();
-        loadBuildYear();
-        initSlider();
     }
 
     @Override
@@ -117,6 +115,30 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
     protected void onResume() {
         MyCustomApplication.activityResumed();
         super.onResume();
+    }
+
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
+            }
+        });
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                init();
+                dTemp.dismiss();
+            }
+        });
     }
 
     public void openDatePicker(View  view)
@@ -382,6 +404,13 @@ public class OutDatedCarRequestActivity extends AppCompatActivity implements Dat
                 floatingActionsMenu.collapse();
             }
         });
+
+        loadBuildYear();
+        initSlider();
+        if (!PublicParams.getConnectionState(this))
+        {
+            displayNoInternetConnectionError();
+        }
     }
 
     private boolean allowAttacheImage()

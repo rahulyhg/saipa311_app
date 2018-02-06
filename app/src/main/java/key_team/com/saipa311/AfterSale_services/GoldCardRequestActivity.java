@@ -25,6 +25,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardReq
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
+import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestRequestParams;
@@ -188,53 +189,82 @@ public class GoldCardRequestActivity extends AppCompatActivity implements DatePi
         builder.show();
     }
 
-    private void init()
-    {
+    private void init() {
         String goldCardInfo_string = getIntent().getExtras().getString("goldCardInfo");
         goldCardInfo = new Gson().fromJson(goldCardInfo_string, GoldCard.class);
+        if (PublicParams.getConnectionState(this))
+        {
+            UserInfo userInfo = UserInfo.getUserInfo();
+            viewFlipper = (ViewFlipper) findViewById(R.id.view_flipper);
+            birthDate = (EditText) findViewById(R.id.btn_birthDate);
+            subject = (EditText) findViewById(R.id.input_subject);
+            chassisIdNumber = (EditText) findViewById(R.id.input_chassisIdNumber);
+            name = (EditText) findViewById(R.id.input_name);
+            fatherName = (EditText) findViewById(R.id.input_fatherName);
+            idNumber = (EditText) findViewById(R.id.input_idNumber);
+            nationalCode = (EditText) findViewById(R.id.input_nationalCode);
+            address = (EditText) findViewById(R.id.input_address);
+            description = (EditText) findViewById(R.id.input_description);
+            mobile = (EditText) findViewById(R.id.input_mobile);
 
-        UserInfo userInfo = UserInfo.getUserInfo();
-        viewFlipper = (ViewFlipper)findViewById(R.id.view_flipper);
-        birthDate = (EditText)findViewById(R.id.btn_birthDate);
-        subject = (EditText)findViewById(R.id.input_subject);
-        chassisIdNumber = (EditText)findViewById(R.id.input_chassisIdNumber);
-        name = (EditText)findViewById(R.id.input_name);
-        fatherName = (EditText)findViewById(R.id.input_fatherName);
-        idNumber = (EditText)findViewById(R.id.input_idNumber);
-        nationalCode = (EditText)findViewById(R.id.input_nationalCode);
-        address = (EditText)findViewById(R.id.input_address);
-        description = (EditText)findViewById(R.id.input_description);
-        mobile = (EditText)findViewById(R.id.input_mobile);
+            subject.setText(goldCardInfo.getGcSubject());
+            name.setText(userInfo.name);
+            fatherName.setText(userInfo.fatherName);
+            idNumber.setText(userInfo.idNumber);
+            nationalCode.setText(userInfo.nationalCode);
+            mobile.setText(userInfo.mobile);
+            address.setText(userInfo.address);
 
-        subject.setText(goldCardInfo.getGcSubject());
-        name.setText(userInfo.name);
-        fatherName.setText(userInfo.fatherName);
-        idNumber.setText(userInfo.idNumber);
-        nationalCode.setText(userInfo.nationalCode);
-        mobile.setText(userInfo.mobile);
-        address.setText(userInfo.address);
-
-        birthDate.setText(userInfo.birthDate == null ? "" : userInfo.birthDate);
-        birthDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    PersianCalendar now = new PersianCalendar();
-                    now.setPersianDate(1370, 5, 5);
-                    DatePickerDialog dpd = DatePickerDialog.newInstance(
-                            GoldCardRequestActivity.this,
-                            now.getPersianYear(),
-                            now.getPersianMonth(),
-                            now.getPersianDay()
-                    );
-                    dpd.setThemeDark(false);
-                    dpd.setYearRange(1300, new PersianCalendar().getPersianYear() - 1);
-                    dpd.show(getFragmentManager(), "tpd");
+            birthDate.setText(userInfo.birthDate == null ? "" : userInfo.birthDate);
+            birthDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        PersianCalendar now = new PersianCalendar();
+                        now.setPersianDate(1370, 5, 5);
+                        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                                GoldCardRequestActivity.this,
+                                now.getPersianYear(),
+                                now.getPersianMonth(),
+                                now.getPersianDay()
+                        );
+                        dpd.setThemeDark(false);
+                        dpd.setYearRange(1300, new PersianCalendar().getPersianYear() - 1);
+                        dpd.show(getFragmentManager(), "tpd");
+                    }
                 }
+            });
+
+            progressDialog = new MyProgressDialog(GoldCardRequestActivity.this);
+        }
+        else
+        {
+            displayNoInternetConnectionError();
+        }
+    }
+
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
             }
         });
-
-        progressDialog = new MyProgressDialog(GoldCardRequestActivity.this);
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                init();
+                dTemp.dismiss();
+            }
+        });
     }
 
     public boolean validate() {

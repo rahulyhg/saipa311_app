@@ -185,163 +185,172 @@ public class LoginActivity extends AppCompatActivity {
 
     private void getNewActivationCode()
     {
-        progressDialog.start();
-        NewActivationCodeRequestParams params = new NewActivationCodeRequestParams();
-        params.setId(registerUserResult.getId());
-        final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-        Call<Void> newActivationCode = client.getNewActivationCode(params);
-        newActivationCode.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                progressDialog.stop();
-                if (response.code() == 200) {
-                    setCountDownTimer(1000, 120000);
-                } else{
-                    customToast.show(getLayoutInflater(), LoginActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                progressDialog.stop();
-                customToast.show(getLayoutInflater(), LoginActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
-            }
-        });
-    }
-
-    private void register()
-    {
-        if (validateRegisterForm())
-        {
+        if (PublicParams.getConnectionState(this)) {
             progressDialog.start();
-            RegisterUserRequestParams params = new RegisterUserRequestParams();
-            params.setEmail(emailText_reg.getText().toString());
-            params.setPassword(passwordText_reg.getText().toString());
-            params.setMobile(mobileText_reg.getText().toString());
-            params.setName(nameText_reg.getText().toString());
+            NewActivationCodeRequestParams params = new NewActivationCodeRequestParams();
+            params.setId(registerUserResult.getId());
             final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-            Call<RegisterUserResult> regUser = client.registerUser(params);
-            regUser.enqueue(new Callback<RegisterUserResult>() {
+            Call<Void> newActivationCode = client.getNewActivationCode(params);
+            newActivationCode.enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(Call<RegisterUserResult> call, Response<RegisterUserResult> response) {
-                    Log.d("my log", "................................... register user" + response.code());
+                public void onResponse(Call<Void> call, Response<Void> response) {
                     progressDialog.stop();
                     if (response.code() == 200) {
-                        registerUserResult = response.body();
-                        Log.d("my log", "................................... register user 200");
-                        viewFlipper.setDisplayedChild(2);
                         setCountDownTimer(1000, 120000);
-                    }else if (response.code() == 409)
-                    {
-                        customToast.show(getLayoutInflater(), LoginActivity.this, "شماره همراه یا نام کاربری تکراری است");
+                    } else {
+                        customToast.show(getLayoutInflater(), LoginActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                     }
                 }
 
                 @Override
-                public void onFailure(Call<RegisterUserResult> call, Throwable t) {
-                    Log.d("my log" , "................................... register user" + t.getMessage());
+                public void onFailure(Call<Void> call, Throwable t) {
                     progressDialog.stop();
+                    customToast.show(getLayoutInflater(), LoginActivity.this, "خطایی رخ داده است دوباره تلاش کنید");
                 }
             });
+        }else{
+            customToast.show(getLayoutInflater() , this , "عدم دسترسی به اینترنت");
+        }
+    }
+
+    private void register()
+    {
+        if (PublicParams.getConnectionState(this)) {
+            if (validateRegisterForm()) {
+                progressDialog.start();
+                RegisterUserRequestParams params = new RegisterUserRequestParams();
+                params.setEmail(emailText_reg.getText().toString());
+                params.setPassword(passwordText_reg.getText().toString());
+                params.setMobile(mobileText_reg.getText().toString());
+                params.setName(nameText_reg.getText().toString());
+                final StoreClient client = ServiceGenerator.createService(StoreClient.class);
+                Call<RegisterUserResult> regUser = client.registerUser(params);
+                regUser.enqueue(new Callback<RegisterUserResult>() {
+                    @Override
+                    public void onResponse(Call<RegisterUserResult> call, Response<RegisterUserResult> response) {
+                        Log.d("my log", "................................... register user" + response.code());
+                        progressDialog.stop();
+                        if (response.code() == 200) {
+                            registerUserResult = response.body();
+                            Log.d("my log", "................................... register user 200");
+                            viewFlipper.setDisplayedChild(2);
+                            setCountDownTimer(1000, 120000);
+                        } else if (response.code() == 409) {
+                            customToast.show(getLayoutInflater(), LoginActivity.this, "شماره همراه یا نام کاربری تکراری است");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<RegisterUserResult> call, Throwable t) {
+                        Log.d("my log", "................................... register user" + t.getMessage());
+                        progressDialog.stop();
+                    }
+                });
+            }
+        }else{
+            customToast.show(getLayoutInflater() , this , "عدم دسترسی به اینترنت");
         }
     }
 
     private void activeAccount()
     {
-        if (activationFormValidate())
-        {
-            progressDialog.start();
-            UserActivationRequestParams params = new UserActivationRequestParams();
-            params.setActivationCode(activationCodeText.getText().toString());
-            params.setId(registerUserResult.getId());
-            final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-            Call activation = client.userActivation(params);
-            activation.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) {
-                    if (response.code() == 200)
-                    {
-                        emailText.setText(emailText_reg.getText().toString());
-                        passwordText.setText(passwordText_reg.getText().toString());
-                        signIn();
+        if (PublicParams.getConnectionState(this)) {
+            if (activationFormValidate()) {
+                progressDialog.start();
+                UserActivationRequestParams params = new UserActivationRequestParams();
+                params.setActivationCode(activationCodeText.getText().toString());
+                params.setId(registerUserResult.getId());
+                final StoreClient client = ServiceGenerator.createService(StoreClient.class);
+                Call activation = client.userActivation(params);
+                activation.enqueue(new Callback() {
+                    @Override
+                    public void onResponse(Call call, Response response) {
+                        if (response.code() == 200) {
+                            emailText.setText(emailText_reg.getText().toString());
+                            passwordText.setText(passwordText_reg.getText().toString());
+                            signIn();
+                        } else if (response.code() == 412) {
+                            progressDialog.stop();
+                            customToast.show(getLayoutInflater(), LoginActivity.this, "کد فعالسازی اشتباه است");
+                        }
                     }
-                    else if (response.code() == 412){
-                        progressDialog.stop();
-                        customToast.show(getLayoutInflater(), LoginActivity.this, "کد فعالسازی اشتباه است");
-                    }
-                }
 
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    progressDialog.stop();
-                }
-            });
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+                        progressDialog.stop();
+                    }
+                });
+            }
+        }else{
+            customToast.show(getLayoutInflater() , this , "عدم دسترسی به اینترنت");
         }
     }
 
     private void signIn()
     {
-        if (validate())
-        {
-            Log.d("my log", ".................. user name" + emailText.getText().toString() + " - " + passwordText.getText().toString());
-            progressDialog.start();
-            TokenRequestParams params = new TokenRequestParams();
-            params.setEmail(emailText.getText().toString());
-            params.setPassword(passwordText.getText().toString());
-            final StoreClient client = ServiceGenerator.createService(StoreClient.class);
-            Call<TokenInfo> tokenInfo = client.login(params);
-            tokenInfo.enqueue(new Callback<TokenInfo>() {
-                @Override
-                public void onResponse(Call<TokenInfo> call, Response<TokenInfo> response) {
-                    if (response.code() == 200) {
-                        TokenInfo temp = response.body();
-                        new Delete().from(UserInfo.class).execute();
-                        final UserInfo userInfo = new UserInfo();
-                        userInfo.access_token = temp.getAccessToken();
-                        userInfo.refresh_token = temp.getRefreshToken();
-                        userInfo.save();
-                        Log.d("my log", ".................. access token" + UserInfo.getUserInfo().access_token);
-                        Call<User> user_info = client.userInfo();
-                        user_info.enqueue(new Callback<User>() {
-                            @Override
-                            public void onResponse(Call<User> call, Response<User> response) {
-                                User user = response.body();
-                                userInfo.userId = user.getId();
-                                userInfo.name = user.getName();
-                                userInfo.mobile = user.getMobile();
-                                userInfo.birthDate = user.getBirthDate();
-                                userInfo.fatherName = user.getFatherName();
-                                userInfo.idNumber = user.getIdNumber();
-                                userInfo.nationalCode = user.getNationalCode();
-                                userInfo.address = user.getAddress();
-                                userInfo.save();
-                                progressDialog.stop();
-                                Log.d("my log", ".................. user name" + userInfo.name + " - " + userInfo.refresh_token);
-                                finish();
-                            }
+        if (PublicParams.getConnectionState(this)) {
+            if (validate()) {
+                Log.d("my log", ".................. user name" + emailText.getText().toString() + " - " + passwordText.getText().toString());
+                progressDialog.start();
+                TokenRequestParams params = new TokenRequestParams();
+                params.setEmail(emailText.getText().toString());
+                params.setPassword(passwordText.getText().toString());
+                final StoreClient client = ServiceGenerator.createService(StoreClient.class);
+                Call<TokenInfo> tokenInfo = client.login(params);
+                tokenInfo.enqueue(new Callback<TokenInfo>() {
+                    @Override
+                    public void onResponse(Call<TokenInfo> call, Response<TokenInfo> response) {
+                        if (response.code() == 200) {
+                            TokenInfo temp = response.body();
+                            new Delete().from(UserInfo.class).execute();
+                            final UserInfo userInfo = new UserInfo();
+                            userInfo.access_token = temp.getAccessToken();
+                            userInfo.refresh_token = temp.getRefreshToken();
+                            userInfo.save();
+                            Log.d("my log", ".................. access token" + UserInfo.getUserInfo().access_token);
+                            Call<User> user_info = client.userInfo();
+                            user_info.enqueue(new Callback<User>() {
+                                @Override
+                                public void onResponse(Call<User> call, Response<User> response) {
+                                    User user = response.body();
+                                    userInfo.userId = user.getId();
+                                    userInfo.name = user.getName();
+                                    userInfo.mobile = user.getMobile();
+                                    userInfo.birthDate = user.getBirthDate();
+                                    userInfo.fatherName = user.getFatherName();
+                                    userInfo.idNumber = user.getIdNumber();
+                                    userInfo.nationalCode = user.getNationalCode();
+                                    userInfo.address = user.getAddress();
+                                    userInfo.save();
+                                    progressDialog.stop();
+                                    Log.d("my log", ".................. user name" + userInfo.name + " - " + userInfo.refresh_token);
+                                    finish();
+                                }
 
-                            @Override
-                            public void onFailure(Call<User> call, Throwable t) {
-                                progressDialog.stop();
-                            }
-                        });
-                    } else if (response.code() == 401){
-                        progressDialog.stop();
-                        customToast.show(getLayoutInflater() , LoginActivity.this , "نام کاربری یا کلمه عبور اشتباه است");
+                                @Override
+                                public void onFailure(Call<User> call, Throwable t) {
+                                    progressDialog.stop();
+                                }
+                            });
+                        } else if (response.code() == 401) {
+                            progressDialog.stop();
+                            customToast.show(getLayoutInflater(), LoginActivity.this, "نام کاربری یا کلمه عبور اشتباه است");
+                        } else {
+                            progressDialog.stop();
+                            customToast.show(getLayoutInflater(), LoginActivity.this, "خطای داخلی رخ داده است");
+                            Log.d("my log", "........................ get access token error" + response.code());
+                        }
                     }
-                    else{
-                        progressDialog.stop();
-                        customToast.show(getLayoutInflater() , LoginActivity.this , "خطای داخلی رخ داده است");
-                        Log.d("my log" , "........................ get access token error" + response.code());
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<TokenInfo> call, Throwable t) {
-                    progressDialog.stop();
-                    Log.d("my log", "........................ get access token error " + t.getMessage());
-                }
-            });
+                    @Override
+                    public void onFailure(Call<TokenInfo> call, Throwable t) {
+                        progressDialog.stop();
+                        Log.d("my log", "........................ get access token error " + t.getMessage());
+                    }
+                });
+            }
+        }else{
+            customToast.show(getLayoutInflater() , this , "عدم دسترسی به اینترنت");
         }
     }
 

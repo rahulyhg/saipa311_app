@@ -110,7 +110,6 @@ public class SurveyFormActivity extends AppCompatActivity implements DatePickerD
         this.createActionBar();
         this.getSurveyFormId();
         this.init();
-        this.fetchSurveyForm();
     }
 
     private void init()
@@ -177,9 +176,38 @@ public class SurveyFormActivity extends AppCompatActivity implements DatePickerD
         loadFuelTypes();
         progressDialog = new MyProgressDialog(SurveyFormActivity.this);
 
+        this.fetchSurveyForm();
+
+        if (!PublicParams.getConnectionState(this))
+        {
+            displayNoInternetConnectionError();
+        }
+
     }
 
-
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
+            }
+        });
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                init();
+                dTemp.dismiss();
+            }
+        });
+    }
 
     public void openDatePicker(View  view)
     {

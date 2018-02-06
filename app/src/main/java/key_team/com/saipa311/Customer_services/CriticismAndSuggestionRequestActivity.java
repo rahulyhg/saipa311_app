@@ -26,6 +26,7 @@ import key_team.com.saipa311.Customer_services.JsonSchema.CriticismAndSuggestion
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
+import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
@@ -66,6 +67,30 @@ public class CriticismAndSuggestionRequestActivity extends AppCompatActivity imp
     protected void onResume() {
         MyCustomApplication.activityResumed();
         super.onResume();
+    }
+
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
+            }
+        });
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                init();
+                dTemp.dismiss();
+            }
+        });
     }
 
     private void createActionBar()
@@ -175,28 +200,6 @@ public class CriticismAndSuggestionRequestActivity extends AppCompatActivity imp
         userInfo.save();
     }
 
-/*    private void showDialog()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        TextView title = new TextView(this);
-        title.setPadding(0 , 30 , 45 , 10);
-        title.setGravity(Gravity.RIGHT);
-        //title.setTextSize((int) getResources().getDimension(R.dimen.textSizeXSmaller));
-        title.setTextColor(getResources().getColor(R.color.colorPrimary));
-        title.setTypeface(title.getTypeface() , Typeface.BOLD);
-        title.setText("مشتری گرامی");
-        builder.setCustomTitle(title);
-        builder.setMessage(R.string.register_pm);
-        builder.setCancelable(false);
-        builder.setPositiveButton("منتظر می مانم", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        builder.show();
-    }*/
-
     private void init()
     {
         UserInfo userInfo = UserInfo.getUserInfo();
@@ -237,6 +240,10 @@ public class CriticismAndSuggestionRequestActivity extends AppCompatActivity imp
         });
 
         progressDialog = new MyProgressDialog(CriticismAndSuggestionRequestActivity.this);
+        if (!PublicParams.getConnectionState(this))
+        {
+            displayNoInternetConnectionError();
+        }
     }
 
     public boolean validate() {

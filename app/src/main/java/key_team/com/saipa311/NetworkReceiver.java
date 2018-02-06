@@ -36,9 +36,7 @@ public class NetworkReceiver extends BroadcastReceiver {
         android.net.NetworkInfo wifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         android.net.NetworkInfo _3g = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-        NetworkInfo activeNetworkInfo = connMgr.getActiveNetworkInfo();
-
-        if (activeNetworkInfo != null)
+        if (wifi.isConnected() || _3g.isConnected())
         {
             PublicParams.setConnectionState(context , true);
         }else{

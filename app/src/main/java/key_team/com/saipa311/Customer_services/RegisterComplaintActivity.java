@@ -41,6 +41,7 @@ import key_team.com.saipa311.Customer_services.JsonSchema.TrackingCode;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
+import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.Exchange.CompanyWithProduct;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.SelectedOption;
@@ -81,7 +82,6 @@ public class RegisterComplaintActivity extends AppCompatActivity implements Date
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint_request);
         createActionBar();
-        getAllComplaintTypes();
         init();
     }
 
@@ -95,6 +95,30 @@ public class RegisterComplaintActivity extends AppCompatActivity implements Date
     protected void onResume() {
         MyCustomApplication.activityResumed();
         super.onResume();
+    }
+
+    public void displayNoInternetConnectionError()
+    {
+        TextView reTry_btn;
+        View alertLayout = getLayoutInflater().inflate(R.layout.no_internet_connection_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        reTry_btn = (TextView)alertLayout.findViewById(R.id.reTry);
+        builder.setView(alertLayout);
+        builder.setCancelable(true);
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                System.exit(0);
+            }
+        });
+        final AlertDialog dTemp = builder.show();
+        reTry_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                init();
+                dTemp.dismiss();
+            }
+        });
     }
 
     private void createActionBar()
@@ -367,6 +391,13 @@ public class RegisterComplaintActivity extends AppCompatActivity implements Date
         });
 
         progressDialog = new MyProgressDialog(RegisterComplaintActivity.this);
+
+        if (PublicParams.getConnectionState(this))
+        {
+            getAllComplaintTypes();
+        }else{
+            displayNoInternetConnectionError();
+        }
     }
 
     public boolean validate() {
