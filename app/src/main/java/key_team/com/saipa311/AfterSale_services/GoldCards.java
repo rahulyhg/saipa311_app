@@ -23,6 +23,7 @@ import java.util.List;
 
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestParams;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.NewCars.NewCar;
@@ -73,7 +74,7 @@ public class GoldCards extends Fragment {
     {
         swipeContainer.setRefreshing(true);
         GoldCardRequestParams params = new GoldCardRequestParams();
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         StoreClient client = ServiceGenerator.createService(StoreClient.class);
         Call<List<GoldCard>> goldCards = client.fetchGoldCards(params);
         goldCards.enqueue(new Callback<List<GoldCard>>() {

@@ -38,6 +38,7 @@ import key_team.com.saipa311.Customer_services.JsonSchema.CriticismAndSuggestion
 import key_team.com.saipa311.Customer_services.JsonSchema.RegisterComplaintRequestParams;
 import key_team.com.saipa311.Customer_services.JsonSchema.SelectedComplaint;
 import key_team.com.saipa311.Customer_services.JsonSchema.TrackingCode;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
@@ -238,7 +239,7 @@ public class RegisterComplaintActivity extends AppCompatActivity implements Date
         {
             progressDialog.start();
             RegisterComplaintRequestParams params = new RegisterComplaintRequestParams();
-            params.setRepId(1);
+            params.setRepId(ActiveRepresentation.getActiveRepresentationId());
             params.setName(name.getText().toString());
             params.setFatherName(fatherName.getText().toString());
             params.setNationalCode(nationalCode.getText().toString());

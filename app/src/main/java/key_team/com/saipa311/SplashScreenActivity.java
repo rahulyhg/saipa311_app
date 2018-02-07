@@ -1,7 +1,9 @@
 package key_team.com.saipa311;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -40,6 +42,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         MyCustomApplication.appCreate();
+        checkNetworkState();
         refreshToken();
         Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.fade_in);
         ImageView imageView = (ImageView)findViewById(R.id.saipa_logo);
@@ -113,6 +116,20 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
             });
             Log.d("my log", ".................................. user table is not empty");
+        }
+    }
+
+    private void checkNetworkState()
+    {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        android.net.NetworkInfo wifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        android.net.NetworkInfo _3g = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+        if (wifi.isConnected() || _3g.isConnected())
+        {
+            PublicParams.setConnectionState(this , true);
+        }else{
+            PublicParams.setConnectionState(this , false);
         }
     }
 }

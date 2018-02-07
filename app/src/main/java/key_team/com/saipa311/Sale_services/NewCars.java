@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
@@ -69,7 +70,7 @@ public class NewCars extends Fragment {
     {
         swipeContainer.setRefreshing(true);
         NewCarRequestParams params = new NewCarRequestParams();
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         StoreClient client = ServiceGenerator.createService(StoreClient.class);
         Call<List<NewCar>> newCars = client.fetchNewCars(params);
         newCars.enqueue(new Callback<List<NewCar>>() {

@@ -28,6 +28,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExists;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExistsParams;
 import key_team.com.saipa311.Auth.LoginActivity;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.Options.JsonSchema.CarOption;
@@ -164,7 +165,7 @@ public class OptionInfoActivity extends AppCompatActivity {
         onTrackPm.setDisplayedChild(0);
 
         CarOptionRequestExistsParams params = new CarOptionRequestExistsParams();
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         params.setCoId(carOptionInfo.getId());
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<CarOptionRequestExists> request = client.isNotTrackedCarOptionRequestExist(params);

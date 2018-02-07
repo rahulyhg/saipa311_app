@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginTop="15dp"
+        card_view:cardBackgroundColor="@android:color/background_light"
+        card_view:cardElevation="2dp"
+        card_view:cardCornerRadius="2dp"
+        card_view:cardPreventCornerOverlap="false">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSizeLarge"
+                android:layout_gravity="right"
+                android:textStyle="bold"
+                android:textColor="#263938"/>
+            <TextView
+                android:id="@+id/code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="@dimen/textSizeNormal"
+                android:layout_gravity="right"
+                android:paddingRight="5dp"
+                android:textColor="@android:color/tab_indicator_text" />
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="@dimen/textSizeNormal"
+                android:layout_gravity="right"
+                android:textColor="@android:color/tab_indicator_text" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="@dimen/textSizeNormal"
+                android:textColor="@android:color/black"
+                android:text="آدرس"/>
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="@dimen/textSizeNormal"
+                android:layout_gravity="right"
+                android:textColor="@android:color/tab_indicator_text" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

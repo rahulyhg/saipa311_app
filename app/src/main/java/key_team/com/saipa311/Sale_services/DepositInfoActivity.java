@@ -31,6 +31,7 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 
 import key_team.com.saipa311.Auth.LoginActivity;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.PublicParams;
@@ -245,7 +246,7 @@ public class DepositInfoActivity extends AppCompatActivity {
 
         DepositRequestExistsParams params = new DepositRequestExistsParams();
         params.setDId(depositInfo.getId());
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<DepositRequestExists> request = client.isNotTrackedDepositRequestExist(params);
         request.enqueue(new Callback<DepositRequestExists>() {

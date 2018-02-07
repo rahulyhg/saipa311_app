@@ -42,6 +42,7 @@ import key_team.com.saipa311.Auth.JsonSchema.TokenInfo;
 import key_team.com.saipa311.Auth.JsonSchema.TokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.User;
 import key_team.com.saipa311.Auth.JsonSchema.UserActivationRequestParams;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
@@ -126,7 +127,7 @@ public class NewCarRequestActivity extends AppCompatActivity implements DatePick
     private void loadOptions()
     {
         NewCarOptionsParams params = new NewCarOptionsParams();
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         params.setPId(newCarInfo.getProduct().getId());
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<List<NewCarOption>> request = client.fetchOptionWithRepAndPid(params);

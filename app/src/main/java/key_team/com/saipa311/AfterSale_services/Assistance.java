@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Assistance.AssistanceRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TrackingCode;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
@@ -143,7 +144,7 @@ public class Assistance extends Fragment {
         AssistanceRequestParams params = new AssistanceRequestParams();
         params.setName(name);
         params.setPhoneNumber(phone);
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<TrackingCode> request = client.registerAssistanceRequest(params);
         request.enqueue(new Callback<TrackingCode>() {

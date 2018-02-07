@@ -24,6 +24,7 @@ import java.util.List;
 import key_team.com.saipa311.AfterSale_services.GoldCardInfoActivity;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestParams;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.ItemOffsetDecoration;
 import key_team.com.saipa311.Options.JsonSchema.CarOption;
 import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
@@ -74,7 +75,7 @@ public class OptionsFragment extends Fragment {
     {
         swipeContainer.setRefreshing(true);
         CarOptionsRequestParams params = new CarOptionsRequestParams();
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         params.setDeviceId(PublicParams.deviceId(getContext()));
         StoreClient client = ServiceGenerator.createService(StoreClient.class);
         Call<List<CarOption>> request = client.fetchAllCarOptions(params);

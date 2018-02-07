@@ -38,6 +38,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.DeclarationGr
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TheTurnRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TrackingCode;
 import key_team.com.saipa311.Auth.LoginActivity;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.ServiceGenerator;
@@ -104,7 +105,7 @@ public class Turning extends Fragment {
     {
         changeFragmentView(PROGRESS_MODE);
         AdmissionListRequestParams params = new AdmissionListRequestParams();
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         params.setPId(selectedMyCar.getPId());
         params.setMcId(selectedMyCar.getId());
         StoreClient client = ServiceGenerator.createService(StoreClient.class);

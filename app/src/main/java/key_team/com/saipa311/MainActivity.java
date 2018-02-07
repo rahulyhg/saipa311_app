@@ -44,6 +44,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.Options.JsonSchema.CarOption;
 import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
 import key_team.com.saipa311.Options.OptionInfoActivity;
@@ -64,7 +65,10 @@ public class MainActivity extends AppCompatActivity {
     private EventsAdapter eventsAdapter;
     private ArrayList<eventItem> eventList;
     private DrawerLayout mDrawerLayout;
-    private ImageButton toolBarBotifButton;
+    private ImageButton toolBarNotifButton;
+    private ImageButton toolBarRepresentationButton;
+    private TextView representationName;
+    private TextView representationCode;
     private ViewPager mainViewPager;
     private BottomNavigationView bottomNavigationView;
     private MenuItem prevMenuItem;
@@ -74,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         this.getIntentType();
         MyCustomApplication.appCreate();
@@ -143,6 +145,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) // representation activity
+        {
+            if (resultCode == RESULT_OK)
+            {
+                setupViewPager();
+            }
+        }
+    }
+
     private void init()
     {
         endToast = new Toast(MainActivity.this);
@@ -154,6 +168,22 @@ public class MainActivity extends AppCompatActivity {
         eventRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(this, R.dimen.recycler_item_offset);
         eventRecyclerView.addItemDecoration(itemDecoration);
+        toolBarRepresentationButton = (ImageButton)findViewById(R.id.tool_bar_representation_btn);
+        toolBarRepresentationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRepresentationPage();
+            }
+        });
+
+        representationName = (TextView)findViewById(R.id.representation_name);
+        representationCode = (TextView)findViewById(R.id.representation_code);
+    }
+
+    private void openRepresentationPage()
+    {
+        Intent intent = new Intent(MainActivity.this , RepresentationActivity.class);
+        startActivityForResult(intent, 0);
     }
 
     private void checkIntentType()
@@ -178,8 +208,8 @@ public class MainActivity extends AppCompatActivity {
     {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        toolBarBotifButton = (ImageButton) findViewById(R.id.tool_bar_notif_btn);
-        toolBarBotifButton.setOnClickListener(new View.OnClickListener() {
+        toolBarNotifButton = (ImageButton) findViewById(R.id.tool_bar_notif_btn);
+        toolBarNotifButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDrawerLayout.openDrawer(Gravity.LEFT);
@@ -262,40 +292,50 @@ public class MainActivity extends AppCompatActivity {
 
         if (PublicParams.getConnectionState(this))
         {
-            mainViewPager = (ViewPager)findViewById(R.id.viewpager);
-            mainViewPager.setOffscreenPageLimit(4);
-            adapter = new MainViewPagerAdapter(getSupportFragmentManager() , 4);
-            mainViewPager.setAdapter(adapter);
-            mainViewPager.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return true;
+            if (ActiveRepresentation.activeRepresentationIsSet()) {
+                if (ActiveRepresentation.activeRepresentationIsSet())
+                {
+                    ActiveRepresentation activeRepresentation = ActiveRepresentation.getActiveRepresentationInfo();
+                    representationName.setText("نمایندگی " + activeRepresentation.name);
+                    representationCode.setText("کد " + activeRepresentation.code);
                 }
-            });
-            mainViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                mainViewPager = (ViewPager) findViewById(R.id.viewpager);
+                mainViewPager.setOffscreenPageLimit(4);
+                adapter = new MainViewPagerAdapter(getSupportFragmentManager(), 4);
+                mainViewPager.setAdapter(adapter);
+                mainViewPager.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return true;
+                    }
+                });
+                mainViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-                    if (prevMenuItem != null) {
-                        prevMenuItem.setChecked(false);
-                    } else {
-                        bottomNavigationView.getMenu().getItem(0).setChecked(false);
                     }
 
-                    bottomNavigationView.getMenu().getItem(position).setChecked(true);
-                    prevMenuItem = bottomNavigationView.getMenu().getItem(position);
-                }
+                    @Override
+                    public void onPageSelected(int position) {
+                        if (prevMenuItem != null) {
+                            prevMenuItem.setChecked(false);
+                        } else {
+                            bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                        }
 
-                @Override
-                public void onPageScrollStateChanged(int state) {
+                        bottomNavigationView.getMenu().getItem(position).setChecked(true);
+                        prevMenuItem = bottomNavigationView.getMenu().getItem(position);
+                    }
 
-                }
-            });
-            this.fetchAllEvents();
+                    @Override
+                    public void onPageScrollStateChanged(int state) {
+
+                    }
+                });
+                this.fetchAllEvents();
+            }else{
+                openRepresentationPage();
+            }
         }else{
             displayNoInternetConnectionError();
         }

@@ -23,6 +23,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestRequestParams;
 import key_team.com.saipa311.Customer_services.JsonSchema.CriticismAndSuggestionRequestParams;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.MyProgressDialog;
@@ -130,7 +131,7 @@ public class CriticismAndSuggestionRequestActivity extends AppCompatActivity imp
         {
             progressDialog.start();
             CriticismAndSuggestionRequestParams params = new CriticismAndSuggestionRequestParams();
-            params.setRepId(1);
+            params.setRepId(ActiveRepresentation.getActiveRepresentationId());
             params.setDescription(description.getText().toString());
             params.setName(name.getText().toString());
             params.setFatherName(fatherName.getText().toString());

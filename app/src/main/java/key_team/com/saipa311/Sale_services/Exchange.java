@@ -13,6 +13,7 @@ import android.widget.ViewFlipper;
 import com.google.gson.Gson;
 
 import key_team.com.saipa311.Auth.LoginActivity;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.PhotoViewer;
 import key_team.com.saipa311.PublicParams;
@@ -56,7 +57,7 @@ public class Exchange extends Fragment {
     private void checkIsNoTrackedRequestExist()
     {
         ExchangeRequestExistsParams params = new ExchangeRequestExistsParams();
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<ExchangeRequestExists> request = client.isNotTrackedExchangeRequestExist(params);
         request.enqueue(new Callback<ExchangeRequestExists>() {

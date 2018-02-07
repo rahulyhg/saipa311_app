@@ -14,6 +14,7 @@ import android.widget.ViewFlipper;
 import com.google.gson.Gson;
 
 import key_team.com.saipa311.Auth.LoginActivity;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.OutDatedCar.OutDatedCarChangePlans;
@@ -75,7 +76,7 @@ public class Junk extends Fragment {
     {
         junk_view.setDisplayedChild(0);
         OutDatedCarChangePlanRequestParams params = new OutDatedCarChangePlanRequestParams();
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<OutDatedCarChangePlans> request = client.getOutDatedCarChangeActivePlan(params);
         request.enqueue(new Callback<OutDatedCarChangePlans>() {
@@ -113,7 +114,7 @@ public class Junk extends Fragment {
     private void checkIsNoTrackedRequestExist()
     {
         OutDatedCarRequestExistsParams params = new OutDatedCarRequestExistsParams();
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<OutDatedCarRequestExists> request = client.isNotTrackedODCCRequestExist(params);
         request.enqueue(new Callback<OutDatedCarRequestExists>() {

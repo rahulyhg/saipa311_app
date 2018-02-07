@@ -38,6 +38,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExists;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestExistsParams;
 import key_team.com.saipa311.Auth.LoginActivity;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MyCustomApplication;
 import key_team.com.saipa311.PhotoViewer;
@@ -177,7 +178,7 @@ public class GoldCardInfoActivity extends AppCompatActivity {
 
         GoldCardRequestExistsParams params = new GoldCardRequestExistsParams();
         params.setGcId(goldCardInfo.getId());
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         final StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<GoldCardRequestExists> request = client.isNotTrackedGoldCardRequestExist(params);
         request.enqueue(new Callback<GoldCardRequestExists>() {

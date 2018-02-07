@@ -82,7 +82,6 @@ public class SurveyFormActivity extends AppCompatActivity implements DatePickerD
     private EditText idNumber;
     private EditText nationalCode;
     private EditText mobile;
-    private Switch haveLicensePlate;
     private EditText address;
     private EditText description;
     private SurveyForm surveyForm;
@@ -121,7 +120,6 @@ public class SurveyFormActivity extends AppCompatActivity implements DatePickerD
         fatherName = (EditText)findViewById(R.id.input_fatherName);
         idNumber = (EditText)findViewById(R.id.input_idNumber);
         nationalCode = (EditText)findViewById(R.id.input_nationalCode);
-        haveLicensePlate = (Switch)findViewById(R.id.input_haveLicensePlate);
         address = (EditText)findViewById(R.id.input_address);
         description = (EditText)findViewById(R.id.input_description);
         mobile = (EditText)findViewById(R.id.input_mobile);
@@ -270,7 +268,7 @@ public class SurveyFormActivity extends AppCompatActivity implements DatePickerD
             public void onResponse(Call<SurveyForm> call, Response<SurveyForm> response) {
                 if (response.code() == 200) {
                     surveyForm = response.body();
-                    repInfo.setText("نمایندگی " + surveyForm.getRepresentation().getRCode() + " " + surveyForm.getRepresentation().getRName());
+                    repInfo.setText("نمایندگی " + surveyForm.getRepresentation().getRCode() + " - " + surveyForm.getRepresentation().getRName());
                     serviceSubject.setText(surveyForm.getSfSubject());
                     fetchCauseOfReferrals();
                     fetchQuestions();

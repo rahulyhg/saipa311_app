@@ -47,11 +47,6 @@ import retrofit2.http.PUT;
 
 
 public class MyService extends IntentService {
-    //private DatabaseHandler db;
-    //private ArrayList<HashMap<String, Object>> dailySubscriptionsOffersArrayList;
-    //private ArrayList<HashMap<String, Object>> newOffers;
-    //private LotusJSONMethods ss;
-    //private User user;
     private List<UnDeliveredCarOption> unDeliveredCarOptions;
     private List<UnDeliveredEvent> unDeliveredEvents;
     private Survey survey;
@@ -61,11 +56,6 @@ public class MyService extends IntentService {
     private long[] vibrate = {500 , 1000};
     public MyService() {
         super("SaipaRepService");
-/*        db = new DatabaseHandler(MyService.this);
-        dailySubscriptionsOffersArrayList = new ArrayList<HashMap<String, Object>>();
-        newOffers  = new ArrayList<HashMap<String, Object>>();
-        ss = new LotusJSONMethods(MyService.this);
-        user = new User(MyService.this);*/
     }
 
     @Override

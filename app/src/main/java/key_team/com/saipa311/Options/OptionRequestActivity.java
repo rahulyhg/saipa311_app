@@ -23,6 +23,7 @@ import com.mohamadamin.persianmaterialdatetimepicker.utils.PersianCalendar;
 
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCard;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.GoldCards.GoldCardRequestRequestParams;
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.InputFilterMinMax;
 import key_team.com.saipa311.MyCustomApplication;
@@ -137,7 +138,7 @@ public class OptionRequestActivity extends AppCompatActivity implements DatePick
         {
             progressDialog.start();
             RegisterCarOptionRequestParams params = new RegisterCarOptionRequestParams();
-            params.setRepId(1);
+            params.setRepId(ActiveRepresentation.getActiveRepresentationId());
             params.setName(name.getText().toString());
             params.setFatherName(fatherName.getText().toString());
             params.setNationalCode(nationalCode.getText().toString());

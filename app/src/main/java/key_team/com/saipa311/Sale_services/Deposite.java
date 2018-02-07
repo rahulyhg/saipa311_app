@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.PublicParams;
 import key_team.com.saipa311.R;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
@@ -65,7 +66,7 @@ public class Deposite extends Fragment {
     {
         swipeContainer.setRefreshing(true);
         DepositRequestParams params = new DepositRequestParams();
-        params.setRepId(1);
+        params.setRepId(ActiveRepresentation.getActiveRepresentationId());
         StoreClient client = ServiceGenerator.createService(StoreClient.class);
         final Call<List<Deposit>> deposits = client.fetchDeposits(params);
         deposits.enqueue(new Callback<List<Deposit>>() {
