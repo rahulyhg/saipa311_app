@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -33,6 +34,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.MyCars.MyCar;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionList;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionListRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionServiceType;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.CancelTurningRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.Declaration;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.DeclarationGroup;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TheTurnRequestParams;
@@ -41,6 +43,7 @@ import key_team.com.saipa311.Auth.LoginActivity;
 import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.R;
+import key_team.com.saipa311.RepresentationActivity;
 import key_team.com.saipa311.ServiceGenerator;
 import key_team.com.saipa311.StoreClient;
 import key_team.com.saipa311.customToast;
@@ -59,6 +62,7 @@ public class Turning extends Fragment {
     private RecyclerView recyclerView;
     private Button selectMyCar;
     private ViewFlipper viewFlipper;
+    private TextView cancel_the_turn_btn;
     private TurningAdapter turningAdapter;
     private ArrayList<admissionCapacity> turningList;
     private static final int TURNING_MODE = 0;
@@ -85,6 +89,13 @@ public class Turning extends Fragment {
                     mayCar.putExtra("recursive", true);
                     startActivityForResult(mayCar, MY_CAR_REQUEST);
                 }
+            }
+        });
+        cancel_the_turn_btn = (TextView)view.findViewById(R.id.cancel_the_turn_btn);
+        cancel_the_turn_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCancelThTurnDialog();
             }
         });
         turningList = new ArrayList<>();
@@ -118,19 +129,17 @@ public class Turning extends Fragment {
                     Log.d("my log", "................................. admission size:" + admissionData.size());
                     if (admissionData.size() > 0)
                         reloadTurningList();
-                    else{
+                    else {
                         changeFragmentView(TURNING_MODE);
                         showDialog(getResources().getString(R.string.admissionCapacityDoesNotExistInRep_pm));
                     }
                 } else if (response.code() == 306) {
                     changeFragmentView(TURNING_MODE);
                     showDialog(getResources().getString(R.string.afterSaleServiceDoesnotExistInRep_pm));
-                }else if (response.code() == 409)
-                {
+                } else if (response.code() == 409) {
                     changeFragmentView(TURNING_MODE);
                     showDialog("برای خودروی انتخاب شده در این نمایندگی نوبت پذیرش رزرو شده است!");
-                }
-                else {
+                } else {
                     customToast.show(getActivity().getLayoutInflater(), getActivity(), "خطایی رخ داده است دوباره تلاش کنید");
                 }
 
@@ -160,7 +169,9 @@ public class Turning extends Fragment {
         builder.setPositiveButton("تعویض نمایندگی", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                Intent intent = new Intent(getContext(), RepresentationActivity.class);
+                getActivity().startActivityForResult(intent, 0);
+                dialog.dismiss();
             }
         });
         builder.setNeutralButton("انصراف", new DialogInterface.OnClickListener() {
@@ -169,7 +180,42 @@ public class Turning extends Fragment {
 
             }
         });
+
         builder.show();
+
+    }
+
+    private void showCancelThTurnDialog()
+    {
+        TextView reg_btn;
+        TextView cancel_btn;
+        final EditText trackingCode;
+        View alertLayout = getActivity().getLayoutInflater().inflate(R.layout.cancel_the_turn_dialog_layout, null);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        trackingCode = (EditText)alertLayout.findViewById(R.id.input_cancel_turn_trackingCode);
+        reg_btn = (TextView)alertLayout.findViewById(R.id.reg_register_btn);
+        cancel_btn = (TextView)alertLayout.findViewById(R.id.reg_cancel_btn);
+        builder.setView(alertLayout);
+        builder.setCancelable(false);
+        final AlertDialog dTemp = builder.show();
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dTemp.dismiss();
+            }
+        });
+        reg_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (trackingCode.getText().toString().isEmpty()) {
+                    trackingCode.setError("شماره پیگیری الزامیست!");
+                } else {
+                    trackingCode.setError(null);
+                    dTemp.dismiss();
+                    registerCancelTheTurnRequest(trackingCode.getText().toString());
+                }
+            }
+        });
     }
 
     private void showRegDialog(final int acPos)
@@ -249,7 +295,7 @@ public class Turning extends Fragment {
         View alertLayout = getActivity().getLayoutInflater().inflate(R.layout.tracking_code_dialog_layout, null);
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         trackingCodePm = (TextView)alertLayout.findViewById(R.id.trackingCode_pm);
-        trackingCode = (TextView)alertLayout.findViewById(R.id.trachingCode);
+        trackingCode = (TextView)alertLayout.findViewById(R.id.trackingCode);
         trackingCodePm.setText("درخواست نوبت شما با موفقیت ثبت شد، شما می توانید با استفاده از کد پیگیری ذیل درخواست خود را پیگیری نموده و یا لغو کنید.");
         trackingCode.setText(_trackingCode);
         builder.setView(alertLayout);
@@ -301,6 +347,48 @@ public class Turning extends Fragment {
 
             @Override
             public void onFailure(Call<TrackingCode> call, Throwable t) {
+                Log.d("my log" , "............................ register turn request:" + t.getMessage());
+                customToast.show(getActivity().getLayoutInflater(), getContext(), "خطایی رخ داده است، دوباره تلاش کنید");
+            }
+        });
+    }
+
+    private void registerCancelTheTurnRequest(String trackingCode)
+    {
+        changeFragmentView(PROGRESS_MODE);
+        CancelTurningRequestParams params = new CancelTurningRequestParams();
+        params.setTrackingCode(trackingCode);
+        final StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        final Call request = client.cancelTheTurn(params);
+        request.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                changeFragmentView(TURNING_MODE);
+                Log.d("my log" , "............................ register turn request:" + response.code());
+                if (response.code() == 200)
+                {
+                    TextView trackingCodePm;
+                    View alertLayout = getActivity().getLayoutInflater().inflate(R.layout.tracking_code_dialog_layout, null);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    trackingCodePm = (TextView)alertLayout.findViewById(R.id.trackingCode_pm);
+                    trackingCodePm.setText("نوبت شما با موفقیت در این نمایندگی لغو شد.");
+                    builder.setView(alertLayout);
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("بله", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+                }else if (response.code() == 204)
+                {
+                    customToast.show(getActivity().getLayoutInflater() , getContext() , "درخواست با کد رهگیری شما یافت نشد!");
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
                 Log.d("my log" , "............................ register turn request:" + t.getMessage());
                 customToast.show(getActivity().getLayoutInflater(), getContext(), "خطایی رخ داده است، دوباره تلاش کنید");
             }

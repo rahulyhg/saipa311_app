@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -24,6 +27,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -44,6 +48,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import key_team.com.saipa311.AfterSale_services.JsonSchema.MyCars.MyCar;
+import key_team.com.saipa311.AfterSale_services.MyCarActivity;
 import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.Options.JsonSchema.CarOption;
 import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
@@ -67,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ImageButton toolBarNotifButton;
     private ImageButton toolBarRepresentationButton;
+    private LinearLayout representationInfo;
     private TextView representationName;
     private TextView representationCode;
     private ViewPager mainViewPager;
@@ -75,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private int intentType;
     private Toast endToast;
     private boolean doubleBackToExitPressedOnce = false;
+    private BroadcastReceiver mMessageReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +186,13 @@ public class MainActivity extends AppCompatActivity {
 
         representationName = (TextView)findViewById(R.id.representation_name);
         representationCode = (TextView)findViewById(R.id.representation_code);
+        representationInfo = (LinearLayout)findViewById(R.id.representation_info);
+        representationInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RepresentationInfoDialog.show(MainActivity.this);
+            }
+        });
     }
 
     private void openRepresentationPage()
@@ -267,11 +282,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setNotifService(Context context) {
-/*        Calendar updateTime = Calendar.getInstance();
-        updateTime.setTimeZone(TimeZone.getDefault());
-        updateTime.set(Calendar.HOUR_OF_DAY, 12);
-        updateTime.set(Calendar.MINUTE, 30);*/
-        //if (!this.isAlaram(this)) {
         RunState runState = new RunState(MainActivity.this);
         if (runState.get() == false) {
             Intent downloader = new Intent(context, MyStartServiceReceiver.class);
@@ -282,14 +292,29 @@ public class MainActivity extends AppCompatActivity {
             //Log.d("MyActivity", "Set alarmManager.setRepeating to: " + updateTime.getTime().toLocaleString());
             runState.set(true);
         }
-        //this.setMessageReceiver();
-        //}
+        this.setMessageReceiver();
+    }
 
+    private void setMessageReceiver()
+    {
+        mMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int notifType = intent.getIntExtra("notifType", 0);
+                if (notifType == PublicParams.SURVEY_FORM_AVAILABLE) {
+                    Intent surveyFormIntent = new Intent(MainActivity.this , SurveyFormActivity.class);
+                    surveyFormIntent.putExtra("surveyFormId" , intent.getIntExtra("surveyFormId" , 0));
+                    startActivity(surveyFormIntent);
+                    Log.d("my log", ".......................... notifType : surveyForm");
+                }
+
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("SaipaServiceSignal"));
     }
 
     private void setupViewPager()
     {
-
         if (PublicParams.getConnectionState(this))
         {
             if (ActiveRepresentation.activeRepresentationIsSet()) {
@@ -309,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+                bottomNavigationView.getMenu().getItem(0).setChecked(true);
                 mainViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -425,12 +451,21 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id)
+        {
+            case R.id.action_myCar:
+                Intent myCarIntent = new Intent(MainActivity.this , MyCarActivity.class);
+                startActivity(myCarIntent);
+                break;
+            case R.id.action_representations:
+                Intent intent = new Intent(MainActivity.this , RepresentationActivity.class);
+                startActivityForResult(intent, 0);
+                break;
+            case R.id.action_profile:
+                break;
+            case R.id.action_settings:
+                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -96,10 +96,12 @@ public class MyService extends IntentService {
 
         db.close();*/
         //sendEventNotification(MyService.this);
-        this.fetchAllUnDeliveredCarOptions();
-        this.fetchAllUnDeliveredEvents();
-        if (UserInfo.isLoggedIn()) {
-            fetchUnDeliveredSurveyForm();
+        if (PublicParams.getConnectionState(MyService.this)) {
+            this.fetchAllUnDeliveredCarOptions();
+            this.fetchAllUnDeliveredEvents();
+            if (UserInfo.isLoggedIn()) {
+                fetchUnDeliveredSurveyForm();
+            }
         }
     }
 
@@ -210,7 +212,7 @@ public class MyService extends IntentService {
         }
         else
         {
-            new playAlarm().execute();
+            sendSignalToActivity(PublicParams.SURVEY_FORM_AVAILABLE);
         }
     }
 
@@ -260,7 +262,7 @@ public class MyService extends IntentService {
         }
         else
         {
-            new playAlarm().execute();
+            //new playAlarm().execute();
         }
     }
 
@@ -310,17 +312,19 @@ public class MyService extends IntentService {
         }
         else
         {
-            new playAlarm().execute();
+            //new playAlarm().execute();
         }
     }
 
-    private void sendSignalToActivity() {
-        Intent intent = new Intent("LotusServiceSignal");
-        sendLocationBroadcast(intent);
+    private void sendSignalToActivity(int notiType) {
+        Intent intent = new Intent("SaipaServiceSignal");
+        sendLocationBroadcast(intent , notiType);
     }
 
-    private void sendLocationBroadcast(Intent intent){
-        intent.putExtra("state", state);
+    private void sendLocationBroadcast(Intent intent , int notifType){
+        intent.putExtra("notifType", notifType);
+        if (notifType == PublicParams.SURVEY_FORM_AVAILABLE)
+            intent.putExtra("surveyFormId" , survey.getId());
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 

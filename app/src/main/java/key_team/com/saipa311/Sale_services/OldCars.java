@@ -77,7 +77,7 @@ public class OldCars extends Fragment {
             @Override
             public void onResponse(Call<List<OldCar>> call, Response<List<OldCar>> response) {
                 oldCarData = response.body();
-                Log.d("my log" , "......................" + oldCarData.get(0).getProduct().getPrSubject());
+                //Log.d("my log" , "......................" + oldCarData.get(0).getProduct().getPrSubject());
                 prepareAlbums();
             }
 

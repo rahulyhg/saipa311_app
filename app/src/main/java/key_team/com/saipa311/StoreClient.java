@@ -16,6 +16,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.MyCars.MyCarsRegister
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionList;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionListRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.AdmissionServiceType;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.CancelTurningRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.DeclarationGroup;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TheTurnRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TrackingCode;
@@ -37,6 +38,7 @@ import key_team.com.saipa311.Options.JsonSchema.CarOptionRequestExistsParams;
 import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
 import key_team.com.saipa311.Options.JsonSchema.RegisterCarOptionRequestParams;
 import key_team.com.saipa311.Representations.JsonSchema.Representation;
+import key_team.com.saipa311.Representations.JsonSchema.RepresentationWithIdRequestParams;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.Deposit;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExists;
 import key_team.com.saipa311.Sale_services.JsonSchema.Deposits.DepositRequestExistsParams;
@@ -236,4 +238,10 @@ public interface StoreClient {
 
     @POST("app/representation/fetchAllItems")
     Call<List<Representation>> fetchAllRepresentations();
+
+    @POST("app/representation/fetchItemWithId")
+    Call<Representation> fetchRepresentationWithId(@Body RepresentationWithIdRequestParams params);
+
+    @POST("app/after_sale_service/admission_capacity/cancelTheTurn")
+    Call<Void> cancelTheTurn(@Body CancelTurningRequestParams params);
 }

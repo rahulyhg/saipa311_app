@@ -288,7 +288,7 @@ public class RegisterComplaintActivity extends AppCompatActivity implements Date
         View alertLayout = getLayoutInflater().inflate(R.layout.tracking_code_dialog_layout, null);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         trackingCodePm = (TextView)alertLayout.findViewById(R.id.trackingCode_pm);
-        trackingCode = (TextView)alertLayout.findViewById(R.id.trachingCode);
+        trackingCode = (TextView)alertLayout.findViewById(R.id.trackingCode);
         trackingCodePm.setText("مشتری گرامی، دراسرع وقت به شکایت شما رسیدگی خواهد شد، شما می تواند با استفاده از کد رهگیری ذیل نتیجه را پیگیری نمایید.");
         trackingCode.setText(_trackingCode);
         builder.setView(alertLayout);

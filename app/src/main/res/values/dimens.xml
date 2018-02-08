@@ -7,4 +7,6 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="recycler_item_offset">6dp</dimen>
+
+    <dimen name="company_icon_margin">4dp</dimen>
 </resources>

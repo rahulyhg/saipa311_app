@@ -6,12 +6,12 @@
         android:id="@+id/action_insert"
         android:orderInCategory="100"
         android:icon="@drawable/ic_action_tick"
-        android:title="@string/action_settings"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:title="" />
     <item
         android:id="@+id/action_new"
         android:orderInCategory="100"
         android:icon="@drawable/ic_new_car"
-        android:title="@string/action_settings"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:title="" />
 </menu>
