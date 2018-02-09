@@ -54,7 +54,7 @@ public class CustomerServicesFragment extends Fragment {
             public void onClick(View v) {
                 if (UserInfo.isLoggedIn() == false) {
                     Intent intent = new Intent(getContext(), LoginActivity.class);
-                    startActivityForResult(intent, 1);
+                    getActivity().startActivityForResult(intent, 100);
                 } else {
                     Intent intent = new Intent(getContext(), CriticismAndSuggestionRequestActivity.class);
                     startActivityForResult(intent, 2);
@@ -67,7 +67,7 @@ public class CustomerServicesFragment extends Fragment {
             public void onClick(View v) {
                 if (UserInfo.isLoggedIn() == false) {
                     Intent intent = new Intent(getContext(), LoginActivity.class);
-                    startActivityForResult(intent, 1);
+                    getActivity().startActivityForResult(intent, 100);
                 } else {
                     Intent intent = new Intent(getContext(), RegisterComplaintActivity.class);
                     startActivityForResult(intent, 3);

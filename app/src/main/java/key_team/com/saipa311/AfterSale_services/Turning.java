@@ -481,7 +481,7 @@ public class Turning extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == LOGIN_REQUEST)
         {
-
+            getActivity().invalidateOptionsMenu();
         }else if (requestCode == MY_CAR_REQUEST)
         {
             if (resultCode == Activity.RESULT_OK)

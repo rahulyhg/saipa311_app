@@ -51,6 +51,7 @@ import java.util.List;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.MyCars.MyCar;
 import key_team.com.saipa311.AfterSale_services.MyCarActivity;
 import key_team.com.saipa311.DB_Management.ActiveRepresentation;
+import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Options.JsonSchema.CarOption;
 import key_team.com.saipa311.Options.JsonSchema.CarOptionsRequestParams;
 import key_team.com.saipa311.Options.OptionInfoActivity;
@@ -163,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
                 setupViewPager();
             }
         }
+
+        invalidateOptionsMenu();
     }
 
     private void init()
@@ -442,6 +445,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem profileAction = menu.findItem(R.id.action_profile);
+        MenuItem myCarAction = menu.findItem(R.id.action_myCar);
+        if (!UserInfo.isLoggedIn())
+        {
+            profileAction.setVisible(false);
+            myCarAction.setVisible(false);
+        }else {
+            profileAction.setVisible(true);
+            myCarAction.setVisible(true);
+        }
         return true;
     }
 
@@ -462,8 +475,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 0);
                 break;
             case R.id.action_profile:
+                ProfileDialog.show(MainActivity.this);
                 break;
             case R.id.action_settings:
+                Intent setting = new Intent(MainActivity.this , SettingActivity.class);
+                startActivity(setting);
                 break;
         }
         return super.onOptionsItemSelected(item);

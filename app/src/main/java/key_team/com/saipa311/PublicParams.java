@@ -11,7 +11,7 @@ import android.text.TextWatcher;
  * Created by ammorteza on 12/11/17.
  */
 public class PublicParams {
-    public static final String BASE_URL = "http://192.168.1.2/SaipaRepresentation/public/";
+    public static final String BASE_URL = "http://192.168.1.41/SaipaRepresentation/public/";
     public static final int MAX_IMAGE_ATTACHED = 3;
     public static final long REPEAT_TIME = 1000 * 60 * 1;
     public static final int OPTION_NOTIFICATION_ID = 136561951;

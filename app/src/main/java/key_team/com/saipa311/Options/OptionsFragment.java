@@ -159,7 +159,7 @@ public class OptionsFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), OptionInfoActivity.class);
                         String arrayAsString = new Gson().toJson(carOptionsData.get(getAdapterPosition()));
                         intent.putExtra("carOptionInfo", arrayAsString);
-                        startActivity(intent);
+                        getActivity().startActivityForResult(intent , 100);
                     }
                 });
             }
@@ -192,10 +192,12 @@ public class OptionsFragment extends Fragment {
 
                     Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                     sharingIntent.setType("text/plain");
-                    String shareBody = dataSet.get(listPosition).getSubject()
+                    String shareBody =
+                            "آپشن خودرو:"
+                            + "\n" + dataSet.get(listPosition).getSubject()
                             + "\n" + dataSet.get(listPosition).getDescription()
                             + "\n" + "قیمت : " + dataSet.get(listPosition).getPrice()
-                            + "\n" + "نماینده سایپا ۳۱۱ : کوچک عظیمی";
+                            + "\n" + "نمایندگی " + ActiveRepresentation.getActiveRepresentationInfo().name + " کد" + ActiveRepresentation.getActiveRepresentationInfo().code;
                     sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "سایپا");
                     sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                     //sharingIntent.setType("*/*");

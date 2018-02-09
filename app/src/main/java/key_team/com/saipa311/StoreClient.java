@@ -30,7 +30,9 @@ import key_team.com.saipa311.Auth.JsonSchema.User;
 import key_team.com.saipa311.Auth.JsonSchema.UserActivationRequestParams;
 import key_team.com.saipa311.Customer_services.JsonSchema.ComplaintType;
 import key_team.com.saipa311.Customer_services.JsonSchema.CriticismAndSuggestionRequestParams;
+import key_team.com.saipa311.Customer_services.JsonSchema.CustomerScoreInClubRequestParams;
 import key_team.com.saipa311.Customer_services.JsonSchema.RegisterComplaintRequestParams;
+import key_team.com.saipa311.Customer_services.JsonSchema.ScoreInCustomerClub;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Options.JsonSchema.CarOption;
 import key_team.com.saipa311.Options.JsonSchema.CarOptionRequestExists;
@@ -244,4 +246,7 @@ public interface StoreClient {
 
     @POST("app/after_sale_service/admission_capacity/cancelTheTurn")
     Call<Void> cancelTheTurn(@Body CancelTurningRequestParams params);
+
+    @POST("app/customer_club/fetchScoreByUserId")
+    Call<ScoreInCustomerClub> fetchCustomerScoreInClub(@Body CustomerScoreInClubRequestParams params);
 }

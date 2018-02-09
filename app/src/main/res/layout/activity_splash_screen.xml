@@ -17,13 +17,13 @@
                 android:src="@drawable/saipa_logo"/>
         </LinearLayout>
         <TextView
+            android:id="@+id/versionLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="10dp"
             android:gravity="center"
             android:textSize="@dimen/textSizeXSmaller"
             android:textStyle="bold"
-            android:text="Version 1.0"
             android:textColor="@color/version_color"/>
 </RelativeLayout>

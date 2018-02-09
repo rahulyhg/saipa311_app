@@ -163,7 +163,7 @@ public class OldCars extends Fragment {
                         Intent intent = new Intent(getActivity(), OldCarInfoActivity.class);
                         String arrayAsString = new Gson().toJson(oldCarData.get(getAdapterPosition()));
                         intent.putExtra("oldCarInfo", arrayAsString);
-                        startActivity(intent);
+                        getActivity().startActivityForResult(intent , 100);
                     }
                 });
             }
@@ -202,7 +202,7 @@ public class OldCars extends Fragment {
                             + "\n" + dataSet.get(listPosition).getDescription()
                             + "\n" + "سال ساخت : " + dataSet.get(listPosition).getBuildYear()
                             + "\n" + "قیمت : " + dataSet.get(listPosition).getPrice()
-                            + "\n" + "نماینده سایپا ۳۱۱ : کوچک عظیمی";
+                            + "\n" + "نمایندگی " + ActiveRepresentation.getActiveRepresentationInfo().name + " کد" + ActiveRepresentation.getActiveRepresentationInfo().code;
                     sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "سایپا");
                     sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                     //sharingIntent.setType("*/*");

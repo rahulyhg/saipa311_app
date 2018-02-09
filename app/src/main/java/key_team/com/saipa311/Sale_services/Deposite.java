@@ -148,7 +148,7 @@ public class Deposite extends Fragment {
                         Intent intent = new Intent(getActivity(), DepositInfoActivity.class);
                         String arrayAsString = new Gson().toJson(depositData.get(getAdapterPosition()));
                         intent.putExtra("depositInfo", arrayAsString);
-                        startActivity(intent);
+                        getActivity().startActivityForResult(intent , 100);
                     }
                 });
 
@@ -183,7 +183,7 @@ public class Deposite extends Fragment {
                     sharingIntent.setType("text/plain");
                     String shareBody = "طرح سرمایه گذاری " + dataSet.get(listPosition).getCar()
                             + "\n" + dataSet.get(listPosition).getDescription()
-                            + "\n" + "نماینده سایپا ۳۱۱ : کوچک عظیمی";
+                            + "\n" + "نمایندگی " + ActiveRepresentation.getActiveRepresentationInfo().name + " کد" + ActiveRepresentation.getActiveRepresentationInfo().code;
                     sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "سایپا");
                     sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                     //sharingIntent.setType("*/*");

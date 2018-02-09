@@ -7,7 +7,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ViewFlipper
-                android:id="@+id/representation_view"
+                android:id="@+id/profile_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <RelativeLayout
@@ -23,28 +23,32 @@
                 <ScrollView
                     android:layout_width="match_parent"
                     android:orientation="vertical"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="25dp">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="130dp">
+                            android:layout_height="160dp">
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
+                                android:layout_height="110dp"
                                 android:layout_alignParentTop="true"
                                 android:background="@color/colorPrimary"></LinearLayout>
                             <LinearLayout
-                                android:id="@+id/rep_companyIcon"
                                 android:layout_width="match_parent"
-                                android:layout_height="60dp"
+                                android:layout_height="100dp"
                                 android:layout_alignParentBottom="true"
                                 android:orientation="horizontal"
                                 android:background="@android:color/transparent"
                                 android:gravity="center">
-
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:adjustViewBounds="true"
+                                        android:src="@drawable/ic_profile"/>
                             </LinearLayout>
                         </RelativeLayout>
                         <LinearLayout
@@ -53,7 +57,7 @@
                             android:orientation="vertical"
                             android:padding="10dp">
                             <TextView
-                                android:id="@+id/rep_name"
+                                android:id="@+id/prof_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/textSizeLarge"
@@ -61,64 +65,37 @@
                                 android:gravity="center"
                                 android:textColor="@android:color/black"/>
                             <TextView
-                                android:id="@+id/rep_code"
+                                android:id="@+id/prof_phoneNumber"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:textSize="@dimen/textSizeNormal"
                                 android:textColor="@color/bottom_nav_color"/>
-                            <TextView
-                                android:id="@+id/rep_desc"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:textSize="@dimen/textSizeNormal"
-                                android:textColor="@color/cardview_dark_background"/>
-
-                            <TextView
-                                android:id="@+id/rep_address"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:textSize="@dimen/textSizeNormal"
-                                android:textColor="@color/cardview_dark_background"/>
                             <LinearLayout
-                                android:id="@+id/rep_tell"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
+                                android:layout_marginTop="20dp"
                                 android:gravity="center"
                                 android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/cardview_dark_background"
+                                    android:gravity="center"
+                                    android:text="امتیاز شما در باشگاه مشتریان"/>
+                                <TextView
+                                    android:id="@+id/customerClub_score"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/text_button"
+                                    android:layout_marginTop="10dp"
+                                    android:textSize="@dimen/textSizeLarge"
+                                    android:textStyle="bold"
+                                    android:gravity="center"/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </ScrollView>
             </ViewFlipper>
-        </LinearLayout>
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="1px"
-                android:background="#DBE0E0"
-                android:weightSum="2">
-                <TextView
-                    android:id="@+id/more"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:foregroundGravity="center"
-                    android:layout_gravity="center"
-                    android:textSize="@dimen/textSizeNormal"
-                    android:gravity="center"
-                    android:background="@android:color/white"
-                    android:textColor="@android:color/black"
-                    android:text="دیگر نمایندگی ها"/>
-            </LinearLayout>
         </LinearLayout>
 </LinearLayout>

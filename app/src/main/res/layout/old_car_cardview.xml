@@ -125,6 +125,25 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:orientation="vertical"
+                android:background="#DBE0E0"></LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/shareNewCar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="6dp"
+                    android:paddingRight="20dp"
+                    android:paddingLeft="25dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_action_share"/>
+            </LinearLayout>
+<!--            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                     <LinearLayout
@@ -160,7 +179,7 @@
                     android:layout_height="1px"
                     android:orientation="vertical"
                     android:background="#DBE0E0"></LinearLayout>
-            </LinearLayout>
+            </LinearLayout>-->
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

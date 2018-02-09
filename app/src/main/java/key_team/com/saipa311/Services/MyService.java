@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import key_team.com.saipa311.Auth.JsonSchema.User;
+import key_team.com.saipa311.DB_Management.Setting;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.MainActivity;
 import key_team.com.saipa311.Options.JsonSchema.CarOption;
@@ -97,10 +98,15 @@ public class MyService extends IntentService {
         db.close();*/
         //sendEventNotification(MyService.this);
         if (PublicParams.getConnectionState(MyService.this)) {
-            this.fetchAllUnDeliveredCarOptions();
-            this.fetchAllUnDeliveredEvents();
             if (UserInfo.isLoggedIn()) {
                 fetchUnDeliveredSurveyForm();
+            }
+        }
+
+        if (Setting.getNotifState()) {
+            if (PublicParams.getConnectionState(MyService.this)) {
+                this.fetchAllUnDeliveredCarOptions();
+                this.fetchAllUnDeliveredEvents();
             }
         }
     }
@@ -178,7 +184,7 @@ public class MyService extends IntentService {
     }
 
     private void sendSurveyNotification(Context context) {
-        if (!applicationIsVisible) {
+        if (!applicationIsVisible && Setting.getNotifState()) {
             Intent notificationIntent = new Intent(context, SurveyFormActivity.class);
             notificationIntent.putExtra("surveyFormId" , survey.getId());
             notificationIntent.setAction(Intent.ACTION_MAIN );
@@ -201,8 +207,8 @@ public class MyService extends IntentService {
                             .setAutoCancel(true)
                             .setTicker("بیشتر ...")
                             .setPriority(Notification.PRIORITY_MAX)
-                            .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound))
-                            .setVibrate(vibrate)
+                            .setSound(Setting.getSoundState() == true ? Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound) : null)
+                            .setVibrate(Setting.getVibrationState() == true ? vibrate : null)
                             .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.saipa_notif_icon));
 
 
@@ -239,8 +245,8 @@ public class MyService extends IntentService {
                             .setAutoCancel(true)
                             .setTicker("بیشتر ...")
                             .setPriority(Notification.PRIORITY_MAX)
-                            .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound))
-                            .setVibrate(vibrate)
+                            .setSound(Setting.getSoundState() == true ? Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound) : null)
+                            .setVibrate(Setting.getVibrationState() == true ? vibrate : null)
                             .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.saipa_notif_icon));
 
 
@@ -289,8 +295,8 @@ public class MyService extends IntentService {
                             .setAutoCancel(true)
                             .setTicker("بیشتر ...")
                             .setPriority(Notification.PRIORITY_MAX)
-                            .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound))
-                            .setVibrate(vibrate)
+                            .setSound(Setting.getSoundState() == true ? Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound) : null)
+                            .setVibrate(Setting.getVibrationState() == true ? vibrate : null)
                             .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.saipa_notif_icon));
 
 

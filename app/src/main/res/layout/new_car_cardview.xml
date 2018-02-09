@@ -150,14 +150,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                    <ImageView
+<!--                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="14dp"
                         android:paddingRight="20dp"
                         android:paddingLeft="20dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_action_star_0"/>
+                        android:src="@drawable/ic_action_star_0"/>-->
                     <ImageView
                         android:id="@+id/shareNewCar"
                         android:layout_width="wrap_content"

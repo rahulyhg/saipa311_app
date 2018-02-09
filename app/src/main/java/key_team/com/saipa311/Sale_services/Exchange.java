@@ -90,5 +90,6 @@ public class Exchange extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         this.checkIsNoTrackedRequestExist();
+        getActivity().invalidateOptionsMenu();
     }
 }

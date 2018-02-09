@@ -23,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.activeandroid.query.Delete;
 
@@ -30,6 +31,7 @@ import key_team.com.saipa311.Auth.JsonSchema.RefreshTokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.TokenInfo;
 import key_team.com.saipa311.Auth.JsonSchema.TokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.User;
+import key_team.com.saipa311.DB_Management.Setting;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +46,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         MyCustomApplication.appCreate();
         checkNetworkState();
         refreshToken();
+        setSetting();
         Animation animation = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.fade_in);
         ImageView imageView = (ImageView)findViewById(R.id.saipa_logo);
         imageView.setAnimation(animation);
@@ -57,12 +60,30 @@ public class SplashScreenActivity extends AppCompatActivity {
                 finish();
             }
         }, 3000);
+        setVersionLabel();
     }
 
     @Override
     protected void onResume() {
         MyCustomApplication.activityResumed();
         super.onResume();
+    }
+
+    private void setSetting()
+    {
+        if (!Setting.settingAvailable())
+        {
+            Setting setting = new Setting();
+            setting.notifState = true;
+            setting.soundState = true;
+            setting.vibrateState = true;
+            setting.save();
+        }
+    }
+
+    private void setVersionLabel()
+    {
+        ((TextView)findViewById(R.id.versionLabel)).setText("Version " + BuildConfig.VERSION_NAME);
     }
 
     private void refreshToken()
