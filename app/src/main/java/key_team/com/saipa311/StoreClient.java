@@ -20,6 +20,7 @@ import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.CancelTurning
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.DeclarationGroup;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TheTurnRequestParams;
 import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TrackingCode;
+import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TurnReminder;
 import key_team.com.saipa311.Auth.JsonSchema.NewActivationCodeRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RefreshTokenRequestParams;
 import key_team.com.saipa311.Auth.JsonSchema.RegisterUserRequestParams;
@@ -249,4 +250,10 @@ public interface StoreClient {
 
     @POST("app/customer_club/fetchScoreByUserId")
     Call<ScoreInCustomerClub> fetchCustomerScoreInClub(@Body CustomerScoreInClubRequestParams params);
+
+    @POST("app/after_sale_service/admission_capacity/checkUnDeliveredTurnReminder")
+    Call<TurnReminder> checkUnDeliveredTurnReminder();
+
+    @POST("app/after_sale_service/admission_capacity/fetchUnDeliveredTurnReminder")
+    Call<TurnReminder> fetchUnDeliveredTurnReminder();
 }

@@ -17,7 +17,9 @@ public class PublicParams {
     public static final int OPTION_NOTIFICATION_ID = 136561951;
     public static final int EVENT_NOTIFICATION_ID = 136561952;
     public static final int SURVEY_NOTIFICATION_ID = 136561953;
+    public static final int REMINDER_NOTIFICATION_ID = 136561954;
     public static final int SURVEY_FORM_AVAILABLE = 1;
+    public static final int REMINDER_DIALOG_AVAILABLE = 2;
 
     private static String deviceUniqueID = null;
     private static final String DEVICE_UNIQUE_ID = "DEVICE_UNIQUE_ID";

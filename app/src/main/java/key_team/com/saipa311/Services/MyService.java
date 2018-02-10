@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import key_team.com.saipa311.AfterSale_services.JsonSchema.Turning.TurnReminder;
 import key_team.com.saipa311.Auth.JsonSchema.User;
 import key_team.com.saipa311.DB_Management.Setting;
 import key_team.com.saipa311.DB_Management.UserInfo;
@@ -79,27 +80,10 @@ public class MyService extends IntentService {
         else
             Log.d("MyService", "Application is not running");
 
-/*        state = Constants.NOT_NEW_DAILY_SUB_OFFERS;
-        if (user.userIsLogin()) {
-            if (InternetAccess.getConnectivityStatus(MyService.this) == InternetAccess.TYPE_CONNECTED) {
-                dailySubscriptionsOffersArrayList = ss.getDailySubscriptionsOffers(MyService.this);
-                if (ss.getStatusCode() == Constants.HTTP_STATUS_OK && dailySubscriptionsOffersArrayList.size() > 0) {
-                    newOffers = db.updateDailySubOffers(dailySubscriptionsOffersArrayList);
-                    if (newOffers.size() > 0) {
-                        if ((boolean) db.getSetting().get("notifState") == true)
-                            sendNotification(MyService.this);
-                        state = Constants.NEW_DAILY_SUB_OFFERS;
-                        sendSignalToActivity();
-                    }
-                }
-            }
-        }
-
-        db.close();*/
-        //sendEventNotification(MyService.this);
         if (PublicParams.getConnectionState(MyService.this)) {
             if (UserInfo.isLoggedIn()) {
                 fetchUnDeliveredSurveyForm();
+                checkUnDeliveredTurnReminder();
             }
         }
 
@@ -109,6 +93,30 @@ public class MyService extends IntentService {
                 this.fetchAllUnDeliveredEvents();
             }
         }
+    }
+
+    private void checkUnDeliveredTurnReminder()
+    {
+        StoreClient client = ServiceGenerator.createService(StoreClient.class);
+        final Call<TurnReminder> request = client.checkUnDeliveredTurnReminder();
+        request.enqueue(new Callback<TurnReminder>() {
+            @Override
+            public void onResponse(Call<TurnReminder> call, Response<TurnReminder> response) {
+                if (response.code() == 200)
+                {
+                    sendReminderNotification(MyService.this , response.body());
+                }else if (response.code() == 204){
+
+                }
+
+                Log.d("my log", "............. turn request reminder deliver:" + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<TurnReminder> call, Throwable t) {
+
+            }
+        });
     }
 
     private void fetchAllUnDeliveredCarOptions()
@@ -183,6 +191,48 @@ public class MyService extends IntentService {
         });
     }
 
+    private void sendReminderNotification(Context context , TurnReminder turnReminder) {
+        if (!applicationIsVisible && Setting.getNotifState()) {
+            Intent notificationIntent = new Intent(context, MainActivity.class);
+            notificationIntent.putExtra("notificationType" , PublicParams.REMINDER_NOTIFICATION_ID);
+            notificationIntent.setAction(Intent.ACTION_MAIN );
+            notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER );
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent contentIntent;
+            if (applicationIsRunning)
+                contentIntent = PendingIntent.getActivity(context, PublicParams.OPTION_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            else
+                contentIntent = PendingIntent.getActivity(context, PublicParams.OPTION_NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            Resources res = context.getResources();
+
+            NotificationCompat.Builder builder =
+                    new NotificationCompat.Builder(context)
+                            .setContentTitle("یادآوری")
+                            .setContentText("نمایندگی " + turnReminder.getAdmissionCapacity().getRepresentation().getRName().toString() + " - کد" + turnReminder.getAdmissionCapacity().getRepresentation().getRCode().toString())
+                                    //.setContentText(dailySubscriptionsOffersArrayList.get(0).get("description").toString())
+                                    //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
+                            .setSmallIcon(R.drawable.saipa_notif_icon_small)
+                            .setAutoCancel(true)
+                            .setTicker("بیشتر ...")
+                            .setPriority(Notification.PRIORITY_MAX)
+                            .setSound(Setting.getSoundState() == true ? Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound) : null)
+                            .setVibrate(Setting.getVibrationState() == true ? vibrate : null)
+                            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.saipa_notif_icon));
+
+
+            builder.setContentIntent(contentIntent);
+            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+            inboxStyle.addLine("تاریخ مراجعه به نمایندگی " + turnReminder.getAdmissionCapacity().getAcDate());
+            builder.setStyle(inboxStyle);
+            NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            nManager.notify(PublicParams.SURVEY_NOTIFICATION_ID, builder.build());
+        }
+        else
+        {
+            sendSignalToActivity(PublicParams.REMINDER_DIALOG_AVAILABLE);
+        }
+    }
+
     private void sendSurveyNotification(Context context) {
         if (!applicationIsVisible && Setting.getNotifState()) {
             Intent notificationIntent = new Intent(context, SurveyFormActivity.class);
@@ -200,7 +250,7 @@ public class MyService extends IntentService {
             NotificationCompat.Builder builder =
                     new NotificationCompat.Builder(context)
                             .setContentTitle(" نظر سنجی")
-                            .setContentText("نمایندگی " + survey.getRepresentation().getRCode().toString() + " - " + survey.getRepresentation().getRName().toString())
+                            .setContentText("نمایندگی " + survey.getRepresentation().getRName().toString() + " - کد " + survey.getRepresentation().getRCode().toString())
                             //.setContentText(dailySubscriptionsOffersArrayList.get(0).get("description").toString())
                             //.setStyle(new NotificationCompat.BigTextStyle().bigText(dailySubscriptionsOffersArrayList.get(0).get("title").toString()))
                             .setSmallIcon(R.drawable.saipa_notif_icon_small)

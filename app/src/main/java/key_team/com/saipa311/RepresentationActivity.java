@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -28,6 +30,8 @@ import java.util.List;
 import key_team.com.saipa311.DB_Management.ActiveRepresentation;
 import key_team.com.saipa311.DB_Management.UserInfo;
 import key_team.com.saipa311.Representations.JsonSchema.Representation;
+import key_team.com.saipa311.Representations.JsonSchema.Service;
+import key_team.com.saipa311.Representations.JsonSchema.Tell;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -205,7 +209,9 @@ public class RepresentationActivity extends AppCompatActivity {
             representation a = new representation(representations.get(i).getRName(),
                     representations.get(i).getRCode(),
                     representations.get(i).getRDescription(),
-                    representations.get(i).getRAddress());
+                    representations.get(i).getRAddress(),
+                    representations.get(i).getTell(),
+                    representations.get(i).getService());
             representationAdapter.addItem(a);
         }
         changeActivityView(REPRESENTATION_MODE);
@@ -217,14 +223,20 @@ public class RepresentationActivity extends AppCompatActivity {
         String _code;
         String _description;
         String _address;
+        List<Tell> _tell;
+        List<Service> _service;
         public representation(String subject,
                      String code,
                      String  description,
-                     String address) {
+                     String address,
+                     List<Tell> tell,
+                     List<Service> services) {
             this._subject = subject;
             this._code = code;
             this._description = description;
             this._address = address;
+            this._tell = tell;
+            this._service = services;
         }
 
         public String getSubject() {
@@ -242,6 +254,14 @@ public class RepresentationActivity extends AppCompatActivity {
         public String getAddress() {
             return this._address;
         }
+
+        public List<Tell> getTell() {
+            return this._tell;
+        }
+
+        public List<Service> getService() {
+            return this._service;
+        }
     }
 
     public class RepresentationAdapter extends RecyclerView.Adapter<RepresentationAdapter.RepresentationViewHolder> {
@@ -252,6 +272,8 @@ public class RepresentationActivity extends AppCompatActivity {
             public TextView code;
             public TextView description;
             public TextView address;
+            public LinearLayout tell;
+            public LinearLayout companyIcon;
 
             public RepresentationViewHolder(View view) {
                 super(view);
@@ -259,6 +281,8 @@ public class RepresentationActivity extends AppCompatActivity {
                 code = (TextView) view.findViewById(R.id.code);
                 description = (TextView) view.findViewById(R.id.description);
                 address = (TextView) view.findViewById(R.id.address);
+                tell = (LinearLayout) view.findViewById(R.id.rep_tell);
+                companyIcon = (LinearLayout) view.findViewById(R.id.rep_companyIcon);
                 view.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
@@ -303,6 +327,34 @@ public class RepresentationActivity extends AppCompatActivity {
             holder.code.setText("کد " + dataSet.get(listPosition).getCode());
             holder.description.setText(dataSet.get(listPosition).getDescription());
             holder.address.setText(dataSet.get(listPosition).getAddress());
+            for (int i = 0; i < dataSet.get(listPosition).getTell().size(); i++) {
+                LinearLayout.LayoutParams tel_layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                TextView tel_number = new TextView(RepresentationActivity.this);
+                tel_number.setTextColor(getResources().getColor(android.R.color.black));
+                tel_number.setText(dataSet.get(listPosition).getTell().get(i).getTNumber());
+                holder.tell.addView(tel_number, tel_layoutParams);
+            }
+
+            LinearLayout.LayoutParams tel_layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            tel_layoutParams.setMargins(8, 0, 8, 0);
+            List<Integer> companyId = new ArrayList<>();
+            for (int i=0;i<dataSet.get(listPosition).getService().size(); i++)
+            {
+                int j =0;
+                for (;j<companyId.size() ; j++)
+                {
+                    if (companyId.get(j) == dataSet.get(listPosition).getService().get(i).getProduct().getCompany().getId())
+                        break;
+                }
+                if (j == companyId.size())
+                {
+                    companyId.add(dataSet.get(listPosition).getService().get(i).getProduct().getCompany().getId());
+                    ImageView c1 = new ImageView(RepresentationActivity.this);
+                    c1.setAdjustViewBounds(true);
+                    holder.companyIcon.addView(c1, tel_layoutParams);
+                    new DownloadImageTask(c1).execute(PublicParams.BASE_URL + dataSet.get(listPosition).getService().get(i).getProduct().getCompany().getCoIconPath());
+                }
+            }
         }
 
         public void addItem(representation dataObj) {

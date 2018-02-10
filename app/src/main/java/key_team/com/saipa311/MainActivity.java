@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         this.initBottomNavigationView();
         this.init();
         this.setNotifService(this);
-        this.checkIntentType();
         this.setupViewPager();
     }
 
@@ -213,6 +212,9 @@ public class MainActivity extends AppCompatActivity {
         }else if (intentType == PublicParams.EVENT_NOTIFICATION_ID)
         {
             mDrawerLayout.openDrawer(Gravity.LEFT);
+        }else if(intentType == PublicParams.REMINDER_NOTIFICATION_ID)
+        {
+            ReminderDialog.show(MainActivity.this);
         }
     }
 
@@ -309,6 +311,9 @@ public class MainActivity extends AppCompatActivity {
                     surveyFormIntent.putExtra("surveyFormId" , intent.getIntExtra("surveyFormId" , 0));
                     startActivity(surveyFormIntent);
                     Log.d("my log", ".......................... notifType : surveyForm");
+                }else if (notifType == PublicParams.REMINDER_DIALOG_AVAILABLE)
+                {
+                    ReminderDialog.show(MainActivity.this);
                 }
 
             }
@@ -362,6 +367,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 this.fetchAllEvents();
+                this.checkIntentType();
             }else{
                 openRepresentationPage();
             }
